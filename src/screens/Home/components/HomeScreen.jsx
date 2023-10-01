@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, CheckIcon, Divider, Flex, Heading, Icon, Select, Stack, Text, VStack } from "native-base";
+import { Avatar, Box, CheckIcon, Flex, Heading, Select, Stack, Text } from "native-base";
 import React from "react";
 import { StyleSheet, Animated, ScrollView, View, Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
@@ -65,13 +65,13 @@ export const HomeScreen = ({ navigation }) => {
 
     return (
         <Animated.View style={{ flex: 1, opacity: fadeAnim }}>
-            <Stack
+            <Box
                 paddingX={15}
                 paddingY={30}
                 width='100%'
                 display='flex'
                 flexDirection='column'
-                height='100vh'
+                minHeight='100%'
                 overflow='hidden'
             >
                 <Stack
@@ -106,8 +106,8 @@ export const HomeScreen = ({ navigation }) => {
                         flexDirection='row'
                         style={{ columnGap: 5 }}
                     >
-                        <GradientButton onPress={() => handleChangeRoute('History')} colors={['#2A4AB6', '#269DDB']} width={45} height={45} radius={15} prefixIcon={<Ionicons color='white' name='timer' size={24} />} />
-                        <GradientButton onPress={() => handleChangeRoute('Activities')} colors={['#2A4AB6', '#269DDB']} width={45} height={45} radius={15} prefixIcon={<Ionicons color='white' name='list' size={24} />} />
+                        <GradientButton onPress={() => handleChangeRoute('History')} colors={['#2A4AB6', '#269DDB']} width={45} height={45} radius={15} prefixIcon={<Ionicons color='white' name='timer' size={22} />} />
+                        <GradientButton onPress={() => handleChangeRoute('Activities')} colors={['#2A4AB6', '#269DDB']} width={45} height={45} radius={15} prefixIcon={<Ionicons color='white' name='list' size={22} />} />
                     </Flex>
 
                     <Select
@@ -131,29 +131,33 @@ export const HomeScreen = ({ navigation }) => {
                     </Select>
                 </Flex>
 
-                <ScrollView>
-                    {
-                        prodData.map((item, index) => (
-                            <View
-                                key={index} // Use a unique key for each item
-                                style={{
-                                    flexDirection: 'row',
-                                    justifyContent: 'space-between',
-                                    alignItems: 'center',
-                                    paddingBottom: 15,
-                                }}
-                            >
-                                <Image source={item.thumbnail} borderRadius={10} width={150} height={100} />
-                                <View>
-                                    <Text fontSize={16} fontWeight={700} color='#01005C'>{item.name}</Text>
-                                    <Text fontSize={14} fontWeight={400} color={item.statusColor}>{item.statusMessage}</Text>
+                <Box
+                    flex={1}
+                >
+                    <ScrollView                >
+                        {
+                            prodData.map((item, index) => (
+                                <View
+                                    key={index} // Use a unique key for each item
+                                    style={{
+                                        flexDirection: 'row',
+                                        justifyContent: 'space-between',
+                                        alignItems: 'center',
+                                        paddingBottom: 15,
+                                    }}
+                                >
+                                    <Image source={item.thumbnail} borderRadius={10} width={150} height={100} />
+                                    <View>
+                                        <Text fontSize={16} fontWeight={700} color='#01005C'>{item.name}</Text>
+                                        <Text fontSize={14} fontWeight={400} color={item.statusColor}>{item.statusMessage}</Text>
+                                    </View>
+                                    <Ionicons onPress={() => navigation.navigate('Product details', {productName: item.name})} name='chevron-forward' size={28} />
                                 </View>
-                                <Ionicons name='chevron-forward' size={28} />
-                            </View>
-                        ))
-                    }
-                </ScrollView>
-            </Stack>
+                            ))
+                        }
+                    </ScrollView>
+                </Box>
+            </Box>
         </Animated.View>
     );
 };

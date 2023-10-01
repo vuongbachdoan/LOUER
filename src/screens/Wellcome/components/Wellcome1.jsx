@@ -1,7 +1,6 @@
 import React from "react";
 import { View, Text, StyleSheet, Animated } from "react-native";
 import GradientText from "react-native-gradient-texts";
-import LogoLouer from '../../../assets/images/logo.png';
 
 export const Wellcome1 = ({ navigation }) => {
     React.useEffect(() => {
@@ -29,11 +28,8 @@ export const Wellcome1 = ({ navigation }) => {
                     fontWeight={1000}
                     isGradientFill
                     gradientColors={['#FF5484', '#26A0DD']}
-
-
                 />
                 <Text style={{
-                    color: '#FFF',
                     fontSize: 22,
                     fontWeight: 600
                 }}
@@ -54,7 +50,6 @@ const styles = StyleSheet.create({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#080A0C'
     },
     text: {
         textTransform: 'uppercase',

@@ -3,17 +3,21 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { Wellcome } from '../screens/Wellcome';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { ImportFromSeed } from '../screens/ImportFromSeed';
 import { Home } from '../screens/Home';
+import { Chat } from '../screens/Chat';
+import { Notification } from '../screens/Notification';
+import { Profile } from '../screens/Profile';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
 export const MainNavigator = () => {
   return (
-    <NavigationContainer theme={{colors: {
-      background: 'transparent'
-    }}}>
+    <NavigationContainer theme={{
+      colors: {
+        background: 'transparent'
+      }
+    }}>
       <Stack.Navigator
         screenOptions={{
           headerStyle: {
@@ -31,18 +35,32 @@ export const MainNavigator = () => {
         />
 
         <Stack.Screen
-          name="Import From Seed"
-          component={ImportFromSeed}
-          options={{
-            headerShown: false
-          }}
-        />
-
-        <Stack.Screen
           name="Home"
           component={Home}
           options={{
             headerShown: false
+          }}
+        />
+        <Stack.Screen
+          name="Chat"
+          component={Chat}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="Notification"
+          component={Notification}
+          options={{
+            headerShown: false,
+          }}
+        />
+
+        <Stack.Screen
+          name="Profile"
+          component={Profile}
+          options={{
+            headerShown: true,
           }}
         />
       </Stack.Navigator>
