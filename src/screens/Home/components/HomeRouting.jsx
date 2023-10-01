@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, CheckIcon, Divider, Flex, Heading, Icon, Select, Stack, Text, VStack } from "native-base";
+import { Stack } from "native-base";
 import React from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { GradientButton } from "../../../components/GradientButton";
@@ -10,6 +10,7 @@ import { HomeScreen } from "./HomeScreen";
 import { Activities } from "./Activities";
 import { History } from "./History";
 import { TouchableOpacity } from "react-native";
+import { ProductDetail } from "./ProductDetail";
 
 const prodData = [
     {
@@ -62,7 +63,7 @@ export const HomeRouting = ({ navigation }) => {
                         {
                             route.name !== 'HomeScreen' &&
                             <TouchableOpacity onPress={() => navigation.navigate('HomeScreen')}>
-                                <Stack marginLeft={15}><Ionicons name='chevron-back' size={24} /></Stack>
+                                <Stack marginLeft={15}><Ionicons name='chevron-back' size={22} /></Stack>
                             </TouchableOpacity>
                         }
                     </>
@@ -79,7 +80,7 @@ export const HomeRouting = ({ navigation }) => {
                                         navigation.navigate('History')
                                     }
                                 }}
-                                colors={['#2A4AB6', '#269DDB']} width={45} height={45} radius={15} prefixIcon={<Ionicons color='white' name='timer' size={24} />} /></Stack>
+                                colors={['#2A4AB6', '#269DDB']} width={45} height={45} radius={15} prefixIcon={<Ionicons color='white' name='timer' size={22} />} /></Stack>
                         }
                         {
                             route.name === 'History' &&
@@ -91,7 +92,7 @@ export const HomeRouting = ({ navigation }) => {
                                         navigation.navigate('History')
                                     }
                                 }}
-                                colors={['#2A4AB6', '#269DDB']} width={45} height={45} radius={15} prefixIcon={<Ionicons color='white' name='list' size={24} />} /></Stack>
+                                colors={['#2A4AB6', '#269DDB']} width={45} height={45} radius={15} prefixIcon={<Ionicons color='white' name='list' size={22} />} /></Stack>
                         }
                     </>
                 ),
@@ -103,6 +104,7 @@ export const HomeRouting = ({ navigation }) => {
             <HomeTabs.Screen name="HomeScreen" component={HomeScreen} options={{ tabBarLabel: '', tabBarLabelStyle: { fontWeight: 'bold', bottom: 5 } }} />
             <HomeTabs.Screen name="Activities" component={Activities} options={{ tabBarLabel: '', tabBarLabelStyle: { fontWeight: 'bold', bottom: 5 } }} />
             <HomeTabs.Screen name="History" component={History} options={{ tabBarLabel: '', tabBarLabelStyle: { fontWeight: 'bold', bottom: 5 } }} />
+            <HomeTabs.Screen name="Product details" component={ProductDetail} options={{ tabBarLabel: '', tabBarLabelStyle: { fontWeight: 'bold', bottom: 5 } }} />
         </HomeTabs.Navigator>
     )
 };

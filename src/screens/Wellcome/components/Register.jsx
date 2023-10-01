@@ -2,7 +2,7 @@ import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { Button, Icon, FormControl, Input, WarningOutlineIcon, Pressable } from 'native-base';
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, KeyboardAvoidingView, ScrollView } from 'react-native';
-import Logo from '../assets/icons/icons';
+import Logo from '../../../assets/icons/icons';
 
 const styles = StyleSheet.create({
     container: {
@@ -54,17 +54,17 @@ const styles = StyleSheet.create({
     }
 })
 
-export const Login = ({ navigation }) => {
+export const Register = ({ navigation }) => {
     const [username, setUsername] = React.useState('');
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
-    const [isLogin, setIsLogin] = React.useState(false);
+    const [isRegister, setIsRegister] = React.useState(false);
     const [show, setShow] = React.useState(false);
 
-    handleLogin = () => {
-        setIsLogin(true);
+    handleRegister = () => {
+        setIsRegister(true);
         setTimeout(() => {
-            setIsLogin(false);
+            setIsRegister(false);
             navigation.navigate('Home');
         }, 3000)
     }
@@ -83,11 +83,11 @@ export const Login = ({ navigation }) => {
             >
                 <View style={styles.container}>
 
-                    <Text style={styles.title}>🥷 Welcome back to <Text style={{fontWeight: 'bold'}}>Suriken</Text></Text>
+                <Text style={styles.title}>🥷 Take new journey with <Text style={{fontWeight: 'bold'}}>Suriken</Text></Text>
                     <Logo width={75} height={75} />
                     <View style={{ width: '100%' }}>
                         {/* Social Buttons */}
-                        <Text style={{textAlign: 'center', marginBottom: 24}}>Sign-in with</Text>
+                        <Text style={{textAlign: 'center', marginBottom: 24}}>Sign-up with</Text>
                         <View style={{
                             display: 'flex',
                             flexDirection: 'row',
@@ -158,12 +158,12 @@ export const Login = ({ navigation }) => {
                         </View>
                     </View>
                     <View>
-                        <Button style={styles.button} isLoading={isLogin} onPress={handleLogin} spinnerPlacement="end" isLoadingText="Submitting">
-                            <Text style={styles.buttonText}>Login</Text>
+                        <Button style={styles.button} isLoading={isRegister} onPress={handleRegister} spinnerPlacement="end" isLoadingText="Submitting">
+                            <Text style={styles.buttonText}>Register</Text>
                         </Button>
 
-                        <TouchableOpacity style={{ marginTop: 24 }} onPress={() => navigation.navigate('Register')}>
-                            <Text style={{textAlign: 'center', color: '#2F2F2F'}}>Don't have an account? Register here</Text>
+                        <TouchableOpacity style={{ marginTop: 24 }} onPress={() => navigation.navigate('Login')}>
+                            <Text style={{textAlign: 'center', color: '#2F2F2F'}}>Already have an account? Login here</Text>
                         </TouchableOpacity>
                     </View>
                 </View>

@@ -1,9 +1,12 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
-import { Button, Stack } from "native-base";
+import { Stack } from "native-base";
 import { GradientButton } from "../../components/GradientButton";
 import { HomeRouting } from "./components/HomeRouting";
+import { Chat } from "../Chat";
+import { Notification } from "../Notification";
+import { Profile } from "../Profile";
 
 const Tab = createBottomTabNavigator();
 
@@ -22,8 +25,6 @@ export const Home = ({ navigation }) => {
                     borderTopWidth: 0,
                     borderTopColor: 'transparent',
                     height: 70,
-                    borderRadius: 70,
-                    margin: 5
                 },
                 tabBarIcon: ({ focused, color, size }) => {
                     let iconName;
@@ -37,8 +38,8 @@ export const Home = ({ navigation }) => {
                         return <Ionicons name={iconName} size={size} color={color} />
                     } else if (route.name === 'Add') {
                         iconName = 'add-outline'
-                        return <Stack style={{ borderWidth: 4, borderColor: '#FAFAFA', borderRadius: '50%', top: -30 }}><GradientButton radius={15} colors={['#2A4AB6', '#269DDB']} width={60} height={60} prefixIcon={<Ionicons name={iconName} size={35} color='#FFF' style={{ marginLeft: 2 }} />}></GradientButton></Stack>
-                    } else if (route.name === 'Messages') {
+                        return <Stack style={{ borderWidth: 4, borderColor: '#FAFAFA', borderRadius: '50%', top: -20 }}><GradientButton radius={15} colors={['#2A4AB6', '#269DDB']} width={60} height={60} prefixIcon={<Ionicons name={iconName} size={35} color='#FFF' style={{ marginLeft: 2 }} />}></GradientButton></Stack>
+                    } else if (route.name === 'Chat') {
                         iconName = 'chatbubble-outline'
                         return <Ionicons name={iconName} size={size} color={color} />
                     } else if (route.name === 'Profile') {
@@ -53,10 +54,10 @@ export const Home = ({ navigation }) => {
             })}
         >
             <Tab.Screen name="Home" component={HomeRouting} options={{ tabBarLabel: '', tabBarLabelStyle: { fontWeight: 'bold', bottom: 5 } }}/>
-            <Tab.Screen name="Notification" component={HomeRouting} options={{ tabBarLabel: '', tabBarLabelStyle: { fontWeight: 'bold', bottom: 5 } }} />
+            <Tab.Screen name="Notification" component={Notification} options={{ tabBarLabel: '', tabBarLabelStyle: { fontWeight: 'bold', bottom: 5 } }} />
             <Tab.Screen name="Add" component={HomeRouting} options={{ tabBarLabel: '' }} />
-            <Tab.Screen name="Messages" component={HomeRouting} options={{ tabBarLabel: '', tabBarLabelStyle: { fontWeight: 'bold', bottom: 5 } }} />
-            <Tab.Screen name="Profile" component={HomeRouting} options={{ tabBarLabel: '', tabBarLabelStyle: { fontWeight: 'bold', bottom: 5 } }} />
+            <Tab.Screen name="Chat" component={Chat} options={{ tabBarLabel: '', tabBarLabelStyle: { fontWeight: 'bold', bottom: 5 } }} />
+            <Tab.Screen name="Profile" component={Profile} options={{ tabBarLabel: '', tabBarLabelStyle: { fontWeight: 'bold', bottom: 5 } }} />
         </Tab.Navigator>
     );
 };
