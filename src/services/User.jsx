@@ -28,11 +28,28 @@ export const getImgById = async (userId) => {
     }
 };
 
+
+export const addImgById = async (userId, imgLink) => {
+    try {
+        const res = await request.post('images/users',{
+            params: {
+                user_id: userId,
+                
+            }
+        })
+        return res.data;
+    } catch (error) {
+        outputError(error);
+    }
+};
+
+
 export const updateImgById = async (userId) => {
     try {
-        const res = await request.get('images/users/',{
+        const res = await request.post('images/users/',{
             params: {
-                user_id: userId 
+                user_id: userId,
+
             }
         })
         return res.data;
@@ -43,12 +60,12 @@ export const updateImgById = async (userId) => {
 
 export const deleteImgById = async(userId,data) =>{
     try {
-        const res = await request.delete(`images/users?user_id=${userId}`);
+        const res = await request.del(`images/users?user_id=${userId}`);
         return res.data;
     } catch (error) {
         outputError(error);
     }
-}
+};
 
 
 export const updateById = async (userId, data) => {
@@ -61,7 +78,7 @@ export const updateById = async (userId, data) => {
 
 
 
-   
+
 const outputError = (error) => {
     return console.error(error);
 }

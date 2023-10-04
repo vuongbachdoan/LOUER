@@ -1,12 +1,9 @@
 import * as request from "../utils/request";
 
 
-const getByProductId = async (productId) => {
+const getAllByPage = async (page, size) => {
     try {
-        const res = await request.get('users/', {
-            params: {
-                id: productId
-            }});
+        const res = await request.get(`/products?page=${page}&size=${size}`);
         return res.data; 
     } catch (error) {
         outputError(error);
@@ -14,10 +11,15 @@ const getByProductId = async (productId) => {
 
 };
 
+const getImgByProductId = async (productId) => {
+    try {
+        const res = await request.get(`/images/products?product_id=${productId}`);
+        return res.data; 
+    } catch (error) {
+        outputError(error);
+    }
 
-
-
-
+};
 
 
 const outputError = (error) => {
