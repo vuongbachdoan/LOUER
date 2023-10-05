@@ -64,6 +64,7 @@ export const ChatList = ({ navigation, route }) => {
                 flexDirection='column'
                 minHeight='100%'
                 overflow='hidden'
+                marginTop={7}
             >
                 <Stack
                     display='flex'
