@@ -6,7 +6,7 @@ export const Wellcome1 = ({ navigation }) => {
     React.useEffect(() => {
         setTimeout(() => {
             navigation.navigate('Wellcome2')
-        }, 3000)
+        }, 1500)
     }, []);
 
     const fadeAnim = React.useRef(new Animated.Value(0)).current;

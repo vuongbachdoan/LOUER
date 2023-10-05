@@ -2,13 +2,12 @@ import axios from "axios";
 
 
 const request = axios.create({
-    baseURL: 'https://b7c2-123-21-48-217.ngrok-free.app/',
+    baseURL: 'https://www.louerapp.com/',
     timeout: 1000,
     headers: {
         // 'X-Custom-Header': 'foobar',
         'ngrok-skip-browser-warning': 'true' // Set the header with any value you want
     }
-    
 });
 
 

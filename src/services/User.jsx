@@ -4,12 +4,8 @@ import * as request from "../utils/request";
 
 export const getById = async (userId) => {
     try {
-        const res = await request.get('users/', {
-            params: {
-                id: userId
-            }});
-        console.log(user)
-        return user;
+        const res = await request.get(`users/${userId}`);
+        return res;
     } catch (error) {
         outputError(error);
     }

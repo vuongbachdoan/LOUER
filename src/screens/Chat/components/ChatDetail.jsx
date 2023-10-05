@@ -1,6 +1,7 @@
 import { Avatar, Box, Flex, Input, ScrollView, Stack, Text } from "native-base";
 import React from "react";
 import { StyleSheet, Animated } from "react-native";
+import { TouchableOpacity } from "react-native";
 import { useLayoutEffect } from "react";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -49,7 +50,9 @@ export const ChatDetail = ({ navigation, route }) => {
                         alignItems='center'
                         columnGap={15}
                     >
-                        <Flex><Ionicons name="chevron-back" size={22} /></Flex>
+                        <TouchableOpacity onPress={() => navigation.navigate('Chat')}>
+                                <Stack marginLeft={15}><Ionicons name='chevron-back' size={22} /></Stack>
+                            </TouchableOpacity>
                         <Text fontSize={22} fontWeight='semibold'>{chatDetail.receiver}</Text>
 
                     </Flex>
