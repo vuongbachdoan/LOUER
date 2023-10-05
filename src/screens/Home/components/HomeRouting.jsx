@@ -11,6 +11,9 @@ import { Activities } from "./Activities";
 import { History } from "./History";
 import { TouchableOpacity } from "react-native";
 import { ProductDetail } from "./ProductDetail";
+import { LessorRules } from "./LessorRules";
+import { LessorRequestSent } from "./LessorRequestSent";
+import { SearchRequest } from "./SearchRequest";
 
 const prodData = [
     {
@@ -105,6 +108,9 @@ export const HomeRouting = ({ navigation }) => {
             <HomeTabs.Screen name="Activities" component={Activities} options={{ tabBarLabel: '', tabBarLabelStyle: { fontWeight: 'bold', bottom: 5 } }} />
             <HomeTabs.Screen name="History" component={History} options={{ tabBarLabel: '', tabBarLabelStyle: { fontWeight: 'bold', bottom: 5 } }} />
             <HomeTabs.Screen name="Product details" component={ProductDetail} options={{ tabBarLabel: '', tabBarLabelStyle: { fontWeight: 'bold', bottom: 5 } }} />
+            <HomeTabs.Screen name="Điều khoản thuê" component={LessorRules} options={{ tabBarLabel: '', tabBarLabelStyle: { fontWeight: 'bold', bottom: 5 } }} />
+            <HomeTabs.Screen name="Lessor request sent" component={LessorRequestSent} />
+            <HomeTabs.Screen name="Yêu cầu thuê" component={SearchRequest} />
         </HomeTabs.Navigator>
     )
 };
