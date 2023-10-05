@@ -1,7 +1,7 @@
 import { LinearGradient } from "expo-linear-gradient";
 import { Text, TouchableOpacity } from "react-native";
 
-export const GradientButton = ({ text, width, height = 45, minWidth, paddingTop = 12, paddingBottom = 12, paddingLeft = 12, paddingRight = 12, minHeight, colors = ['#8AD4EC', '#EF96FF', '#FF56A9', '#FFAA6C'], color = '#FFF', onPress = () => { }, prefixIcon, radius = 10000 }) => {
+export const GradientButton = ({ text, width, disabled = false, height = 45, minWidth, paddingTop = 12, paddingBottom = 12, paddingLeft = 12, paddingRight = 12, minHeight, colors = ['#8AD4EC', '#EF96FF', '#FF56A9', '#FFAA6C'], color = '#FFF', onPress = () => { }, prefixIcon, radius = 10000 }) => {
 
 
   const handlePress = () => {
@@ -10,6 +10,7 @@ export const GradientButton = ({ text, width, height = 45, minWidth, paddingTop 
 
   return (
     <TouchableOpacity
+      disabled={disabled}
       onPress={handlePress}
     >
       <LinearGradient
