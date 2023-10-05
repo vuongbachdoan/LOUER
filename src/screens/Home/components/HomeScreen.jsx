@@ -93,7 +93,7 @@ export const HomeScreen = ({ navigation }) => {
                     </Avatar>
                 </Stack>
 
-                <GradientButton text='Tìm kiếm yêu cầu' radius={15} colors={['#2A4AB6', '#269DDB']} />
+                <GradientButton onPress={() => navigation.navigate('Yêu cầu thuê')} text='Tìm kiếm yêu cầu' radius={15} colors={['#2A4AB6', '#269DDB']} />
 
                 <Text paddingY={15} textAlign='center' fontSize={28} fontWeight='bold'>Tài sản trên louer</Text>
 
@@ -151,7 +151,7 @@ export const HomeScreen = ({ navigation }) => {
                                         <Text fontSize={16} fontWeight={700} color='#01005C'>{item.name}</Text>
                                         <Text fontSize={14} fontWeight={400} color={item.statusColor}>{item.statusMessage}</Text>
                                     </View>
-                                    <Ionicons onPress={() => navigation.navigate('Product details', {productName: item.name})} name='chevron-forward' size={28} />
+                                    <Ionicons onPress={() => navigation.navigate('Product details', { product: item })} name='chevron-forward' size={28} />
                                 </View>
                             ))
                         }

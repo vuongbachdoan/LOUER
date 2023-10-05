@@ -35,7 +35,7 @@ export const Profile = ({ navigation, route }) => {
                     <Image alt="user" source={AvatarUser} width={140} height={140} borderRadius={15} />
                     <Text fontSize={22} fontWeight='semibold' color='#1B6BB5'>Nguyễn Văn A</Text>
                     <Text fontSize={14} fontWeight='semibold'>anvse170000@fpt.edu.vn</Text>
-                    <Button
+                    <Button 
                         leftIcon={<Ionicons name="person-outline" size={22} />}
                         width='60%'
                         background='transparent'
@@ -50,7 +50,7 @@ export const Profile = ({ navigation, route }) => {
                             Thông tin cá nhân
                         </Text>
                     </Button>
-                    <Button
+                    <Button 
                         leftIcon={<Ionicons name="star-outline" size={22} />}
                         width='60%'
                         background='transparent'
@@ -65,7 +65,7 @@ export const Profile = ({ navigation, route }) => {
                             Đánh giá của tôi
                         </Text>
                     </Button>
-                    <Button
+                    <Button 
                         leftIcon={<Ionicons color='#F24545' name="log-out-outline" size={22} />}
                         width='60%'
                         background='transparent'
