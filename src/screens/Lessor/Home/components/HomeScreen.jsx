@@ -80,6 +80,7 @@ export const HomeScreen = ({ navigation }) => {
                     flexDirection='row'
                     alignItems='center'
                     paddingBottom={15}
+                    marginTop={7}
                 >
                     <Stack>
                         <Heading fontSize={36} fontWeight='bold'>Xin Chào</Heading>
