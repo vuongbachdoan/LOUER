@@ -1,10 +1,10 @@
 import { Stack } from "native-base";
 import React from "react";
 import { Ionicons } from "@expo/vector-icons";
-import { GradientButton } from "../../../components/GradientButton";
-import Prod1 from '../../../assets/images/prod1.png'
-import Prod2 from '../../../assets/images/prod2.png'
-import Prod3 from '../../../assets/images/prod3.png'
+import { GradientButton } from "../../../../components/GradientButton";
+import Prod1 from '../../../../assets/images/prod1.png'
+import Prod2 from '../../../../assets/images/prod2.png'
+import Prod3 from '../../../../assets/images/prod3.png'
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { HomeScreen } from "./HomeScreen";
 import { Activities } from "./Activities";

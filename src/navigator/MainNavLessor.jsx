@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
-import { Wellcome } from '../screens/Wellcome';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
+import { Wellcome } from '../screens/Wellcome';
 import { Home } from '../screens/Lessor/Home';
 import { Chat } from '../screens/Lessor/Chat';
 import { Notification } from '../screens/Lessor/Notification';

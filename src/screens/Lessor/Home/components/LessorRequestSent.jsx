@@ -1,7 +1,7 @@
 import React from "react";
 import { View, StyleSheet, Animated } from "react-native";
 import GradientText from "react-native-gradient-texts";
-import { GradientButton } from "../../../components/GradientButton";
+import { GradientButton } from "../../../../components/GradientButton";
 import { Box, Flex, Stack, Text } from "native-base";
 import { useLayoutEffect } from "react";
 

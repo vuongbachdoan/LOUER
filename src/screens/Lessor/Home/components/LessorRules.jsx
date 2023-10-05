@@ -1,7 +1,7 @@
 import { Box, Checkbox, ScrollView, Stack, Text } from "native-base";
 import React from "react";
 import { StyleSheet, Animated } from "react-native";
-import { GradientButton } from "../../../components/GradientButton";
+import { GradientButton } from "../../../../components/GradientButton";
 import { useState } from "react";
 
 export const LessorRules = ({ navigation }) => {

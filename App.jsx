@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { NativeBaseProvider } from "native-base";
-import { MainNavigator } from './src/navigator/MainNavigator';
+// import { MainNavigator } from './src/navigator/MainNavigator';
 
 import { MainNavLessor } from "./src/navigator/MainNavLessor";
 

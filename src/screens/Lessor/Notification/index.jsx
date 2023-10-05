@@ -1,7 +1,7 @@
 import { Avatar, Box, Flex, Heading, Image, Input, ScrollView, Stack, Text } from "native-base";
 import React from "react";
 import { StyleSheet, Animated, TouchableOpacity } from "react-native";
-import Prod1 from '../../assets/images/prod1.png';
+import Prod1 from '../../../assets/images/prod1.png';
 
 const notifications = [
     {

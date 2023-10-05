@@ -2,7 +2,7 @@ import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
 import { Stack } from "native-base";
-import { GradientButton } from "../../components/GradientButton";
+import { GradientButton } from "../../../components/GradientButton";
 import { HomeRouting } from "./components/HomeRouting";
 import { Chat } from "../Chat";
 import { Notification } from "../Notification";

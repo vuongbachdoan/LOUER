@@ -1,7 +1,7 @@
 import { Avatar, Box, Button, Flex, Icon, Image, Text } from "native-base";
 import React from "react";
 import { StyleSheet, Animated } from "react-native";
-import AvatarUser from '../../assets/images/placeholder.png';
+import AvatarUser from '../../../assets/images/placeholder.png';
 import { Ionicons } from "@expo/vector-icons";
 
 export const Profile = ({ navigation, route }) => {
