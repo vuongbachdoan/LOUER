@@ -38,7 +38,7 @@ export const Home = ({ navigation }) => {
                         return <Ionicons name={iconName} size={size} color={color} />
                     } else if (route.name === 'Add') {
                         iconName = 'add-outline'
-                        return <Stack style={{ borderRadius: '50px', top: -20 }}><GradientButton radius={50} colors={['#2A4AB6', '#269DDB']} width={60} height={60} prefixIcon={<Ionicons name={iconName} size={35} color='#FFF' style={{ marginLeft: 2 }} />}></GradientButton></Stack>
+                        return <Stack style={{ borderRadius: '15px', top: -20 }}><GradientButton radius={15} colors={['#2A4AB6', '#269DDB']} width={60} height={60} prefixIcon={<Ionicons name={iconName} size={35} color='#FFF' style={{ marginLeft: 2 }} />}></GradientButton></Stack>
                     } else if (route.name === 'Chat') {
                         iconName = 'chatbubble-outline'
                         return <Ionicons name={iconName} size={size} color={color} />
