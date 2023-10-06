@@ -14,10 +14,9 @@ export const LoggedIn = ({ navigation }) => {
     };
 
 
-    React.useEffect(() => {
-        getById(1).then((user) => setUser(user));
-        console.log(user);
+    const fadeAnim = React.useRef(new Animated.Value(500)).current;
 
+    React.useEffect(() => {
         Animated.timing(fadeAnim, {
             toValue: 1,
             duration: 1000,
@@ -25,7 +24,11 @@ export const LoggedIn = ({ navigation }) => {
         }).start();
     }, [fadeAnim]);
 
-    const fadeAnim = React.useRef(new Animated.Value(500)).current;
+
+    React.useEffect(() => {
+        getById(1).then((user) => setUser(user));
+        console.log(user);
+    })
 
     return (
         <Animated.View style={{ flex: 1, opacity: fadeAnim }}>
@@ -67,11 +70,7 @@ export const LoggedIn = ({ navigation }) => {
                 <GradientButton
                         text='Tiếp tục'
                         onPress={() => {
-                            navigation.navigate('Home');
-                            navigation.reset({
-                                index: 0,
-                                routes: [{ name: 'Home' }],
-                            });
+                            navigation.navigate('LoggedInNewUser');
                         }}
                         colors={['#2A4AB6', '#269DDB']}
                     />

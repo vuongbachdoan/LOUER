@@ -6,9 +6,10 @@ import { Checkbox, Flex, Link, Stack, Text } from "native-base";
 import GradientText from "react-native-gradient-texts";
 
 export const Wellcome2 = ({ navigation }) => {
-    const fadeAnim = React.useRef(new Animated.Value(0)).current;
     const [isChecked, setChecked] = useState(false);
 
+    
+    const fadeAnim = React.useRef(new Animated.Value(0)).current;
 
     React.useEffect(() => {
         Animated.timing(fadeAnim, {
@@ -63,7 +64,7 @@ export const Wellcome2 = ({ navigation }) => {
                         disabled={!isChecked}
                     />
                     <Checkbox marginTop={15} isChecked={isChecked} onChange={handlePolicyAllow} colorScheme="green" display='flex' flexDirection='row'>
-                        <Text>By click, you aggree with our</Text><Link href='/policy'>Tern and Conditional</Link>
+                        <Text>By click, you aggree with our</Text><Link href='/policy'>Terms & Conditional</Link>
                     </Checkbox>
                 </Stack>
             </Flex>

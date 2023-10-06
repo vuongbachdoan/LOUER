@@ -86,7 +86,7 @@ export const ChatList = ({ navigation, route }) => {
                         <Avatar.Badge bg="green.500" />
                     </Avatar>
                 </Stack>
-                <Input backgroundColor='#FFF' leftElement={<Stack padding='15px' backgroundColor='#FFF'><Ionicons color='#B9C6CC' size={22} name="search" /></Stack>} variant="rounded" placeholder="Search" size='1xl' />
+                <Input backgroundColor='#FFF' leftElement={<Stack padding='15px' backgroundColor='#FFF'><Ionicons color='#B9C6CC' size={22} name="search" /></Stack>} variant="rounded" placeholder="Search" size='2xl' />
 
                 <Box
                     flex={1}

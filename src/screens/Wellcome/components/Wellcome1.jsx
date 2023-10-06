@@ -20,7 +20,7 @@ export const Wellcome1 = ({ navigation }) => {
     }, [fadeAnim]);
 
     return (
-        <Animated.View style={{ flex: 1, opacity: fadeAnim }}>
+        <Animated.View style={{ flex: 1, opacity: fadeAnim}}>
             <View style={styles.container}>
                 <GradientText
                     text={"Louer"}
