@@ -1,4 +1,4 @@
-import { Avatar, Box, Checkbox, Flex, Image, Input, ScrollView, Stack, Text } from "native-base";
+import { Avatar, Badge, Box, Flex, HStack, Input, Pressable, ScrollView, Spacer, Stack, Text, Image, } from "native-base";
 import React from "react";
 import { StyleSheet, Animated } from "react-native";
 import Prod2 from '../../../../assets/images/prod2.png'
@@ -7,6 +7,55 @@ import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
 import { GradientButton } from "../../../../components/GradientButton";
 import { Header } from "react-native/Libraries/NewAppScreen";
+
+
+
+const reviewlist = [
+    {
+        name: "John Doe",
+        comment: "Great experience renting from this person!",
+        timestamp: "2021-09-01T12:00:00Z",
+        avatar: source = {
+            uri: "https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
+        },
+    },
+    {
+        name: "Jane Smith",
+        comment: "The property was exactly as described. Highly recommend!",
+        timestamp: "2021-08-30T09:30:00Z",
+        avatar: source = {
+            uri: "https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
+        },
+    },
+    {
+        name: "Bob Johnson",
+        comment: "Had a few issues with the property, but the owner was quick to resolve them.",
+        timestamp: "2021-08-28T16:45:00Z",
+        avatar: source = {
+            uri: "https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
+        },
+    },
+    {
+        name: "Alice Lee",
+        comment: "The owner was very friendly and accommodating. Would rent from them again!",
+        timestamp: "2021-08-25T11:15:00Z",
+        avatar: source = {
+            uri: "https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
+        },
+    },
+    {
+        name: "Tom Wilson",
+        comment: "The property was clean and well-maintained. No complaints!",
+        timestamp: "2021-08-20T14:00:00Z",
+        avatar: source = {
+            uri: "https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
+        },
+    },
+];
+
+
+
+
 
 export const ChatPropInfo = ({ navigation, route }) => {
 
@@ -20,15 +69,15 @@ export const ChatPropInfo = ({ navigation, route }) => {
         }).start();
     }, [fadeAnim]);
 
-    const { product } = route.params;
+    const { prodData } = route.params;
 
     const [isBanking, setIsBanking] = useState(false);
 
     useLayoutEffect(() => {
         navigation.setOptions({
-            headerTitle: () => <Text fontWeight='bold'>{product.name}</Text>,
+            headerTitle: () => <Text fontWeight='bold'>{prodData.name}</Text>,
         });
-    }, [navigation, product]);
+    }, [navigation, prodData]);
 
     const toggleIsBanking = () => {
         setIsBanking(!isBanking)
@@ -124,22 +173,55 @@ export const ChatPropInfo = ({ navigation, route }) => {
                                 <ScrollView horizontal={true}>
                                     <Stack
                                         paddingX={15}
-                                        paddingY={30}
                                         width='100%'
                                         display='flex'
                                         flexDirection='row'
-                                        height='100vh'
+                                        // height='10vh'
                                         overflow='hidden'
                                     >
-                                        <Box bgcolor='gray' width={100} height={100} marginRight={2} />
-                                        <Box bgcolor='gray' width={100} height={100} marginRight={2} />
-                                        <Box bgcolor='gray' width={100} height={100} marginRight={2} />
+                                        {[...Array(5)].map((_, index) => (
+                                            <Pressable
+                                                key={index}
+                                                style={{
+                                                    width: 100,
+                                                    height: 100,
+                                                    paddingRight: 10,
+                                                    alignItems: 'center',
+                                                    justifyContent: 'center',
+                                                    backgroundColor: 'transparent',
+                                                    borderRadius: 10,
+                                                }}
+                                            >
+                                                {({
+                                                    isHovered,
+                                                    isPressed
+                                                }) => {
+                                                    return (
+                                                        <Box
+                                                            bg={isPressed ? "coolGray.200" : isHovered ? "coolGray.200" : "coolGray.100"}
+                                                            style={{ transform: [{ scale: isPressed ? 0.96 : 1 }] }}
+                                                            p="10"
+                                                            rounded="8"
+                                                            shadow={2}
+                                                            borderWidth="1"
+                                                            borderColor="coolGray.300"
+                                                        >
+                                                        </Box>
+                                                    );
+                                                }}
+                                            </Pressable>
+                                        ))}
                                     </Stack>
                                 </ScrollView>
                             </Box>
-
+                            <Text fontSize={18} fontWeight='700' paddingBottom={2}>Reviews</Text>
+                            {[...Array(5)].map((_, index) => (
+                                <Text key={index} color={'gray.500'}>
+                                    {reviewlist[index].name}
+                                </Text>
+                            ))}
                         </Box>
-
+                        
 
 
 

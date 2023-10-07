@@ -8,6 +8,7 @@ import { Home } from '../screens/Lessee/Home';
 import { Chat } from '../screens/Lessee/Chat';
 import { Notification } from '../screens/Lessee/Notification';
 import { Profile } from '../screens/Lessee/Profile';
+import { Renting } from '../screens/Lessee/Renting';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -60,6 +61,14 @@ export const MainNavLessee = () => {
         <Stack.Screen
           name="Profile"
           component={Profile}
+          options={{
+            headerShown: true,
+          }}
+        />
+
+        <Stack.Screen
+          name="Renting"
+          component={Renting}
           options={{
             headerShown: true,
           }}

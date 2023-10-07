@@ -118,7 +118,7 @@ export const ChatDetail = ({ navigation, route }) => {
                 >
                     <Pressable
                         // maxW="96"
-                        onPress={() => navigation.navigate('ChatPropInfo', prodData)}
+                        onPress={() => navigation.navigate('ChatPropInfo', { prodData: prodData })}
                     >
                         {({
                             isHovered,
