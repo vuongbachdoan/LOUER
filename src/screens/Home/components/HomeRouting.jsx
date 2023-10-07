@@ -14,6 +14,9 @@ import { ProductDetail } from "./ProductDetail";
 import { LessorRules } from "./LessorRules";
 import { LessorRequestSent } from "./LessorRequestSent";
 import { SearchRequest } from "./SearchRequest";
+import { LesseeViewProductDetail } from "./LesseeViewProductDetail";
+import { LesseeNoteBeforeOrder } from "./LesseeNoteBeforeOrder";
+import { LesseeQR } from "./LesseeQR";
 
 const prodData = [
     {
@@ -111,6 +114,9 @@ export const HomeRouting = ({ navigation }) => {
             <HomeTabs.Screen name="Điều khoản thuê" component={LessorRules} options={{ tabBarLabel: '', tabBarLabelStyle: { fontWeight: 'bold', bottom: 5 } }} />
             <HomeTabs.Screen name="Lessor request sent" component={LessorRequestSent} />
             <HomeTabs.Screen name="Yêu cầu thuê" component={SearchRequest} />
+            <HomeTabs.Screen name="Lessee View Product Details" component={LesseeViewProductDetail} />
+            <HomeTabs.Screen name="Lessee note before order" component={LesseeNoteBeforeOrder} />
+            <HomeTabs.Screen name="Thanh toán" component={LesseeQR} />
         </HomeTabs.Navigator>
     )
 };
