@@ -3,6 +3,18 @@ import React from "react";
 import { StyleSheet, Animated, TouchableOpacity } from "react-native";
 import Prod1 from '../../../assets/images/prod1.png';
 
+
+const userData = {
+    name : 'Người Đẹp Trai',
+    email: 'traindse178200@fpt.edu.vn',
+    mssv: 'SE178200',
+    namecolor: '#FF5484',
+
+}
+
+
+
+
 const notifications = [
     {
         thumbnail: Prod1,
@@ -56,7 +68,7 @@ export const Notification = ({ navigation, route }) => {
                     paddingBottom={15}
                 >
                     
-                    <Heading fontSize={36} fontWeight='bold' color='#22A4DD'>Thông báo</Heading>
+                    <Heading fontSize={36} fontWeight='bold' color={userData.namecolor}>Thông báo</Heading>
                     <Avatar bg="lightBlue.400" source={{
                         uri: "https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
                     }} size="md">

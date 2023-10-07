@@ -37,7 +37,6 @@ export const LoggedIn = ({ navigation }) => {
                 <Text style={{
                     color: 'black',
                     fontSize: 40,
-                    fontFamily: 'Inter',
                     fontWeight: '700',
                     // wordWrap: 'break-word',
                     textAlign: 'left'
@@ -45,7 +44,6 @@ export const LoggedIn = ({ navigation }) => {
                 <Text style={{
                     color: 'black',
                     fontSize: 40,
-                    fontFamily: 'Inter',
                     fontWeight: '700',
                     // wordWrap: 'break-word',
                     textAlign: 'left'
@@ -58,8 +56,7 @@ export const LoggedIn = ({ navigation }) => {
                             key={key} 
                             text={userName[key]} 
                             fontSize={90} 
-                            fontWeight={900} 
-                            fontFamily='Inter' 
+                            fontWeight={900}  
                             isGradientFill 
                             gradientColors={['#FF5484', '#26A0DD']} 
                             style={{ textAlign: 'left' }} 

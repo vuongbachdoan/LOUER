@@ -3,15 +3,53 @@ import { Avatar, Badge, Box, Flex, HStack, Input, Pressable, ScrollView, Spacer,
 import React, { useLayoutEffect } from "react";
 import { Animated, StyleSheet, TouchableOpacity } from "react-native";
 
-import Prod2 from '../../../../assets/images/prod2.png'
+import Prod2 from '../../../../assets/images/prod2.png';
 
 const prodData = {
     name: 'Nikon D7000',
-    status: 'Chưa thuê',
+    status: 'available',
     statusColor: '#01005C',
     price: '560',
     thumbnail: Prod2
 }
+
+// const prodData = [
+//     {
+//         name: 'Canon EOS 700D',
+//         status: 'pending',
+//         statusMessage: '2 Giao dịch đang đợi',
+//         statusColor: '#FFC700',
+//         thumbnail: Prod1
+//     },
+//     {
+//         name: 'Nikon D7000',
+//         status: 'warning',
+//         statusMessage: 'Còn thiếu đền bù thiệt hại',
+//         statusColor: '#FC0000',
+//         thumbnail: Prod2
+//     },
+//     {
+//         name: 'Canon 5d Mark IV',
+//         status: 'available',
+//         statusMessage: 'Chưa có giao dịch',
+//         statusColor: '#0166FE',
+//         thumbnail: Prod3
+//     },
+//     {
+//         name: 'Nikon D7000',
+//         status: 'available',
+//         statusMessage: 'Chưa có giao dịch',
+//         statusColor: '#0166FE',
+//         thumbnail: Prod2
+//     },
+//     {
+//         name: 'Canon EOS 700D',
+//         status: 'available',
+//         statusMessage: 'Chưa có giao dịch',
+//         statusColor: '#0166FE',
+//         thumbnail: Prod1
+//     }
+// ]
 
 
 
@@ -78,7 +116,10 @@ export const ChatDetail = ({ navigation, route }) => {
                     marginTop={15}
                     paddingX={15}
                 >
-                    <Pressable maxW="96">
+                    <Pressable
+                        // maxW="96"
+                        onPress={() => navigation.navigate('ChatPropInfo', prodData)}
+                    >
                         {({
                             isHovered,
                             isFocused,

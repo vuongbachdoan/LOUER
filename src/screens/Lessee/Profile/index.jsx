@@ -4,7 +4,18 @@ import { StyleSheet, Animated } from "react-native";
 import AvatarUser from '../../../assets/images/placeholder.png';
 import { Ionicons } from "@expo/vector-icons";
 
+const userData = {
+    name : 'Người Đẹp Trai',
+    email: 'traindse178200@fpt.edu.vn',
+    mssv: 'SE178200',
+    namecolor: '#FF5484',
+
+}
+
 export const Profile = ({ navigation, route }) => {
+
+    
+
 
     const fadeAnim = React.useRef(new Animated.Value(0)).current;
 
@@ -40,7 +51,7 @@ export const Profile = ({ navigation, route }) => {
                         paddingBottom={15}
                         marginTop={7}
                     >
-                        <Heading fontSize={36} fontWeight='bold' color='#22A4DD'>Tài khoản</Heading>
+                        <Heading fontSize={36} fontWeight='bold' color={userData.namecolor}>Tài khoản</Heading>
                     </Stack>
                     <Image alt="user" source={AvatarUser} width={140} height={140} borderRadius={15} />
                     <Box>
@@ -49,7 +60,7 @@ export const Profile = ({ navigation, route }) => {
                             style={{
                                 color: '#545454',
                                 fontSize: 15,
-                                fontFamily: 'Inter',
+                            
                                 fontWeight: '400',
                                 wordWrap: 'break-word'
                             }}
@@ -80,7 +91,7 @@ export const Profile = ({ navigation, route }) => {
                             style={{
                                 color: 'black',
                                 fontSize: 15,
-                                fontFamily: 'Inter',
+                            
                                 fontWeight: '800',
                                 lineHeight: 22,
                                 wordWrap: 'break-word'
@@ -113,7 +124,7 @@ export const Profile = ({ navigation, route }) => {
                             style={{
                                 color: 'black',
                                 fontSize: 15,
-                                fontFamily: 'Inter',
+                            
                                 fontWeight: '800',
                                 lineHeight: 22,
                                 wordWrap: 'break-word'
@@ -146,7 +157,7 @@ export const Profile = ({ navigation, route }) => {
                             style={{
                                 color: '#F24545',
                                 fontSize: 15,
-                                fontFamily: 'Inter',
+                            
                                 fontWeight: '800',
                                 lineHeight: 22,
                                 wordWrap: 'break-word'
