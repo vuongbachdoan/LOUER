@@ -153,12 +153,15 @@ export const ChatPropInfo = ({ navigation, route }) => {
                                 placeholder="Để lại tin nhắn..."
                                 size='1x1'
                             />
+                            <Text>  </Text>
+                            <GradientButton onPress={() => navigation.navigate('TermConfirm')} text='Đặt thuê' radius={15} colors={['#9F3553', '#E98EA6']} />
                         </Box>
                         <Box
                             backgroundColor='transparent'
                             paddingX="15px"
-                            paddingY="20px"
+                            paddingY="5px"
                         >
+                            
                             <Text fontSize={18} fontWeight='700' paddingBottom={2}>Mô tả sản phẩm</Text>
                             <Text fontSize={16} fontWeight='400'>Tình trạng tốt, cond 9.5, hồi còn nghèo sang thì mua về để qua môn nên ít khi sử dụng. Giờ nghèo nghèo nên...{'\n'} (Vui lòng để lại tin nhắn)</Text>
                             <Text></Text>
@@ -167,12 +170,12 @@ export const ChatPropInfo = ({ navigation, route }) => {
                                 width='100%'
                                 display='flex'
                                 flexDirection='column'
-                                minHeight='100%'
+                                minHeight='35%'
                                 overflow='hidden'
                             >
                                 <ScrollView horizontal={true}>
                                     <Stack
-                                        paddingX={15}
+                                        paddingX={0}
                                         width='100%'
                                         display='flex'
                                         flexDirection='row'
@@ -213,15 +216,18 @@ export const ChatPropInfo = ({ navigation, route }) => {
                                         ))}
                                     </Stack>
                                 </ScrollView>
+                                <Text fontSize={18} fontWeight='700' paddingBottom={2}>Reviews</Text>
+                                {[...Array(5)].map((_, index) => (
+                                    <Text key={index} color={'gray.500'}>
+                                        {reviewlist[index].name}
+                                    </Text>
+                                ))}
                             </Box>
-                            <Text fontSize={18} fontWeight='700' paddingBottom={2}>Reviews</Text>
-                            {[...Array(5)].map((_, index) => (
-                                <Text key={index} color={'gray.500'}>
-                                    {reviewlist[index].name}
-                                </Text>
-                            ))}
+                            
+
+
                         </Box>
-                        
+
 
 
 

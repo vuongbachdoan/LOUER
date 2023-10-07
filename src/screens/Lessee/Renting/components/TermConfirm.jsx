@@ -3,14 +3,6 @@ import { React } from "react";
 import { Animated, ScrollView } from "react-native";
 import { GradientButton } from "../../../../components/GradientButton";
 
-const Renting = () => {
-  // Define the Renting component here
-  return (
-    <Box>
-      <Text>Renting component</Text>
-    </Box>
-  );
-};
 
 const TermConfirm = ({ navigation }) => {
 
@@ -84,7 +76,6 @@ const TermConfirm = ({ navigation }) => {
                         <GradientButton onPress={() => handleChangeRoute('Payment')}>
                             Confirm Rental
                         </GradientButton>
-                        <Renting /> {/* Use the Renting component */}
                     </Stack>
                 </ScrollView>
             </Box>
