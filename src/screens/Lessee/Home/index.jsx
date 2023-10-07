@@ -7,6 +7,7 @@ import { HomeRouting } from "./components/HomeRouting";
 import { Chat } from "../Chat";
 import { Notification } from "../Notification";
 import { Profile } from "../Profile";
+import { Renting } from "../Renting";
 
 
 const Tab = createBottomTabNavigator();

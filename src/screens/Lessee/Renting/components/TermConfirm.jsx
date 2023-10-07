@@ -3,7 +3,16 @@ import { React } from "react";
 import { Animated, ScrollView } from "react-native";
 import { GradientButton } from "../../../../components/GradientButton";
 
-const TermConfirm = () => {
+const Renting = () => {
+  // Define the Renting component here
+  return (
+    <Box>
+      <Text>Renting component</Text>
+    </Box>
+  );
+};
+
+const TermConfirm = ({ navigation }) => {
 
     const fadeAnim = React.useRef(new Animated.Value(0)).current;
 

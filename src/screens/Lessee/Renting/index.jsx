@@ -1,15 +1,11 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
-
 import { TermConfirm } from "./components/TermConfirm";
-
-
-
 
 const Tab = createBottomTabNavigator();
 
-export const renting = ({ navigation,route }) => {
+export const Renting = ({ navigation }) => {
 
     return (
         <Tab.Navigator
@@ -25,7 +21,7 @@ export const renting = ({ navigation,route }) => {
             }}
 
         >
-            <Tab.Screen name="RentTermConfirm" component={RentTermConfirm} />
+            <Tab.Screen name="TermConfirm" component={TermConfirm} />
         </Tab.Navigator>
     );
 };
