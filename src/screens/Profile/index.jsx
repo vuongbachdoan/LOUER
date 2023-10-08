@@ -47,9 +47,7 @@ export const Profile = ({ navigation, route }) => {
                             style={{
                                 color: '#545454',
                                 fontSize: 15,
-                                fontFamily: 'Inter',
                                 fontWeight: '400',
-                                wordWrap: 'break-word'
                             }}
                         >
                             anvse170000@fpt.edu.vn
