@@ -47,7 +47,7 @@ export const LoggedIn = ({ navigation }) => {
                     fontWeight: '700',
                     // wordWrap: 'break-word',
                     textAlign: 'left'
-                }}>tới Louer,</Text>
+                }}>trở lại,</Text>
                 <View style={{ height: 50 }} />
                 {/* Show name */}
                 <View style={{ flexDirection: 'column', textAlign: 'left' }}>

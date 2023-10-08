@@ -1,4 +1,4 @@
-import { Avatar, Box, CheckIcon, Flex, Heading, Select, Stack, Text } from "native-base";
+import { Avatar, Box, CheckIcon, Flex, Heading, Select, Stack, Text, Input } from "native-base";
 import React from "react";
 import { StyleSheet, Animated, ScrollView, View, Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
@@ -12,35 +12,35 @@ const prodData = [
     {
         name: 'Canon EOS 700D',
         status: 'pending',
-        statusMessage: '2 Giao dịch đang đợi',
-        statusColor: '#FFC700',
+        statusMessage: '560.000/Ngày',
+        statusColor: '#0166FE',
         thumbnail: Prod1
     },
     {
         name: 'Nikon D7000',
         status: 'warning',
-        statusMessage: 'Còn thiếu đền bù thiệt hại',
-        statusColor: '#FC0000',
+        statusMessage: '500.000/Ngày',
+        statusColor: '#0166FE',
         thumbnail: Prod2
     },
     {
         name: 'Canon 5d Mark IV',
         status: 'available',
-        statusMessage: 'Chưa có giao dịch',
+        statusMessage: '699.000/Ngày',
         statusColor: '#0166FE',
         thumbnail: Prod3
     },
     {
         name: 'Nikon D7000',
         status: 'available',
-        statusMessage: 'Chưa có giao dịch',
+        statusMessage: '850.000/Ngày',
         statusColor: '#0166FE',
         thumbnail: Prod2
     },
     {
         name: 'Canon EOS 700D',
         status: 'available',
-        statusMessage: 'Chưa có giao dịch',
+        statusMessage: '450.000/Ngày',
         statusColor: '#0166FE',
         thumbnail: Prod1
     }
@@ -98,14 +98,13 @@ export const HomeScreen = ({ navigation }) => {
                     </Avatar>
                 </Stack>
 
-                <GradientButton onPress={() => navigation.navigate('Yêu cầu thuê')} text='Tìm kiếm yêu cầu' radius={15} colors={['#2A4AB6', '#269DDB']} />
-
-                <Text paddingY={15} textAlign='center' fontSize={28} fontWeight='bold'>Tài sản trên louer</Text>
-
+                <Input backgroundColor='#FFF' leftElement={<Stack padding='15px' backgroundColor='#FFF'><Ionicons color='#B9C6CC' size={22} name="search" /></Stack>} variant="rounded" placeholder="Tìm sản phẩm..." size='1xl' />
+                
                 <Flex
                     flexDirection='row'
                     justifyContent='space-between'
                     paddingBottom={15}
+                    paddingTop={15}
                 >
                     <Flex
                         flexDirection='row'

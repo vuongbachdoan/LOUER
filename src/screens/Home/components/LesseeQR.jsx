@@ -118,9 +118,8 @@ export const LesseeQR = ({ navigation, route }) => {
                         <GradientButton 
                             onPress={() => {
                                 setIsPaid(true);
-                                paidStat  = true;
-                                console.log('GLobal paidStat:', global.PaidStat);
-                                console.log('paidStat:', PaidStat);
+                                window.$paidStat = true;
+                                console.log(window.$paidStat);
                             }} 
                             text='Tiếp tục' 
                             radius={10} 

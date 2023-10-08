@@ -12,9 +12,7 @@ const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
 
-const paidStat = false;
 export const MainNavigator = () => {
-
   return (
     
     <NavigationContainer theme={{

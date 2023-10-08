@@ -21,7 +21,7 @@ export const ProfileRouting = ({ navigation }) => {
                 },
             })}
         >
-            <Tab.Screen name="Profile" component={Profile} options={{ tabBarLabel: '', tabBarLabelStyle: { fontWeight: 'bold', bottom: 5 } }}/>
+            <Tab.Screen name="ProfileView" component={Profile} options={{ tabBarLabel: '', tabBarLabelStyle: { fontWeight: 'bold', bottom: 5 } }}/>
             <Tab.Screen name="EditInfo" component={EditInfo} options={{ tabBarLabel: '', tabBarLabelStyle: { display: 'none' } }}/>
         </Tab.Navigator>
     );

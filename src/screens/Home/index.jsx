@@ -6,8 +6,8 @@ import { GradientButton } from "../../components/GradientButton";
 import { HomeRouting } from "./components/HomeRouting";
 import { Chat } from "../Chat";
 import { Notification } from "../Notification";
-import { Profile } from "../Profile";
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
+import { ProfileView } from "../Profile/components/ProfileView";
 
 const Tab = createBottomTabNavigator();
 export const Home = ({ navigation, route }) => {
@@ -58,7 +58,7 @@ export const Home = ({ navigation, route }) => {
             <Tab.Screen name="Notification" component={Notification} options={{ tabBarLabel: '', tabBarLabelStyle: { fontWeight: 'bold', bottom: 5 } }} />
             {routeName === 'Home' && <Tab.Screen name="Add" component={HomeRouting} options={{ tabBarLabel: '' }} />}
             <Tab.Screen name="Chat" component={Chat} options={{ tabBarLabel: '', tabBarLabelStyle: { fontWeight: 'bold', bottom: 5 } }} />
-            <Tab.Screen name="Profile" component={Profile} options={{ tabBarLabel: '', tabBarLabelStyle: { fontWeight: 'bold', bottom: 5 } }} />
+            <Tab.Screen name="Profile" component={ProfileView} options={{ tabBarLabel: '', tabBarLabelStyle: { fontWeight: 'bold', bottom: 5 } }} />
         </Tab.Navigator>
     );
 };

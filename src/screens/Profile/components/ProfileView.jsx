@@ -64,7 +64,7 @@ export const ProfileView = ({ navigation, route }) => {
                         flexDirection='row'
                         columnGap={30}
                         justifyContent='flex-start'
-                        onPress={() => navigation.navigate('EditInfo')}
+                        onPress={() => navigation.navigate("Thông tin cá nhân")}
                     >
                         <Text
                             style={{

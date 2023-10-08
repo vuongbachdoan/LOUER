@@ -6,6 +6,7 @@ import { useState } from "react";
 
 export const LessorRules = ({ navigation }) => {
 
+    const [isRent, setIsRent] = useState(false);
     const fadeAnim = React.useRef(new Animated.Value(0)).current;
 
     React.useEffect(() => {
@@ -74,12 +75,20 @@ export const LessorRules = ({ navigation }) => {
                         - Người cho thuê cần thông báo trước cho người thuê về bất kỳ sửa chữa hoặc bảo trì nào có thể ảnh hưởng đến việc sử dụng tài sản.
                     </Text>
 
-                    <Checkbox marginTop={15} isChecked={isChecked} onChange={handleRulesAllow} colorScheme="green" display='flex' flexDirection='row'>
+                    {/* <Checkbox marginTop={15} isChecked={isChecked} onChange={handleRulesAllow} colorScheme="green" display='flex' flexDirection='row'>
                         <Text>Tôi đồng ý với điều khoản trên.</Text>
-                    </Checkbox>
+                    </Checkbox> */}
                     <Stack marginTop={15}>
-                        <GradientButton onPress={() => navigation.navigate('Lessor request sent')} disabled={isChecked === false} text='Xác nhận cho thuê' colors={isChecked ? ['#9F3553', '#E98EA6'] : ['#868686', '#868686']} width='100%' height={45} radius={15} />
+                        <GradientButton
+                            onPress={() => navigation.navigate('Lessor request sent')}
+                            // disabled={isChecked === false}
+                            // text='Xác nhận cho thuê'
+                            // colors={isChecked ? ['#9F3553', '#E98EA6'] : ['#868686', '#868686']} width='100%' height={45} radius={15} 
+                            text='Đang cho thuê'
+                            colors={['#B3EBDA', '#1AD598']} width='100%' height={45} radius={15} 
+                            />
                     </Stack>
+
                 </ScrollView>
             </Stack>
         </Animated.View>

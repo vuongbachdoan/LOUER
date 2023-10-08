@@ -19,6 +19,7 @@ import { LesseeNoteBeforeOrder } from "./LesseeNoteBeforeOrder";
 import { LesseeQR } from "./LesseeQR";
 import { ViewLessorRequest } from "./ViewLessorRequest";
 import { SignoutConfirm } from "./SignoutConfirm";
+import { EditInfo } from "../../Profile/components/EditInfo";
 
 const prodData = [
     {
@@ -123,6 +124,7 @@ export const HomeRouting = ({ navigation }) => {
             <HomeTabs.Screen name="Thanh toán" component={LesseeQR} />
             <HomeTabs.Screen name="View lessor request" component={ViewLessorRequest} />
             <HomeTabs.Screen name="SignoutConfirm" component={SignoutConfirm} />
+            <HomeTabs.Screen name="Thông tin cá nhân" component={EditInfo} />
         </HomeTabs.Navigator>
     )
 };

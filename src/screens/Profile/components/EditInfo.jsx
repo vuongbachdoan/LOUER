@@ -39,15 +39,6 @@ export const EditInfo = ({ navigation, route }) => {
                         display='flex'
                         justifyContent='space-between'
                         flexDirection='row'
-                        alignItems='center'
-                        marginTop={7}
-                    >
-                        <Heading fontSize={36} fontWeight='bold' color='#22A4DD'>Thông tin cá nhân</Heading>
-                    </Stack>
-                    <Stack
-                        display='flex'
-                        justifyContent='space-between'
-                        flexDirection='row'
                         alignItems='flex-start'
                     >
                         <Image 

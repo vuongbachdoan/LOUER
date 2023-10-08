@@ -4,11 +4,9 @@ import { MainNavigator } from './src/navigator/MainNavigator';
 
 // import { MainNavLessor } from "./src/navigator/MainNavLessor";
 
+window.$paidStat = false;
 
 const App = () => {
-  
-  
-  
   return (
       <NativeBaseProvider>
         <MainNavigator />

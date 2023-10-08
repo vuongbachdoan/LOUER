@@ -2,53 +2,58 @@ import { Avatar, Box, Flex, Heading, Image, Input, ScrollView, Stack, Text } fro
 import React, { useState } from "react";
 import { StyleSheet, Animated, TouchableOpacity } from "react-native";
 import Prod1 from '../../assets/images/prod1.png';
-import { useFocusEffect } from "@react-navigation/core";
 
 
-// const notifications = [
-//     {
-//         thumbnail: Prod1,
-//         title: 'Nikon D7000',
-//         description: 'Đã xác nhận cho thuê. mã số giao dịch: ABCD12345678',
-//         isViewed: false
-//     },
-//     {
-//         thumbnail: Prod1,
-//         title: 'Nikon D7000',
-//         description: 'Đã xác nhận cho thuê. mã số giao dịch: ABCD12345678',
-//         isViewed: false
-//     },
-//     {
-//         thumbnail: Prod1,
-//         title: 'Nikon D7000',
-//         description: 'Đã xác nhận cho thuê. mã số giao dịch: ABCD12345678',
-//         isViewed: false
-//     },
-// ]
+
 
 
 export const Notification = ({ navigation, route }) => {
 
     const fadeAnim = React.useRef(new Animated.Value(0)).current;
 
-    const [notifications, setNotifications] = useState(
-        [
-         {
-             thumbnail: Prod1,
-             title: 'Đã xác nhận thanh toán',
-             description: 'Đã xác nhận thanh toán cho thuê Nikon D7000. mã số giao dịch: ABCD12345678',
-             isViewed: false,
-             isShow: false,
-         },
-         {
-             thumbnail: Prod1,
-             title: 'Có tin nhắn mới từ Lê Văn Linh',
-             description: 'Linh: Được em ơi',
-             isViewed: false,
-             isShow: true,
-         },
-        ]
-     )
+    // const [notifications, setNotifications] = useState([
+    //     {
+    //         thumbnail: Prod1,
+    //         title: 'Thông tin từ Nikon D7000',
+    //         description: 'Thông tin thêm từ người cho thuê',
+    //         isViewed: false,
+    //         isShow: true,
+    //     },
+    //     {
+    //         thumbnail: Prod1,
+    //         title: 'Có tin nhắn mới từ Lê Văn Linh',
+    //         description: 'Linh: Được em ơi',
+    //         isViewed: false,
+    //         isShow: true,
+    //     },
+    // ]);
+
+
+    const [notifications, setNotifications] = useState([
+    {
+        thumbnail: Prod1,
+        title: 'Nikon D7000',
+        description: 'Đã xác nhận cho thuê. mã số giao dịch: ABCD12345678',
+        isViewed: false,
+        isShow: true,
+    },
+    {
+        thumbnail: Prod1,
+        title: 'Nikon D7000',
+        description: 'Đã xác nhận cho thuê. mã số giao dịch: ABCD12345678',
+        isViewed: false,
+        isShow: true,
+    },
+    {
+        thumbnail: Prod1,
+        title: 'Nikon D7000',
+        description: 'Đã xác nhận cho thuê. mã số giao dịch: ABCD12345678',
+        isViewed: false,
+        isShow: true,
+    },
+    ]);
+
+    
 
     React.useEffect(() => {
         Animated.timing(fadeAnim, {
@@ -58,16 +63,16 @@ export const Notification = ({ navigation, route }) => {
         }).start();
     }, [fadeAnim]);
 
-    useFocusEffect(() => {
-        console.log('paidStat:', global.paidStat);
-        if (typeof global.paidStat !== 'undefined' && global.paidStat) {
-            setNotifications(
-                notifications.map(notification => ({ 
-                    ...notification, isShow: true 
-                }))
-            );
-        }
-    }, [paidStat]);
+    // useFocusEffect(() => {
+    //     // console.log('paidStat:', window.$paidStat);
+    //     setNotifications((prevNotifications) =>
+    //         prevNotifications.map((notification) => ({
+    //             ...notification,
+    //             isShow: true,
+    //         }))
+    //     );
+    // }, [window.$paidState]);
+
 
     
 
