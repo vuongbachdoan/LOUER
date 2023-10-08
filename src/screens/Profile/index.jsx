@@ -75,6 +75,7 @@ export const Profile = ({ navigation, route }) => {
                         flexDirection='row'
                         columnGap={30}
                         justifyContent='flex-start'
+                        onPress={() => navigation.navigate('SignoutConfirm')}
                     >
                         <Text color='red.500'>
                             Đăng xuất
