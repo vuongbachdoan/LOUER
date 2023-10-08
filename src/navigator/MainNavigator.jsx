@@ -5,8 +5,8 @@ import { Wellcome } from '../screens/Wellcome';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Home } from '../screens/Home';
 import { Chat } from '../screens/Chat';
-import { Notification } from '../screens/Notification';
 import { Profile } from '../screens/Profile';
+import { Notification } from '../screens/Notification';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();

@@ -1,19 +1,10 @@
+import { Avatar, Box, Flex, Image, Input, ScrollView, Stack, Text, View } from "native-base";
+import React from "react";
+import { StyleSheet, Animated } from "react-native";
+import { useLayoutEffect } from "react";
 import { Ionicons } from "@expo/vector-icons";
-import { Avatar, Badge, Box, Flex, HStack, Input, Pressable, ScrollView, Spacer, Stack, Text, Image } from "native-base";
-import React, { useLayoutEffect } from "react";
-import { Animated, StyleSheet, TouchableOpacity } from "react-native";
-
-import Prod2 from '../../../../assets/images/prod2.png'
-
-const prodData = {
-    name: 'Nikon D7000',
-    status: 'Chưa thuê',
-    statusColor: '#01005C',
-    price: '560',
-    thumbnail: Prod2
-}
-
-
+import prodImage from '../../../assets/images/prod1.png';
+import { GradientButton } from "../../../components/GradientButton";
 
 export const ChatDetail = ({ navigation, route }) => {
 
@@ -36,7 +27,12 @@ export const ChatDetail = ({ navigation, route }) => {
         });
     }, [navigation, chatDetail]);
 
-    const currentUser = 'A';
+    const currentUser = 'K';
+    const productPreview = {
+        thumbnail: prodImage,
+        price: '500',
+        name: 'Nikon D7000'
+    }
 
     return (
         <Animated.View style={{ flex: 1, opacity: fadeAnim }}>
@@ -60,10 +56,9 @@ export const ChatDetail = ({ navigation, route }) => {
                         alignItems='center'
                         columnGap={15}
                     >
-                        <TouchableOpacity onPress={() => navigation.navigate('Chat')}>
-                            <Stack marginLeft={15}><Ionicons name='chevron-back' size={22} /></Stack>
-                        </TouchableOpacity>
+                        <Flex><Ionicons name="chevron-back" size={22} /></Flex>
                         <Text fontSize={22} fontWeight='semibold'>{chatDetail.receiver}</Text>
+
                     </Flex>
                     <Avatar bg="amber.500" source={{
                         uri: "https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
@@ -78,54 +73,40 @@ export const ChatDetail = ({ navigation, route }) => {
                     marginTop={15}
                     paddingX={15}
                 >
-                    <Pressable maxW="96">
-                        {({
-                            isHovered,
-                            isFocused,
-                            isPressed
-                        }) => {
-                            return (
-                                <Box
-                                    bg={isPressed ? "coolGray.200" : isHovered ? "coolGray.200" : "coolGray.100"}
-                                    style={{ transform: [{ scale: isPressed ? 0.96 : 1 }] }}
-                                    p="5"
-                                    rounded="20"
-                                    shadow={3}
-                                    borderWidth="1"
-                                    borderColor="coolGray.300"
-                                >
-                                    <HStack alignItems="center">
-                                        <Badge colorScheme="yellow" _text={{ color: "white" }} variant="solid" rounded="5">
-                                            {prodData.status}
-                                        </Badge>
-                                        <Spacer />
-                                        <Box>
-                                            <Ionicons color='#4196D2' name='arrow-forward-outline' size={25} />
-                                        </Box>
-                                    </HStack>
-                                    <Box height={2} />
-                                    <HStack alignItems="center">
-                                        <Image source={prodData.thumbnail} borderRadius={5} width={100} height={75} />
-                                        <Box width={"5%"} />
-                                        <HStack alignItems="center">
-                                            <Text fontWeight="medium" fontSize="xl">
-                                                {prodData.name}
-                                            </Text>
-                                            <Text fontWeight="medium" fontSize="xl">
-                                                {parseFloat(prodData.price).toFixed(3)}/ Ngày
-                                            </Text>
-                                        </HStack>
-
-                                    </HStack>
-
-                                </Box>
-                            );
-                        }}
-                    </Pressable>
-                    <Box height={5} />
                     <ScrollView
                         width='100%'
                     >
+                        <View
+                            style={{
+                                flexDirection: 'row',
+                                alignItems: 'flex-start',
+                                padding: 15,
+                                backgroundColor: '#FFF',
+                                borderRadius: 15,
+                                marginBottom: 15
+                            }}
+                        >
+                            <Box width={150} height={100}><Image source={productPreview.thumbnail} borderRadius={10} /></Box>
+                            <View
+                                style={{ flex: 1 }}
+                            >
+                                <Flex
+                                    flexDirection='column'
+                                    justifyContent='space-between'
+                                >
+                                    <Text textAlign='left' numberOfLines={1} ellipsizeMode='tail' fontSize={16} fontWeight='semibold' color='#01005C'>{productPreview.name}</Text>
+                                    <Flex
+                                        flexDirection='row'
+                                        width='100%'
+                                        justifyContent='space-between'
+                                        alignItems='flex-end'
+                                    >
+                                        <Text>{productPreview.price}k/ngày</Text>
+                                        <GradientButton onPress={() => navigation.navigate('Lessee View Product Details', {product: productPreview})} prefixIcon={<Ionicons name="chevron-forward" color='white' size={18} />} colors={['#2A4AB6', '#269DDB']} width={35} height={35} radius={5} paddingBottom={0} paddingTop={0} paddingLeft={0} paddingRight={0} />
+                                    </Flex>
+                                </Flex>
+                            </View>
+                        </View>
                         {
                             chatDetail?.messages.map((item) => (
                                 (currentUser === item.sender) ?
@@ -176,21 +157,7 @@ export const ChatDetail = ({ navigation, route }) => {
                     paddingX="15px"
                     paddingY="30px"
                 >
-                    <Input
-                        backgroundColor='#FFF'
-                        rightElement={
-                            <Stack
-                                padding='15px'
-                                backgroundColor='#FFF'>
-                                <Ionicons
-                                    color='#B9C6CC'
-                                    size={22}
-                                    name="send" />
-                            </Stack>}
-                        variant="rounded"
-                        placeholder="Nhập tin nhắn ..."
-                        size='1x1'
-                    />
+                    <Input backgroundColor='#FFF' rightElement={<Stack padding='15px' backgroundColor='#FFF'><Ionicons color='#B9C6CC' size={22} name="send" /></Stack>} variant="rounded" placeholder="Nhập tin nhắn ..." size='2xl' />
                 </Box>
             </Box>
         </Animated.View >
