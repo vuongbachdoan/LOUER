@@ -18,7 +18,33 @@ export const ChatDetail = ({ navigation, route }) => {
         }).start();
     }, [fadeAnim]);
 
+    React.useEffect(() => {
+        if (paidStat) {
+            productPreview.status = 'renting';
+        }
+    })
+
     const { chatDetail } = route.params;
+
+    const prodStatus = [
+        {
+            status: 'available',
+            colorScheme: 'info'
+        },
+        {
+            status: 'renting',
+            colorScheme: 'success'
+        },
+        {
+            status: 'rented',
+            colorScheme: 'danger'
+        },
+    ]
+
+    const getStatusColorScheme = (status) => {
+        const prod = prodStatus.find(prod => prod.status === status);
+        return prod ? prod.colorScheme : 'gray';
+    }
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -107,7 +133,7 @@ export const ChatDetail = ({ navigation, route }) => {
                                     </Flex>
                                     <Box>
                                         <Badge
-                                            colorScheme={productPreview.status === 'available' ? 'success' : 'error'}
+                                            // colorScheme={productPreview.status === 'available' ? 'success' : 'error'}
                                             variant='subtle'
                                         >
                                             {productPreview.status}

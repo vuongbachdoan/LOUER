@@ -1,32 +1,54 @@
 import { Avatar, Box, Flex, Heading, Image, Input, ScrollView, Stack, Text } from "native-base";
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, Animated, TouchableOpacity } from "react-native";
 import Prod1 from '../../assets/images/prod1.png';
+import { useFocusEffect } from "@react-navigation/core";
 
-const notifications = [
-    {
-        thumbnail: Prod1,
-        title: 'Nikon D7000',
-        description: 'Đã xác nhận cho thuê. mã số giao dịch: ABCD12345678',
-        isViewed: false
-    },
-    {
-        thumbnail: Prod1,
-        title: 'Nikon D7000',
-        description: 'Đã xác nhận cho thuê. mã số giao dịch: ABCD12345678',
-        isViewed: false
-    },
-    {
-        thumbnail: Prod1,
-        title: 'Nikon D7000',
-        description: 'Đã xác nhận cho thuê. mã số giao dịch: ABCD12345678',
-        isViewed: false
-    },
-]
+
+// const notifications = [
+//     {
+//         thumbnail: Prod1,
+//         title: 'Nikon D7000',
+//         description: 'Đã xác nhận cho thuê. mã số giao dịch: ABCD12345678',
+//         isViewed: false
+//     },
+//     {
+//         thumbnail: Prod1,
+//         title: 'Nikon D7000',
+//         description: 'Đã xác nhận cho thuê. mã số giao dịch: ABCD12345678',
+//         isViewed: false
+//     },
+//     {
+//         thumbnail: Prod1,
+//         title: 'Nikon D7000',
+//         description: 'Đã xác nhận cho thuê. mã số giao dịch: ABCD12345678',
+//         isViewed: false
+//     },
+// ]
+
 
 export const Notification = ({ navigation, route }) => {
 
     const fadeAnim = React.useRef(new Animated.Value(0)).current;
+
+    const [notifications, setNotifications] = useState(
+        [
+         {
+             thumbnail: Prod1,
+             title: 'Đã xác nhận thanh toán',
+             description: 'Đã xác nhận thanh toán cho thuê Nikon D7000. mã số giao dịch: ABCD12345678',
+             isViewed: false,
+             isShow: false,
+         },
+         {
+             thumbnail: Prod1,
+             title: 'Có tin nhắn mới từ Lê Văn Linh',
+             description: 'Linh: Được em ơi',
+             isViewed: false,
+             isShow: true,
+         },
+        ]
+     )
 
     React.useEffect(() => {
         Animated.timing(fadeAnim, {
@@ -35,6 +57,19 @@ export const Notification = ({ navigation, route }) => {
             useNativeDriver: true,
         }).start();
     }, [fadeAnim]);
+
+    useFocusEffect(() => {
+        console.log('paidStat:', global.paidStat);
+        if (typeof global.paidStat !== 'undefined' && global.paidStat) {
+            setNotifications(
+                notifications.map(notification => ({ 
+                    ...notification, isShow: true 
+                }))
+            );
+        }
+    }, [paidStat]);
+
+    
 
     return (
         <Animated.View style={{ flex: 1, opacity: fadeAnim }}>
@@ -71,7 +106,8 @@ export const Notification = ({ navigation, route }) => {
                     <ScrollView>
                         {
                             notifications.map((item) => (
-                                <TouchableOpacity onPress={() => navigation.navigate('ChatDetail', { chatDetail: item })}>
+                                item.isShow && (
+                                    <TouchableOpacity onPress={() => navigation.navigate('ChatDetail', { chatDetail: item })}>
                                     <Flex
                                         flexDirection='row'
                                         columnGap={15}
@@ -81,7 +117,9 @@ export const Notification = ({ navigation, route }) => {
                                         paddingX={5}
                                         paddingY={5}
                                     >
-                                        <Image source={item.thumbnail} width='80px' height='80px' borderRadius={15}/>
+                                        <Image
+                                            alt="thumbnail" 
+                                            source={item.thumbnail} width='80px' height='80px' borderRadius={15}/>
 
                                         <Stack
                                             flex={1}
@@ -91,6 +129,7 @@ export const Notification = ({ navigation, route }) => {
                                         </Stack>
                                     </Flex>
                                 </TouchableOpacity>
+                                )
                             ))
                         }
                     </ScrollView>

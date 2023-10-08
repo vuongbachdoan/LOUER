@@ -12,35 +12,35 @@ const prodData = [
     {
         name: 'Canon EOS 700D',
         status: 'pending',
-        statusMessage: '560.000/Ngày',
-        statusColor: '#0166FE',
+        statusMessage: '2 Giao dịch đang đợi',
+        statusColor: '#FFC700',
         thumbnail: Prod1
     },
     {
         name: 'Nikon D7000',
         status: 'warning',
-        statusMessage: '500.000/Ngày',
-        statusColor: '#0166FE',
+        statusMessage: 'Còn thiếu đền bù thiệt hại',
+        statusColor: '#FC0000',
         thumbnail: Prod2
     },
     {
         name: 'Canon 5d Mark IV',
         status: 'available',
-        statusMessage: '699.000/Ngày',
+        statusMessage: 'Chưa có giao dịch',
         statusColor: '#0166FE',
         thumbnail: Prod3
     },
     {
         name: 'Nikon D7000',
         status: 'available',
-        statusMessage: '850.000/Ngày',
+        statusMessage: 'Chưa có giao dịch',
         statusColor: '#0166FE',
         thumbnail: Prod2
     },
     {
         name: 'Canon EOS 700D',
         status: 'available',
-        statusMessage: '450.000/Ngày',
+        statusMessage: 'Chưa có giao dịch',
         statusColor: '#0166FE',
         thumbnail: Prod1
     }
@@ -100,7 +100,7 @@ export const HomeScreen = ({ navigation }) => {
 
                 <GradientButton onPress={() => navigation.navigate('Yêu cầu thuê')} text='Tìm kiếm yêu cầu' radius={15} colors={['#2A4AB6', '#269DDB']} />
 
-                <Text paddingY={15} textAlign='center' fontSize={28} fontWeight='bold'>Tài sản đang cho thuê</Text>
+                <Text paddingY={15} textAlign='center' fontSize={28} fontWeight='bold'>Tài sản trên louer</Text>
 
                 <Flex
                     flexDirection='row'

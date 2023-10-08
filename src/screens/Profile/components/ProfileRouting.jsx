@@ -1,11 +1,11 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { EditInfo } from "./components/EditInfo";
-import { ProfileView } from "./components/ProfileView";
+import { EditInfo } from "./EditInfo";
+import { Profile } from "./ProfileView";
 
 const Tab = createBottomTabNavigator();
 
-export const Profile = ({ navigation }) => {
+export const ProfileRouting = ({ navigation }) => {
 
     return (
         <Tab.Navigator
@@ -21,8 +21,8 @@ export const Profile = ({ navigation }) => {
                 },
             })}
         >
-            <Tab.Screen name="EditInfo" component={EditInfo} options={{ tabBarLabel: '', tabBarLabelStyle: { fontWeight: 'bold', bottom: 5 } }}/>
-            <Tab.Screen name="Profile" component={ProfileView} options={{ tabBarLabel: '', tabBarLabelStyle: { display: 'none' } }}/>
+            <Tab.Screen name="Profile" component={Profile} options={{ tabBarLabel: '', tabBarLabelStyle: { fontWeight: 'bold', bottom: 5 } }}/>
+            <Tab.Screen name="EditInfo" component={EditInfo} options={{ tabBarLabel: '', tabBarLabelStyle: { display: 'none' } }}/>
         </Tab.Navigator>
     );
 };

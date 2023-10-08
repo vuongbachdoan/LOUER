@@ -7,10 +7,11 @@ import { HomeRouting } from "./components/HomeRouting";
 import { Chat } from "../Chat";
 import { Notification } from "../Notification";
 import { Profile } from "../Profile";
+import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 
 const Tab = createBottomTabNavigator();
-
-export const Home = ({ navigation }) => {
+export const Home = ({ navigation, route }) => {
+    const routeName = getFocusedRouteNameFromRoute(route);
 
     return (
         <Tab.Navigator
@@ -36,7 +37,7 @@ export const Home = ({ navigation }) => {
                     } else if (route.name === 'Notification') {
                         iconName = 'notifications-outline'
                         return <Ionicons name={iconName} size={size} color={color} />
-                    } else if (route.name === 'Add') {
+                    } else if (route.name === 'Add' && routeName === 'Home') {
                         iconName = 'add-outline'
                         return <Stack style={{ borderRadius: '15px', top: -20 }}><GradientButton radius={15} colors={['#2A4AB6', '#269DDB']} width={60} height={60} prefixIcon={<Ionicons name={iconName} size={35} color='#FFF' style={{ marginLeft: 2 }} />}></GradientButton></Stack>
                     } else if (route.name === 'Chat') {
@@ -55,7 +56,7 @@ export const Home = ({ navigation }) => {
         >
             <Tab.Screen name="Home" component={HomeRouting} options={{ tabBarLabel: '', tabBarLabelStyle: { fontWeight: 'bold', bottom: 5 } }}/>
             <Tab.Screen name="Notification" component={Notification} options={{ tabBarLabel: '', tabBarLabelStyle: { fontWeight: 'bold', bottom: 5 } }} />
-            <Tab.Screen name="Add" component={HomeRouting} options={{ tabBarLabel: '' }} />
+            {routeName === 'Home' && <Tab.Screen name="Add" component={HomeRouting} options={{ tabBarLabel: '' }} />}
             <Tab.Screen name="Chat" component={Chat} options={{ tabBarLabel: '', tabBarLabelStyle: { fontWeight: 'bold', bottom: 5 } }} />
             <Tab.Screen name="Profile" component={Profile} options={{ tabBarLabel: '', tabBarLabelStyle: { fontWeight: 'bold', bottom: 5 } }} />
         </Tab.Navigator>

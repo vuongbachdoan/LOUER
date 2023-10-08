@@ -4,7 +4,11 @@ import { MainNavigator } from './src/navigator/MainNavigator';
 
 // import { MainNavLessor } from "./src/navigator/MainNavLessor";
 
+
 const App = () => {
+  
+  
+  
   return (
       <NativeBaseProvider>
         <MainNavigator />

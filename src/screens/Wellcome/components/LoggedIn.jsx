@@ -25,10 +25,10 @@ export const LoggedIn = ({ navigation }) => {
     }, [fadeAnim]);
 
 
-    React.useEffect(() => {
-        getById(1).then((user) => setUser(user));
-        console.log(user);
-    })
+    // React.useEffect(() => {
+    //     getById(1).then((user) => setUser(user));
+    //     console.log(user);
+    // })
 
     return (
         <Animated.View style={{ flex: 1, opacity: fadeAnim }}>
@@ -67,7 +67,8 @@ export const LoggedIn = ({ navigation }) => {
                 <GradientButton
                         text='Tiếp tục'
                         onPress={() => {
-                            navigation.navigate('LoggedInNewUser');
+                            // navigation.navigate('LoggedInNewUser');
+                            navigation.navigate('Home');
                         }}
                         colors={['#2A4AB6', '#269DDB']}
                     />

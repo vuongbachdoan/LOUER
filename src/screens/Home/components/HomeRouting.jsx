@@ -58,6 +58,8 @@ const prodData = [
     }
 ]
 
+const isPaid = false;
+
 const HomeTabs = createBottomTabNavigator();
 
 export const HomeRouting = ({ navigation }) => {

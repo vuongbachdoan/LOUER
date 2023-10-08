@@ -115,7 +115,19 @@ export const LesseeQR = ({ navigation, route }) => {
                             </Flex>
                         </Badge>
 
-                        <GradientButton onPress={() => setIsPaid(true)} text='Tiếp tục' radius={10} fontSize={18} height={55} colors={['#9F3553', '#E98EA6']} />
+                        <GradientButton 
+                            onPress={() => {
+                                setIsPaid(true);
+                                paidStat  = true;
+                                console.log('GLobal paidStat:', global.PaidStat);
+                                console.log('paidStat:', PaidStat);
+                            }} 
+                            text='Tiếp tục' 
+                            radius={10} 
+                            fontSize={18} 
+                            height={55} 
+                            colors={['#9F3553', '#E98EA6']} 
+                        />
                     </Box>
                 </Flex>
             </Box>
