@@ -1,4 +1,4 @@
-import { Avatar, Box, Flex, Image, Input, ScrollView, Stack, Text, View } from "native-base";
+import { Avatar, Box, Flex, Image, Input, ScrollView, Stack, Text, View, Badge } from "native-base";
 import React from "react";
 import { StyleSheet, Animated } from "react-native";
 import { useLayoutEffect } from "react";
@@ -31,7 +31,8 @@ export const ChatDetail = ({ navigation, route }) => {
     const productPreview = {
         thumbnail: prodImage,
         price: '500',
-        name: 'Nikon D7000'
+        name: 'Nikon D7000',
+        status: 'available'
     }
 
     return (
@@ -100,10 +101,18 @@ export const ChatDetail = ({ navigation, route }) => {
                                         width='100%'
                                         justifyContent='space-between'
                                         alignItems='flex-end'
-                                    >
+                                        paddingBottom={3}                                    >
                                         <Text>{productPreview.price}k/ngày</Text>
-                                        <GradientButton onPress={() => navigation.navigate('Lessee View Product Details', {product: productPreview})} prefixIcon={<Ionicons name="chevron-forward" color='white' size={18} />} colors={['#2A4AB6', '#269DDB']} width={35} height={35} radius={5} paddingBottom={0} paddingTop={0} paddingLeft={0} paddingRight={0} />
+                                        <GradientButton onPress={() => navigation.navigate('Lessee View Product Details', { product: productPreview })} prefixIcon={<Ionicons name="chevron-forward" color='white' size={18} />} colors={['#2A4AB6', '#269DDB']} width={35} height={35} radius={5} paddingBottom={0} paddingTop={0} paddingLeft={0} paddingRight={0} />
                                     </Flex>
+                                    <Box>
+                                        <Badge
+                                            colorScheme={productPreview.status === 'available' ? 'success' : 'error'}
+                                            variant='subtle'
+                                        >
+                                            {productPreview.status}
+                                        </Badge>
+                                    </Box>
                                 </Flex>
                             </View>
                         </View>

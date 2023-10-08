@@ -53,6 +53,7 @@ export const Notification = ({ navigation, route }) => {
                     flexDirection='row'
                     alignItems='center'
                     paddingBottom={15}
+                    paddingTop={15}
                 >
                     <Heading fontSize={36} fontWeight='bold' color='#22A4DD'>Thông báo</Heading>
                     <Avatar bg="lightBlue.400" source={{

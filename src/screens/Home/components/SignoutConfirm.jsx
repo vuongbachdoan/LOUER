@@ -62,7 +62,7 @@ export const SignoutConfirm = ({ navigation }) => {
                 <Box width='100%'>
                     <GradientButton onPress={() => navigation.navigate('Wellcome2')} fontSize={18} height={55} radius={10} colors={['#000000C7', '#0000005E']} text='Chuẩn luôn' />
                     <Box height={15}></Box>
-                    <GradientButton onPress={() => navigation.navigate('HomeScreen')} fontSize={18} height={55} radius={10} colors={['#22A4DD', '#F45985']} text='Bấm lộn' />
+                    <GradientButton onPress={() => navigation.navigate('Profile')} fontSize={18} height={55} radius={10} colors={['#22A4DD', '#F45985']} text='Bấm lộn' />
                 </Box>
             </Stack>
         </Animated.View>

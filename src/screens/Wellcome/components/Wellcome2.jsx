@@ -58,8 +58,9 @@ export const Wellcome2 = ({ navigation }) => {
                     <Text fontSize={16} fontWeight='semibold' color='coolGray.500' marginBottom={15}>Sử dụng mail FPT Edu / Google của bạn</Text>
                     <GradientButton
                         text='Login with Google account'
-                        onPress={() => navigation.navigate('Home')}
-                        colors={['#2A4AB6', '#269DDB']}
+                        onPress={() => navigation.navigate('LoggedIn')}
+                        colors={isChecked ? ['#2A4AB6', '#269DDB'] : ['gray', 'gray']}
+                        disabled={!isChecked}
                     />
                     <Checkbox marginTop={15} isChecked={isChecked} onChange={handlePolicyAllow} colorScheme="green" display='flex' flexDirection='row'>
                         <Text>By click, you aggree with our</Text><Link href='/policy'>Tern and Conditional</Link>

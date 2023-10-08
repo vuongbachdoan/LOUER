@@ -64,13 +64,14 @@ export const ChatList = ({ navigation, route }) => {
                 flexDirection='column'
                 minHeight='100%'
                 overflow='hidden'
-            >
+            >   
                 <Stack
                     display='flex'
                     justifyContent='space-between'
                     flexDirection='row'
                     alignItems='center'
                     paddingBottom={15}
+                    paddingTop={15}
                 >
                     <Heading fontSize={36} fontWeight='bold' color='#22A4DD'>Tin nhắn</Heading>
                     <Avatar bg="lightBlue.400" source={{

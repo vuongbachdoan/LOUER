@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, Flex, Icon, Image, Text } from "native-base";
+import { Avatar, Box, Button, Flex, Image, Text, Stack, Heading } from "native-base";
 import React from "react";
 import { StyleSheet, Animated } from "react-native";
 import AvatarUser from '../../assets/images/placeholder.png';
@@ -32,21 +32,48 @@ export const Profile = ({ navigation, route }) => {
                     rowGap={15}
                     alignItems='center'
                 >
+                    <Stack
+                        display='flex'
+                        justifyContent='space-between'
+                        flexDirection='row'
+                        alignItems='center'
+                        marginTop={7}
+                    >
+                        <Heading fontSize={36} fontWeight='bold' color='#22A4DD'>Tài khoản</Heading>
+                    </Stack>
                     <Image alt="user" source={AvatarUser} width={140} height={140} borderRadius={15} />
-                    <Text fontSize={22} fontWeight='semibold' color='#1B6BB5'>Nguyễn Văn A</Text>
-                    <Text fontSize={14} fontWeight='semibold'>anvse170000@fpt.edu.vn</Text>
+                    <Text fontSize={26} fontWeight='semibold' color='#1B6BB5'>Nguyễn Văn A</Text>
+                        <Text
+                            style={{
+                                color: '#545454',
+                                fontSize: 15,
+                                fontFamily: 'Inter',
+                                fontWeight: '400',
+                                wordWrap: 'break-word'
+                            }}
+                        >
+                            anvse170000@fpt.edu.vn
+                        </Text>
                     <Button 
                         leftIcon={<Ionicons name="person-outline" size={22} />}
                         width='60%'
                         background='transparent'
                         color='#000'
-                        variant='outline'
+                        variant='unstyled'
                         display='flex'
                         flexDirection='row'
                         columnGap={30}
                         justifyContent='flex-start'
                     >
-                        <Text>
+                        <Text
+                            style={{
+                                color: 'black',
+                                fontSize: 15,
+                                fontWeight: '600',
+                                lineHeight: 22,
+                                wordWrap: 'break-word'
+                            }}
+                        >
                             Thông tin cá nhân
                         </Text>
                     </Button>
@@ -55,13 +82,21 @@ export const Profile = ({ navigation, route }) => {
                         width='60%'
                         background='transparent'
                         color='#000'
-                        variant='outline'
+                        variant='unstyled'
                         display='flex'
                         flexDirection='row'
                         columnGap={30}
                         justifyContent='flex-start'
                     >
-                        <Text>
+                        <Text
+                            style={{
+                                color: 'black',
+                                fontSize: 15,
+                                fontWeight: '600',
+                                lineHeight: 22,
+                                wordWrap: 'break-word'
+                            }}
+                        >
                             Đánh giá của tôi
                         </Text>
                     </Button>
@@ -70,14 +105,21 @@ export const Profile = ({ navigation, route }) => {
                         width='60%'
                         background='transparent'
                         color='#000'
-                        variant='outline'
+                        variant='unstyled'
                         display='flex'
                         flexDirection='row'
                         columnGap={30}
                         justifyContent='flex-start'
                         onPress={() => navigation.navigate('SignoutConfirm')}
                     >
-                        <Text color='red.500'>
+                        <Text 
+                            style={{
+                                color: '#F24545',
+                                fontSize: 15,
+                                fontWeight: '600',
+                                lineHeight: 22,
+                                wordWrap: 'break-word'
+                            }}>
                             Đăng xuất
                         </Text>
                     </Button>
