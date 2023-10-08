@@ -1,11 +1,11 @@
 import { Avatar, Box, Checkbox, Flex, Image, Input, ScrollView, Stack, Text } from "native-base";
 import React from "react";
 import { StyleSheet, Animated } from "react-native";
-import Prod1 from '../../../../assets/images/prod1.png'
+import Prod1 from '../../../assets/images/prod1.png'
 import { useLayoutEffect } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
-import { GradientButton } from "../../../../components/GradientButton";
+import { GradientButton } from "../../../components/GradientButton";
 
 export const ProductDetail = ({ navigation, route }) => {
 

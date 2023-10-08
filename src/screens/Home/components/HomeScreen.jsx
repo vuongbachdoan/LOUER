@@ -2,18 +2,10 @@ import { Avatar, Box, CheckIcon, Flex, Heading, Select, Stack, Text } from "nati
 import React from "react";
 import { StyleSheet, Animated, ScrollView, View, Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { GradientButton } from "../../../../components/GradientButton";
-import Prod1 from '../../../../assets/images/prod1.png'
-import Prod2 from '../../../../assets/images/prod2.png'
-import Prod3 from '../../../../assets/images/prod3.png'
-
-const userData = {
-    name : 'Người Đẹp Trai',
-    email: 'traindse178200@fpt.edu.vn',
-    mssv: 'SE178200',
-    namecolor: '#FF5484',
-
-}
+import { GradientButton } from "../../../components/GradientButton";
+import Prod1 from '../../../assets/images/prod1.png'
+import Prod2 from '../../../assets/images/prod2.png'
+import Prod3 from '../../../assets/images/prod3.png'
 
 const prodData = [
     {
@@ -88,11 +80,10 @@ export const HomeScreen = ({ navigation }) => {
                     flexDirection='row'
                     alignItems='center'
                     paddingBottom={15}
-                    paddingTop={15}
                 >
                     <Stack>
-                        <Heading fontSize={36} fontWeight='bold' >Xin Chào</Heading>
-                        <Heading fontSize={36} fontWeight='bold' color={userData.namecolor}>{userData.name}</Heading>
+                        <Heading fontSize={36} fontWeight='bold'>Xin Chào</Heading>
+                        <Heading fontSize={36} fontWeight='bold' color='#22A4DD'>Người đẹp trai</Heading>
                     </Stack>
                     <Avatar bg="lightBlue.400" source={{
                         uri: "https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"

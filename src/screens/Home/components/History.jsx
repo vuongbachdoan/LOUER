@@ -2,53 +2,54 @@ import { Box, Stack, Text } from "native-base";
 import React from "react";
 import { StyleSheet, Animated, ScrollView, View, Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import Prod1 from '../../../../assets/images/prod1.png'
-import Prod2 from '../../../../assets/images/prod2.png'
-import Prod3 from '../../../../assets/images/prod3.png'
+import Prod1 from '../../../assets/images/prod1.png'
+import Prod2 from '../../../assets/images/prod2.png'
+import Prod3 from '../../../assets/images/prod3.png'
 
 const prodData = [
     {
         name: 'Canon EOS 700D',
+        status: 'pending',
         user: 'Nguyễn Văn A - SE170111',
         startFrom: 'Sáng, 08/T7',
-        endAt: null,
-        thumbnail: Prod1,
-        message: null,
-        messageStatus: null
+        endAt: 'Chiều, 08/T7',
+        thumbnail: Prod1
     },
     {
         name: 'Nikon D7000',
+        status: 'warning',
         user: 'Nguyễn Văn C - SE170111',
-        startFrom: null,
-        endAt: null,
-        thumbnail: Prod2,
-        message: 'Xác nhận gia hạn',
-        messageStatus: '#0075FF',
-        status: 'pending'
+        startFrom: 'Sáng, 08/T7',
+        endAt: 'Chiều, 08/T7',
+        thumbnail: Prod2
     },
     {
         name: 'Canon 5d Mark IV',
+        status: 'available',
         user: 'Nguyễn Văn B - SE170111',
-        startFrom: null,
-        endAt: null,
-        thumbnail: Prod3,
-        message: 'Thiếu nợ bồi thường',
-        messageStatus: '#BD0000',
-        status: 'danger',
+        startFrom: 'Sáng, 08/T7',
+        endAt: 'Chiều, 08/T7',
+        thumbnail: Prod3
     },
     {
         name: 'Nikon D7000',
+        status: 'available',
         user: 'Nguyễn Văn D - SE170111',
-        startFrom: null,
-        endAt: null,
-        thumbnail: Prod2,
-        message: 'Trễ hạn',
-        messageStatus: '#FFB800',
-        status: 'error',
+        startFrom: 'Sáng, 08/T7',
+        endAt: 'Chiều, 08/T7',
+        thumbnail: Prod2
+    },
+    {
+        name: 'Canon EOS 700D',
+        status: 'available',
+        user: 'Nguyễn Văn E - SE170111',
+        startFrom: 'Sáng, 08/T7',
+        endAt: 'Chiều, 08/T7',
+        thumbnail: Prod1
     }
 ]
 
-export const Activities = ({ navigation }) => {
+export const History = ({ navigation }) => {
 
     const fadeAnim = React.useRef(new Animated.Value(0)).current;
 
@@ -90,18 +91,8 @@ export const Activities = ({ navigation }) => {
                                 >
                                     <Text textAlign='left' fontSize={16} fontWeight={700} color='#01005C'>{item.name}</Text>
                                     <Text textAlign='left' fontSize={14} fontWeight={700} >{item.user}</Text>
-                                    {
-                                        item.startFrom &&
-                                        <Text textAlign='left' fontSize={14} fontWeight={400} >Từ: {item.startFrom}</Text>
-                                    }
-                                    {
-                                        item.endAt &&
-                                        <Text textAlign='left' fontSize={14} fontWeight={400} >Đến: {item.endAt}</Text>
-                                    }
-                                    {
-                                        item.message &&
-                                        <Text fontSize={14} fontWeight={400} color={item.messageStatus}>{item.message}</Text>
-                                    }
+                                    <Text textAlign='left' fontSize={14} fontWeight={400} >Từ: {item.startFrom}</Text>
+                                    <Text textAlign='left' fontSize={14} fontWeight={400} >Đến: {item.endAt}</Text>
                                 </View>
                                 <Ionicons name='chevron-forward' size={28} />
                             </View>

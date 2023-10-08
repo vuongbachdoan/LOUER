@@ -2,13 +2,11 @@ import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
 import { Stack } from "native-base";
-import { GradientButton } from "../../../components/GradientButton";
+import { GradientButton } from "../../components/GradientButton";
 import { HomeRouting } from "./components/HomeRouting";
 import { Chat } from "../Chat";
 import { Notification } from "../Notification";
 import { Profile } from "../Profile";
-import { Renting } from "../Renting";
-
 
 const Tab = createBottomTabNavigator();
 
@@ -40,7 +38,7 @@ export const Home = ({ navigation }) => {
                         return <Ionicons name={iconName} size={size} color={color} />
                     } else if (route.name === 'Add') {
                         iconName = 'add-outline'
-                        return <Stack style={{ borderRadius: '15px', top: -20 }}><GradientButton radius={50} colors={['#9F3553', '#E98EA6E9']} width={60} height={60} prefixIcon={<Ionicons name={iconName} size={35} color='#FFF' style={{ marginLeft: 2 }} />}></GradientButton></Stack>
+                        return <Stack style={{ borderRadius: '15px', top: -20 }}><GradientButton radius={15} colors={['#2A4AB6', '#269DDB']} width={60} height={60} prefixIcon={<Ionicons name={iconName} size={35} color='#FFF' style={{ marginLeft: 2 }} />}></GradientButton></Stack>
                     } else if (route.name === 'Chat') {
                         iconName = 'chatbubble-outline'
                         return <Ionicons name={iconName} size={size} color={color} />

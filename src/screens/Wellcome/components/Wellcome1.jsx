@@ -6,7 +6,7 @@ export const Wellcome1 = ({ navigation }) => {
     React.useEffect(() => {
         setTimeout(() => {
             navigation.navigate('Wellcome2')
-        }, 1500)
+        }, 3000)
     }, []);
 
     const fadeAnim = React.useRef(new Animated.Value(0)).current;
@@ -20,7 +20,7 @@ export const Wellcome1 = ({ navigation }) => {
     }, [fadeAnim]);
 
     return (
-        <Animated.View style={{ flex: 1, opacity: fadeAnim}}>
+        <Animated.View style={{ flex: 1, opacity: fadeAnim }}>
             <View style={styles.container}>
                 <GradientText
                     text={"Louer"}
