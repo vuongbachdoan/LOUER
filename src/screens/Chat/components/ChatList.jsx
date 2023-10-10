@@ -92,16 +92,16 @@ export const ChatList = ({ navigation, route }) => {
                                 <TouchableOpacity onPress={() => navigation.navigate('ChatDetail', { chatDetail: item })}>
                                     <Flex
                                         flexDirection='row'
-                                        columnGap={15}
                                         marginBottom='10px'
                                         backgroundColor='#FFF'
                                         borderRadius={15}
                                         paddingX={5}
                                         paddingY={5}
+                                        style={{columnGap: 15}}
                                     >
                                         <Avatar bg="amber.500" source={{
                                             uri: "https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-                                        }} size="md">
+                                        }} size="xl">
                                             NB
                                             <Avatar.Badge bg="green.500" />
                                         </Avatar>
@@ -109,8 +109,8 @@ export const ChatList = ({ navigation, route }) => {
                                         <Stack
                                             flex={1}
                                         >
-                                            <Text fontSize={16} fontWeight='semibold'>{item.receiver}</Text>
-                                            <Text color="gray.500" numberOfLines={1} ellipsizeMode='tail' fontSize={14} fontWeight='semibold'>{item.lastMessage}</Text>
+                                            <Text fontSize='2xl' fontWeight='semibold'>{item.receiver}</Text>
+                                            <Text color="gray.500" numberOfLines={1} ellipsizeMode='tail'  fontSize='xl' fontWeight='semibold'>{item.lastMessage}</Text>
                                         </Stack>
                                     </Flex>
                                 </TouchableOpacity>

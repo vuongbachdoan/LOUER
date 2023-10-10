@@ -1,6 +1,6 @@
-import { Avatar, Box, CheckIcon, Flex, Heading, Select, Stack, Text } from "native-base";
+import { Avatar, Box, CheckIcon, Flex, Heading, Image, ScrollView, Select, Stack, Text } from "native-base";
 import React from "react";
-import { StyleSheet, Animated, ScrollView, View, Image } from "react-native";
+import { StyleSheet, Animated, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { GradientButton } from "../../../components/GradientButton";
 import Prod1 from '../../../assets/images/prod1.png'
@@ -65,33 +65,31 @@ export const HomeScreen = ({ navigation }) => {
 
     return (
         <Animated.View style={{ flex: 1, opacity: fadeAnim }}>
-            <Box
+            <Flex
                 paddingX={15}
                 paddingY={30}
                 width='100%'
-                display='flex'
                 flexDirection='column'
-                minHeight='100%'
+                height='100%'
                 overflow='hidden'
             >
-                <Stack
-                    display='flex'
+                <Flex
                     justifyContent='space-between'
                     flexDirection='row'
                     alignItems='center'
                     paddingBottom={15}
                 >
-                    <Stack>
+                    <Box>
                         <Heading fontSize={36} fontWeight='bold'>Xin Chào</Heading>
                         <Heading fontSize={36} fontWeight='bold' color='#22A4DD'>Người đẹp trai</Heading>
-                    </Stack>
+                    </Box>
                     <Avatar bg="lightBlue.400" source={{
                         uri: "https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
                     }} size="md">
                         Avt
                         <Avatar.Badge bg="green.500" />
                     </Avatar>
-                </Stack>
+                </Flex>
 
                 <GradientButton onPress={() => navigation.navigate('Yêu cầu thuê')} text='Tìm kiếm yêu cầu' radius={15} colors={['#2A4AB6', '#269DDB']} />
 
@@ -133,31 +131,35 @@ export const HomeScreen = ({ navigation }) => {
 
                 <Box
                     flex={1}
+                    overflow='hidden'
                 >
-                    <ScrollView                >
+                    <ScrollView>
                         {
                             prodData.map((item, index) => (
-                                <View
+                                <Box
                                     key={index} // Use a unique key for each item
                                     style={{
                                         flexDirection: 'row',
                                         justifyContent: 'space-between',
                                         alignItems: 'center',
                                         paddingBottom: 15,
+                                        columnGap: 15
                                     }}
                                 >
-                                    <Image source={item.thumbnail} borderRadius={10} width={150} height={100} />
-                                    <View>
-                                        <Text fontSize={16} fontWeight={700} color='#01005C'>{item.name}</Text>
-                                        <Text fontSize={14} fontWeight={400} color={item.statusColor}>{item.statusMessage}</Text>
-                                    </View>
+                                    <Image source={item.thumbnail} borderRadius={10} width={250} height={150} />
+                                    <Box
+                                        flex={1}
+                                    >
+                                        <Text fontSize='2xl' fontWeight={700} color='#01005C' marginBottom={15}>{item.name}</Text>
+                                        <Text fontSize='md' fontWeight={400} color={item.statusColor}>{item.statusMessage}</Text>
+                                    </Box>
                                     <Ionicons onPress={() => navigation.navigate('Product details', { product: item })} name='chevron-forward' size={28} />
-                                </View>
+                                </Box>
                             ))
                         }
                     </ScrollView>
                 </Box>
-            </Box>
+            </Flex>
         </Animated.View>
     );
 };

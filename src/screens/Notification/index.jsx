@@ -73,20 +73,20 @@ export const Notification = ({ navigation, route }) => {
                                 <TouchableOpacity onPress={() => navigation.navigate('ChatDetail', { chatDetail: item })}>
                                     <Flex
                                         flexDirection='row'
-                                        columnGap={15}
+                                        columnGap='15px'
                                         marginBottom='10px'
                                         backgroundColor='#FFF'
-                                        borderRadius={15}
                                         paddingX={5}
                                         paddingY={5}
                                     >
-                                        <Image source={item.thumbnail} width='80px' height='80px' borderRadius={15}/>
+                                        <Image source={item.thumbnail} width='140px' height='140px' borderRadius={15}/>
 
                                         <Stack
                                             flex={1}
+                                            marginLeft={15}
                                         >
-                                            <Text fontSize={16} fontWeight='semibold'>{item.title}</Text>
-                                            <Text color="gray.500" numberOfLines={2} ellipsizeMode='tail' fontSize={14} fontWeight='semibold'>{item.description}</Text>
+                                            <Text fontSize='2xl' fontWeight='semibold'>{item.title}</Text>
+                                            <Text fontSize='md' color="gray.500" numberOfLines={2} ellipsizeMode='tail' fontWeight='semibold'>{item.description}</Text>
                                         </Stack>
                                     </Flex>
                                 </TouchableOpacity>

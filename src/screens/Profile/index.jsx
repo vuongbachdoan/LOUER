@@ -33,8 +33,9 @@ export const Profile = ({ navigation, route }) => {
                     alignItems='center'
                 >
                     <Image alt="user" source={AvatarUser} width={140} height={140} borderRadius={15} />
-                    <Text fontSize={22} fontWeight='semibold' color='#1B6BB5'>Nguyễn Văn A</Text>
-                    <Text fontSize={14} fontWeight='semibold'>anvse170000@fpt.edu.vn</Text>
+                    <Text fontSize='2xl' fontWeight='semibold' color='#1B6BB5'>Nguyễn Văn A</Text>
+                    <Text fontSize='xl' marginBottom={15} fontWeight='semibold'>anvse170000@fpt.edu.vn</Text>
+                    
                     <Button 
                         leftIcon={<Ionicons name="person-outline" size={22} />}
                         width='60%'
@@ -45,6 +46,9 @@ export const Profile = ({ navigation, route }) => {
                         flexDirection='row'
                         columnGap={30}
                         justifyContent='flex-start'
+                        maxW={220}
+                        marginBottom={15}
+                        borderRadius={8}
                     >
                         <Text>
                             Thông tin cá nhân
@@ -60,6 +64,9 @@ export const Profile = ({ navigation, route }) => {
                         flexDirection='row'
                         columnGap={30}
                         justifyContent='flex-start'
+                        maxW={220}
+                        marginBottom={15}
+                        borderRadius={8}
                     >
                         <Text>
                             Đánh giá của tôi
@@ -75,6 +82,9 @@ export const Profile = ({ navigation, route }) => {
                         flexDirection='row'
                         columnGap={30}
                         justifyContent='flex-start'
+                        maxW={220}
+                        marginBottom={15}
+                        borderRadius={8}
                         onPress={() => navigation.navigate('SignoutConfirm')}
                     >
                         <Text color='red.500'>
