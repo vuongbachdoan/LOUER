@@ -4,9 +4,9 @@ import { MainNavigator } from './src/navigator/MainNavigator';
 import { useEffect } from 'react';
 
 const App = () => {
-  useEffect(() => {
-    document.body.style.overflowY = "hidden";
-  }, []);
+  // useEffect(() => {
+  //   document.body.style.overflowY = "hidden";
+  // }, []);
   return (
     <NativeBaseProvider>
       <MainNavigator />

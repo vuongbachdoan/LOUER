@@ -44,6 +44,19 @@ export const ProductDetail = ({ navigation, route }) => {
                 minHeight='100%'
                 overflow='hidden'
             >
+                <Flex
+                    width='100%'
+                    flexDirection='row'
+                    justifyContent='space-between'
+                    alignItems='center'
+                    paddingX={15}
+                    paddingTop={30}
+                >
+
+                    <Flex><Ionicons name="chevron-back" size={22} onPress={() => navigation.goBack()} /></Flex>
+                    <Text textAlign='center' flex={1} fontSize={22} fontWeight='semibold'>{product.name}</Text>
+                </Flex>
+
                 <ScrollView>
                     <Stack
                         paddingX={15}
@@ -60,7 +73,7 @@ export const ProductDetail = ({ navigation, route }) => {
                             alignItems='flex-start'
                             width='100%'
                         >
-                            <Image borderRadius={10} source={Prod1} height={140} width={140} />
+                            <Image borderRadius={10} source={Prod1} height={140} width={140} alt="product thumbnal"/>
                             <Flex flex={1} flexDirection='column' rowGap={7.5}>
                                 <Text fontSize={16} fontWeight='semibold' textAlign='center'>Thông tin người thuê</Text>
                                 <Flex paddingX={2} paddingY={1} flexDirection='row' columnGap={15}>

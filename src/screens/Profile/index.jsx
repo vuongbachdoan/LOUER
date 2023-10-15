@@ -3,6 +3,7 @@ import React from "react";
 import { StyleSheet, Animated } from "react-native";
 import AvatarUser from '../../assets/images/placeholder.png';
 import { Ionicons } from "@expo/vector-icons";
+import { GradientButton } from "../../components/GradientButton";
 
 export const Profile = ({ navigation, route }) => {
 
@@ -35,62 +36,21 @@ export const Profile = ({ navigation, route }) => {
                     <Image alt="user" source={AvatarUser} width={140} height={140} borderRadius={15} />
                     <Text fontSize='2xl' fontWeight='semibold' color='#1B6BB5'>Nguyễn Văn A</Text>
                     <Text fontSize='xl' marginBottom={15} fontWeight='semibold'>anvse170000@fpt.edu.vn</Text>
-                    
-                    <Button 
-                        leftIcon={<Ionicons name="person-outline" size={22} />}
-                        width='60%'
-                        background='transparent'
-                        color='#000'
-                        variant='outline'
-                        display='flex'
-                        flexDirection='row'
-                        columnGap={30}
-                        justifyContent='flex-start'
-                        maxW={220}
-                        marginBottom={15}
-                        borderRadius={8}
-                    >
-                        <Text>
-                            Thông tin cá nhân
-                        </Text>
-                    </Button>
-                    <Button 
-                        leftIcon={<Ionicons name="star-outline" size={22} />}
-                        width='60%'
-                        background='transparent'
-                        color='#000'
-                        variant='outline'
-                        display='flex'
-                        flexDirection='row'
-                        columnGap={30}
-                        justifyContent='flex-start'
-                        maxW={220}
-                        marginBottom={15}
-                        borderRadius={8}
-                    >
-                        <Text>
-                            Đánh giá của tôi
-                        </Text>
-                    </Button>
-                    <Button 
-                        leftIcon={<Ionicons color='#F24545' name="log-out-outline" size={22} />}
-                        width='60%'
-                        background='transparent'
-                        color='#000'
-                        variant='outline'
-                        display='flex'
-                        flexDirection='row'
-                        columnGap={30}
-                        justifyContent='flex-start'
-                        maxW={220}
-                        marginBottom={15}
-                        borderRadius={8}
+
+                    <GradientButton
+                        width={240}
+                        colors={['#2A4AB6', '#269DDB']}
+                        text='Thông tin cá nhân' />
+                    <GradientButton
+                        width={240}
+                        colors={['#2A4AB6', '#269DDB']}
+                        text='Đánh giá của tôi' />
+                    <GradientButton
+                        width={240}
+                        colors={['#2A4AB6', '#269DDB']}
+                        text='Đăng xuất' 
                         onPress={() => navigation.navigate('SignoutConfirm')}
-                    >
-                        <Text color='red.500'>
-                            Đăng xuất
-                        </Text>
-                    </Button>
+                        />
                 </Flex>
             </Box>
         </Animated.View >

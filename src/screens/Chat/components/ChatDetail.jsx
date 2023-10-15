@@ -56,9 +56,8 @@ export const ChatDetail = ({ navigation, route }) => {
                         alignItems='center'
                         columnGap={15}
                     >
-                        <Flex><Ionicons name="chevron-back" size={22} /></Flex>
+                        <Flex><Ionicons name="chevron-back" size={22} onPress={() => navigation.goBack()}/></Flex>
                         <Text fontSize={22} fontWeight='semibold'>{chatDetail.receiver}</Text>
-
                     </Flex>
                     <Avatar bg="amber.500" source={{
                         uri: "https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
@@ -86,7 +85,7 @@ export const ChatDetail = ({ navigation, route }) => {
                                 marginBottom: 15
                             }}
                         >
-                            <Box width={150} height={100}><Image source={productPreview.thumbnail} borderRadius={10} /></Box>
+                            <Box width={150} height={100}><Image source={productPreview.thumbnail} borderRadius={10} alt="thumbnail"/></Box>
                             <View
                                 style={{ flex: 1 }}
                             >

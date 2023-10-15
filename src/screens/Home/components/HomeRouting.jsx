@@ -112,15 +112,11 @@ export const HomeRouting = ({ navigation }) => {
             <HomeTabs.Screen name="HomeScreen" component={HomeScreen} options={{ tabBarLabel: '', tabBarLabelStyle: { fontWeight: 'bold', bottom: 5 } }} />
             <HomeTabs.Screen name="Activities" component={Activities} options={{ tabBarLabel: '', tabBarLabelStyle: { fontWeight: 'bold', bottom: 5 } }} />
             <HomeTabs.Screen name="History" component={History} options={{ tabBarLabel: '', tabBarLabelStyle: { fontWeight: 'bold', bottom: 5 } }} />
-            <HomeTabs.Screen name="Product details" component={ProductDetail} options={{ tabBarLabel: '', tabBarLabelStyle: { fontWeight: 'bold', bottom: 5 } }} />
-            <HomeTabs.Screen name="Điều khoản thuê" component={LessorRules} options={{ tabBarLabel: '', tabBarLabelStyle: { fontWeight: 'bold', bottom: 5 } }} />
-            <HomeTabs.Screen name="Lessor request sent" component={LessorRequestSent} />
             <HomeTabs.Screen name="Yêu cầu thuê" component={SearchRequest} />
             <HomeTabs.Screen name="Lessee View Product Details" component={LesseeViewProductDetail} />
             <HomeTabs.Screen name="Lessee note before order" component={LesseeNoteBeforeOrder} />
             <HomeTabs.Screen name="Thanh toán" component={LesseeQR} />
             <HomeTabs.Screen name="View lessor request" component={ViewLessorRequest} />
-            <HomeTabs.Screen name="SignoutConfirm" component={SignoutConfirm} />
         </HomeTabs.Navigator>
     )
 };

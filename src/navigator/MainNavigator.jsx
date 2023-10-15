@@ -7,6 +7,11 @@ import { Home } from '../screens/Home';
 import { Chat } from '../screens/Chat';
 import { Profile } from '../screens/Profile';
 import { Notification } from '../screens/Notification';
+import { ChatDetail } from '../screens/Chat/components/ChatDetail';
+import { ProductDetail } from '../screens/Home/components/ProductDetail';
+import { LessorRules } from '../screens/Home/components/LessorRules';
+import { LessorRequestSent } from '../screens/Home/components/LessorRequestSent';
+import { SignoutConfirm } from '../screens/Home/components/SignoutConfirm';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -63,6 +68,38 @@ export const MainNavigator = () => {
             headerShown: true,
           }}
         />
+
+        <Tab.Screen
+          name="ChatDetail"
+          component={ChatDetail}
+          options={{
+            headerShown: false,
+          }}
+        />
+
+
+        <Tab.Screen
+          name="Product details"
+          component={ProductDetail}
+          options={{
+            headerShown: false,
+          }} />
+
+        <Tab.Screen name="Điều khoản thuê" component={LessorRules}
+          options={{
+            headerShown: false,
+          }} />
+
+        <Tab.Screen name="Lessor request sent" component={LessorRequestSent}
+          options={{
+            headerShown: false,
+          }} />
+
+
+        <Tab.Screen name="SignoutConfirm" component={SignoutConfirm}
+          options={{
+            headerShown: false,
+          }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

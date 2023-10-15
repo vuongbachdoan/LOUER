@@ -146,12 +146,12 @@ export const HomeScreen = ({ navigation }) => {
                                         columnGap: 15
                                     }}
                                 >
-                                    <Image source={item.thumbnail} borderRadius={10} width={250} height={150} />
+                                    <Image alt="thumbnail" source={item.thumbnail} borderRadius={10} width={100} height={100} />
                                     <Box
                                         flex={1}
                                     >
-                                        <Text fontSize='2xl' fontWeight={700} color='#01005C' marginBottom={15}>{item.name}</Text>
-                                        <Text fontSize='md' fontWeight={400} color={item.statusColor}>{item.statusMessage}</Text>
+                                        <Text fontSize='xl' fontWeight='semibold' color='#01005C' marginBottom={15}>{item.name}</Text>
+                                        <Text fontSize='sm' fontWeight='semibold' color={item.statusColor}>{item.statusMessage}</Text>
                                     </Box>
                                     <Ionicons onPress={() => navigation.navigate('Product details', { product: item })} name='chevron-forward' size={28} />
                                 </Box>

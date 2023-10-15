@@ -1,6 +1,6 @@
-import { Avatar, Box, Button, CheckIcon, Divider, Flex, Heading, Icon, Select, Stack, Text, VStack } from "native-base";
+import { Avatar, Box, Button, CheckIcon, Divider, Flex, Heading, Icon, Select, Stack, Text, Image } from "native-base";
 import React from "react";
-import { StyleSheet, Animated, ScrollView, View, Image } from "react-native";
+import { StyleSheet, Animated, ScrollView, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { GradientButton } from "../../../components/GradientButton";
 import Prod1 from '../../../assets/images/prod1.png'
@@ -137,10 +137,10 @@ export const Dashboard = ({ navigation }) => {
                                     paddingBottom: 15,
                                 }}
                             >
-                                <Image source={item.thumbnail} borderRadius={10} width={150} height={100} />
+                                <Image source={item.thumbnail} borderRadius={10} width={100} />
                                 <View>
-                                    <Text fontSize={16} fontWeight={700} color='#01005C'>{item.name}</Text>
-                                    <Text fontSize={14} fontWeight={400} color={item.statusColor}>{item.statusMessage}</Text>
+                                    <Text fontSize='xl' fontWeight='semibold' color='#01005C'>{item.name}</Text>
+                                    <Text fontSize='small' fontWeight='semibold' color={item.statusColor}>{item.statusMessage}</Text>
                                 </View>
                                 <Ionicons name='chevron-forward' size={28} />
                             </View>

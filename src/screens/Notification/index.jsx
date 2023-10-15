@@ -8,19 +8,109 @@ const notifications = [
         thumbnail: Prod1,
         title: 'Nikon D7000',
         description: 'Đã xác nhận cho thuê. mã số giao dịch: ABCD12345678',
-        isViewed: false
+        isViewed: false,
+        receiver: 'Nguyen Van A',
+        sender: 'Kid',
+        messages: [
+            {
+                sender: 'A',
+                timestamp: '',
+                content: 'Cho mình hỏi về em D7000 với.'
+            },
+            {
+                sender: 'K',
+                timestamp: '',
+                content: 'Con đó tin chuẩn em nhé'
+            },
+            {
+                sender: 'A',
+                timestamp: '',
+                content: 'Vậy khi nào máy đó thuê được ạ?'
+            },
+            {
+                sender: 'K',
+                timestamp: '',
+                content: 'Con máy đó khoảng tuần sau là free đó em, có thông tin gì thêm không?'
+            },
+            {
+                sender: 'A',
+                timestamp: '',
+                content: 'Cho mình hỏi về em D7000 với.'
+            }
+        ],
+        lastMessage: "Con máy đó khoảng tuần sau là có đúng không bạn"
     },
     {
         thumbnail: Prod1,
         title: 'Nikon D7000',
         description: 'Đã xác nhận cho thuê. mã số giao dịch: ABCD12345678',
-        isViewed: false
+        isViewed: false,
+        receiver: 'Nguyen Van A',
+        sender: 'Kid',
+        messages: [
+            {
+                sender: 'A',
+                timestamp: '',
+                content: 'Cho mình hỏi về em D7000 với.'
+            },
+            {
+                sender: 'K',
+                timestamp: '',
+                content: 'Con đó tin chuẩn em nhé'
+            },
+            {
+                sender: 'A',
+                timestamp: '',
+                content: 'Vậy khi nào máy đó thuê được ạ?'
+            },
+            {
+                sender: 'K',
+                timestamp: '',
+                content: 'Con máy đó khoảng tuần sau là free đó em, có thông tin gì thêm không?'
+            },
+            {
+                sender: 'A',
+                timestamp: '',
+                content: 'Cho mình hỏi về em D7000 với.'
+            }
+        ],
+        lastMessage: "Con máy đó khoảng tuần sau là có đúng không bạn"
     },
     {
         thumbnail: Prod1,
         title: 'Nikon D7000',
         description: 'Đã xác nhận cho thuê. mã số giao dịch: ABCD12345678',
-        isViewed: false
+        isViewed: false,
+        receiver: 'Nguyen Van A',
+        sender: 'Kid',
+        messages: [
+            {
+                sender: 'A',
+                timestamp: '',
+                content: 'Cho mình hỏi về em D7000 với.'
+            },
+            {
+                sender: 'K',
+                timestamp: '',
+                content: 'Con đó tin chuẩn em nhé'
+            },
+            {
+                sender: 'A',
+                timestamp: '',
+                content: 'Vậy khi nào máy đó thuê được ạ?'
+            },
+            {
+                sender: 'K',
+                timestamp: '',
+                content: 'Con máy đó khoảng tuần sau là free đó em, có thông tin gì thêm không?'
+            },
+            {
+                sender: 'A',
+                timestamp: '',
+                content: 'Cho mình hỏi về em D7000 với.'
+            }
+        ],
+        lastMessage: "Con máy đó khoảng tuần sau là có đúng không bạn"
     },
 ]
 
@@ -76,17 +166,16 @@ export const Notification = ({ navigation, route }) => {
                                         columnGap='15px'
                                         marginBottom='10px'
                                         backgroundColor='#FFF'
-                                        paddingX={5}
                                         paddingY={5}
                                     >
-                                        <Image source={item.thumbnail} width='140px' height='140px' borderRadius={15}/>
+                                        <Image alt='thumbnail' source={item.thumbnail} width='140px' height='140px' borderRadius={15} />
 
                                         <Stack
                                             flex={1}
                                             marginLeft={15}
                                         >
-                                            <Text fontSize='2xl' fontWeight='semibold'>{item.title}</Text>
-                                            <Text fontSize='md' color="gray.500" numberOfLines={2} ellipsizeMode='tail' fontWeight='semibold'>{item.description}</Text>
+                                            <Text fontSize='xl' fontWeight='semibold'>{item.title}</Text>
+                                            <Text fontSize='sm' color="gray.500" numberOfLines={2} ellipsizeMode='tail' fontWeight='semibold'>{item.description}</Text>
                                         </Stack>
                                     </Flex>
                                 </TouchableOpacity>
