@@ -25,6 +25,9 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "CLERK_PUBLISHABLE_KEY": "pk_test_Zmx1ZW50LXNlYWhvcnNlLTQuY2xlcmsuYWNjb3VudHMuZGV2JA"
     }
   }
 }

@@ -24,6 +24,16 @@ export const getImgById = async (userId) => {
     }
 };
 
+export const getDataById = async (userId) => {
+    try {
+        const userRes = await getById(userId);
+        const imgRes = await getImgById(userId);
+        return { user: userRes.data, img: imgRes };
+    } catch (error) {
+        outputError(error);
+    }
+};
+
 
 export const addImgById = async (userId, imgLink) => {
     try {
