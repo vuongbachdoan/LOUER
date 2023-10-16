@@ -1,17 +1,37 @@
-import React from "react";
+import React,{ useState } from "react";
 import { View, Text, StyleSheet, Animated } from "react-native";
 import { GradientButton } from "../../../components/GradientButton";
-import { getById } from "../../../services/User";
 import GradientText from "react-native-gradient-texts";
 
+import { getById } from "../../../services/User";
 
-export const LoggedIn = ({ navigation }) => {
-    const [user, setUser] = React.useState(null);
+
+export const LoggedIn = ({ navigation}) => {
+
+    const [user, setUser] = useState(null);
+
+    React.useEffect(() => {
+        const timeoutId = setTimeout(() => {
+            if (!user) {
+                setUser(getById(2));
+                
+            }
+            
+        }); 
+        console.log(user);
+        return () => clearTimeout(timeoutId);
+    }, [user, navigation]);
+
+
     const userName = {
-        firstname: 'Người',
-        surname: 'Đẹp',
-        lastname: 'Trai'
+        // first: user.firstName,
+        // middle: user.middleName,
+        // last: user.lastName
+        first: 'Nguyen',
+        middle: 'Van',
+        last: 'A'
     };
+
 
 
     const fadeAnim = React.useRef(new Animated.Value(500)).current;
@@ -24,11 +44,6 @@ export const LoggedIn = ({ navigation }) => {
         }).start();
     }, [fadeAnim]);
 
-
-    // React.useEffect(() => {
-    //     getById(1).then((user) => setUser(user));
-    //     console.log(user);
-    // })
 
     return (
         <Animated.View style={{ flex: 1, opacity: fadeAnim }}>

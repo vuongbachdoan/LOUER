@@ -1,7 +1,6 @@
 import * as request from "../utils/request";
 
 
-
 export const getById = async (userId) => {
     try {
         const res = await request.get(`users/${userId}`);
@@ -18,7 +17,7 @@ export const getImgById = async (userId) => {
                 user_id: userId 
             }
         })
-        return res.data;
+        return await res.data;
     } catch (error) {
         outputError(error);
     }

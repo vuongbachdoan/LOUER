@@ -5,15 +5,18 @@ const requestZ = axios.create({
     baseURL: 'http://www.louerapp.com/api/',
     timeout: 1000,
     headers: {
-        // 'X-Custom-Header': 'foobar',
-        // 'ngrok-skip-browser-warning': 'true' // Set the header with any value you want
     }
 });
 
 
-export const get = async(path, options ={} ) => {
-    const res = await requestZ.get(path, options);
-    return res.data; 
+export const get = async(path, options = {}) => {
+    return requestZ.get(path, options)
+        .then(response => {
+            return response.data;
+        })
+        .catch(error => {
+            console.error(error);
+        });
 };
 
 export const put = async(path, data) => {

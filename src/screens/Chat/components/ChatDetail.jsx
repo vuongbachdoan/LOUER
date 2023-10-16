@@ -131,7 +131,7 @@ export const ChatDetail = ({ navigation, route }) => {
                                     >
                                         <Text>{productPreview.price}k/ngày</Text>
                                         {/* <GradientButton onPress={() => navigation.navigate('Lessee View Product Details', { product: productPreview })} prefixIcon={<Ionicons name="chevron-forward" color='white' size={18} />} colors={['#2A4AB6', '#269DDB']} width={35} height={35} radius={5} paddingBottom={0} paddingTop={0} paddingLeft={0} paddingRight={0} /> */}
-                                        <GradientButton onPress={() => navigation.navigate('Điều khoản thuê', { product: productPreview })} prefixIcon={<Ionicons name="chevron-forward" color='white' size={18} />} colors={['#2A4AB6', '#269DDB']} width={35} height={35} radius={5} paddingBottom={0} paddingTop={0} paddingLeft={0} paddingRight={0} />
+                                        <GradientButton onPress={() => navigation.navigate('Lessee View Product Details', { product: productPreview })} prefixIcon={<Ionicons name="chevron-forward" color='white' size={18} />} colors={['#2A4AB6', '#269DDB']} width={35} height={35} radius={5} paddingBottom={0} paddingTop={0} paddingLeft={0} paddingRight={0} />
                                     </Flex>
                                     <Box>
                                         <Badge

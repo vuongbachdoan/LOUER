@@ -5,10 +5,16 @@ import { GradientButton } from "../../../components/GradientButton";
 import { Checkbox, Flex, Link, Stack, Text } from "native-base";
 import GradientText from "react-native-gradient-texts";
 
+
+
+
+
+import SignInWithOAuth from "../../../components/SignInWithOAuth";
+
 export const Wellcome2 = ({ navigation }) => {
     const fadeAnim = React.useRef(new Animated.Value(0)).current;
     const [isChecked, setChecked] = useState(false);
-
+    
 
     React.useEffect(() => {
         Animated.timing(fadeAnim, {
@@ -17,6 +23,8 @@ export const Wellcome2 = ({ navigation }) => {
             useNativeDriver: true,
         }).start();
     }, [fadeAnim]);
+
+
 
     const handlePolicyAllow = () => {
         setChecked(!isChecked);
@@ -59,9 +67,10 @@ export const Wellcome2 = ({ navigation }) => {
                     <GradientButton
                         text='Login with Google account'
                         onPress={() => navigation.navigate('LoggedIn')}
+                        // onPress={SignInWithOAuth()}
                         colors={isChecked ? ['#2A4AB6', '#269DDB'] : ['gray', 'gray']}
                         disabled={!isChecked}
-                    />
+                    />                    
                     <Checkbox marginTop={15} isChecked={isChecked} onChange={handlePolicyAllow} colorScheme="green" display='flex' flexDirection='row'>
                         <Text>By click, you aggree with our</Text><Link href='/policy'>Tern and Conditional</Link>
                     </Checkbox>

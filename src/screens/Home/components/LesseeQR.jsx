@@ -2,21 +2,51 @@ import { Avatar, Badge, Box, Button, Flex, Icon, Image, Input, Text, Spacer, use
 import React from "react";
 import { StyleSheet, Animated } from "react-native";
 import QR from '../../../assets/images/qr.png';
-import Visa from '../../../assets/images/visa.png';
+import BankLogo from '../../../assets/images/vietinbank.png';
 import { GradientButton } from "../../../components/GradientButton";
 import { useState } from "react";
+import * as Clipboard from 'expo-clipboard';
 import { Ionicons } from "@expo/vector-icons";
 
+// import {genImgLink}  from "../../../services/QR";
 
-const louerCardDetail = {
-    qrLink: { QR },
-    visaLogo: { Visa },
-    cardHolder: 'Hoang Tien Dat - Vietcombank',
-    cardNumber: '1234 5678 9012 3456',
-    transactionNote: 'RG7573',
-};
+
+
+
+
+
 
 export const LesseeQR = ({ navigation, route }) => {
+
+
+    const copyToClipboard = async (text,description) => {
+        await Clipboard.setStringAsync(text);
+        toast.show({
+            description: {description},
+        })
+    };
+
+    const louerCardDetail = {
+        bankLogo: { BankLogo },
+        BankId: '970415', //VietinBank
+        cardHolder: 'HOANG VU MINH TAI',
+        cardNumber: '104879541523',
+        amount: 100000,
+        transNote: "qrsu2h",
+    };
+
+
+
+
+
+    const genImgLink = (bankId, cardNumber, accName, amount, transNote) => {
+        try {
+            const img = `https://img.vietqr.io/image/${bankId}-${cardNumber}-qr_only.png?amount=${amount}&addInfo=${transNote}&accountName=${accName}`;
+            return img;
+        } catch (error) {
+            outputError(error);
+        }
+    };
 
     const toast = useToast();
 
@@ -31,6 +61,9 @@ export const LesseeQR = ({ navigation, route }) => {
     }, [fadeAnim]);
 
     const [isPaid, setIsPaid] = useState(false);
+
+    const qrLink = genImgLink(louerCardDetail.BankId, louerCardDetail.cardNumber, louerCardDetail.cardHolder, louerCardDetail.amount, louerCardDetail.transNote);
+
 
     return (
         <Animated.View style={{ flex: 1, opacity: fadeAnim }}>
@@ -48,7 +81,7 @@ export const LesseeQR = ({ navigation, route }) => {
                     rowGap={15}
                     alignItems='center'
                 >
-                    <Image alt="user" source={QR} width={140} height={140} borderRadius={15} />
+                    <Image alt="user" source={qrLink} width={140} height={140} borderRadius={15} />
                     {
                         isPaid &&
                         <Badge width='100%' padding='15px' borderRadius={10} colorScheme="green">
@@ -70,12 +103,17 @@ export const LesseeQR = ({ navigation, route }) => {
                             justifyContent='space-between'
                             alignItems='center'
                         >
-                            <Text fontSize={12} color='gray.500'>{louerCardDetail.cardHolder}</Text>
-                            <Image source={Visa} height='56px' />
+                            <Text fontSize={12} color='gray.500' fontWeight='bold'>{louerCardDetail.cardHolder}</Text>
+                            <Image source={BankLogo} height='45px' width={130} style={{ position: 'relative', bottom: '1.8%' }} />
                         </Flex>
 
                         <Text fontSize={14} fontWeight='semibold'>Số tài khoản</Text>
-                        <Badge borderRadius={10} marginTop={7.5} marginBottom={15} colorScheme="gray">
+                        <Badge
+                            borderRadius={10} marginTop={7.5} marginBottom={15} colorScheme="gray"
+                            onPress={() => {
+                                copyToClipboard(louerCardDetail.cardNumber,"đã copy số thẻ");
+                            }}
+                        >
                             <Flex
                                 flexDirection='row'
                                 justifyContent='space-between'
@@ -83,49 +121,48 @@ export const LesseeQR = ({ navigation, route }) => {
                             >
                                 <Text fontSize={18} color='gray.500'>{louerCardDetail.cardNumber}</Text>
                                 <Spacer />
-                                <Ionicons 
-                                    name="copy-outline" 
-                                    paddingLeft={50} 
-                                    size={20} 
-                                    style={{marginRight: 10}}
-                                    onPress={() => toast.show({
-                                        description: "đã copy số thẻ",
-                                    })}
+                                <Ionicons
+                                    name="copy-outline"
+                                    paddingLeft={50}
+                                    size={20}
+                                    style={{ marginRight: 10 }}
                                 />
                             </Flex>
                         </Badge>
                         <Text fontSize={14} fontWeight='semibold'>Nội dung chuyển khoản</Text>
-                        <Badge borderRadius={10} marginTop={7.5} marginBottom={15} colorScheme="gray">
+                        <Badge
+                            borderRadius={10} marginTop={7.5} marginBottom={15} colorScheme="gray"
+                            onPress={() => {
+                                copyToClipboard(louerCardDetail.transNote,"đã copy nội dung");
+                            }}
+                        >
                             <Flex
                                 flexDirection='row'
                                 justifyContent='space-between'
                                 alignItems='center'
                             >
-                                <Text fontSize={18} color='gray.500'>{louerCardDetail.transactionNote}</Text>
+                                <Text fontSize={18} color='gray.500'>{louerCardDetail.transNote}</Text>
                                 <Spacer />
-                                <Ionicons 
-                                    name="copy-outline" 
-                                    paddingLeft={160} 
-                                    size={20} 
-                                    style={{marginRight: 10}}
-                                    onPress={() => toast.show({
-                                        description: "đã copy nội dung",
-                                    })}
+                                <Ionicons
+                                    name="copy-outline"
+                                    paddingLeft={160}
+                                    size={20}
+                                    style={{ marginRight: 10 }}
                                 />
                             </Flex>
                         </Badge>
 
-                        <GradientButton 
+                        <GradientButton
                             onPress={() => {
                                 setIsPaid(true);
                                 window.$paidStat = true;
                                 console.log(window.$paidStat);
-                            }} 
-                            text='Tiếp tục' 
-                            radius={10} 
-                            fontSize={18} 
-                            height={55} 
-                            colors={['#9F3553', '#E98EA6']} 
+                            }}
+                            text='Tiếp tục'
+                            radius={10}
+                            fontSize={18}
+                            height={55}
+                            colors={['#9F3553', '#E98EA6']}
                         />
                     </Box>
                 </Flex>
