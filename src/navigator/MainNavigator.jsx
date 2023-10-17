@@ -12,6 +12,12 @@ import { ProductDetail } from '../screens/Home/components/ProductDetail';
 import { LessorRules } from '../screens/Home/components/LessorRules';
 import { LessorRequestSent } from '../screens/Home/components/LessorRequestSent';
 import { SignoutConfirm } from '../screens/Home/components/SignoutConfirm';
+import { ProfileInformation } from '../screens/Profile/ProfileInformation';
+import { LesseeRecentActivity } from '../screens/Home/components/LesseeRecentActivity';
+import { LesseeCreateRequest } from '../screens/Home/components/LesseeCreateRequest';
+import { LesseeViewProductDetail } from '../screens/Home/components/LesseeViewProductDetail';
+import { LessorViewProductDetail } from '../screens/Home/components/LessorViewProductDetail';
+import { LessorCreateRequest } from '../screens/Home/components/LessorCreateRequest';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -99,6 +105,36 @@ export const MainNavigator = () => {
         <Tab.Screen name="SignoutConfirm" component={SignoutConfirm}
           options={{
             headerShown: false,
+          }} />
+
+        <Tab.Screen name="ProfileInformation" component={ProfileInformation}
+          options={{
+            headerShown: false,
+          }} />
+
+        <Tab.Screen name="LesseeRecentActivity" component={LesseeRecentActivity}
+          options={{
+            headerShown: true,
+          }} />
+
+        <Tab.Screen name="LesseeCreateRequest" component={LesseeCreateRequest}
+          options={{
+            headerShown: false,
+          }} />
+
+        <Tab.Screen name="LessorCreateRequest" component={LessorCreateRequest}
+          options={{
+            headerShown: false,
+          }} />
+
+        <Tab.Screen name="Lessee view product detail" component={LesseeViewProductDetail}
+          options={{
+            headerShown: true,
+          }} />
+
+        <Tab.Screen name="Lessor View Product Details" component={LessorViewProductDetail}
+          options={{
+            headerShown: true,
           }} />
       </Stack.Navigator>
     </NavigationContainer>

@@ -25,7 +25,7 @@ export const LesseeViewProductDetail = ({ navigation, route }) => {
 
     useLayoutEffect(() => {
         navigation.setOptions({
-            headerTitle: () => <Text fontWeight='bold'>{product.name}</Text>,
+            headerTitle: () => <Text fontWeight='bold'>{product.prodName}</Text>,
         });
     }, [navigation, product]);
 
@@ -60,7 +60,7 @@ export const LesseeViewProductDetail = ({ navigation, route }) => {
                             alignItems='flex-start'
                             width='100%'
                         >
-                            <Image borderRadius={10} source={Prod1} height={140} width={140} />
+                            <Image alt="image" borderRadius={10} source={Prod1} height={140} width={140} />
                             <Flex flex={1} flexDirection='column' rowGap={7.5}>
                                 <Text fontSize={16} fontWeight='semibold' textAlign='center'>Thông tin người thuê</Text>
                                 <Flex paddingX={2} paddingY={1} flexDirection='row' columnGap={15}>

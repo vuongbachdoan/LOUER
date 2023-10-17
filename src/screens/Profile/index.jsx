@@ -4,10 +4,12 @@ import { StyleSheet, Animated } from "react-native";
 import AvatarUser from '../../assets/images/placeholder.png';
 import { Ionicons } from "@expo/vector-icons";
 import { GradientButton } from "../../components/GradientButton";
+import { store } from "../../state/store";
 
 export const Profile = ({ navigation, route }) => {
 
     const fadeAnim = React.useRef(new Animated.Value(0)).current;
+    const currentRole = store.useState((state) => state.user.role);
 
     React.useEffect(() => {
         Animated.timing(fadeAnim, {
@@ -38,19 +40,20 @@ export const Profile = ({ navigation, route }) => {
                     <Text fontSize='xl' marginBottom={15} fontWeight='semibold'>anvse170000@fpt.edu.vn</Text>
 
                     <GradientButton
+                        colors={currentRole == 'Lessor' ? ['#2A4AB6', '#269DDB'] : ['#9F3553', '#E98EA6']}
                         width={240}
-                        colors={['#2A4AB6', '#269DDB']}
+                        onPress={() => navigation.navigate('ProfileInformation')}
                         text='Thông tin cá nhân' />
                     <GradientButton
+                        colors={currentRole == 'Lessor' ? ['#2A4AB6', '#269DDB'] : ['#9F3553', '#E98EA6']}
                         width={240}
-                        colors={['#2A4AB6', '#269DDB']}
                         text='Đánh giá của tôi' />
                     <GradientButton
+                        colors={currentRole == 'Lessor' ? ['#2A4AB6', '#269DDB'] : ['#9F3553', '#E98EA6']}
                         width={240}
-                        colors={['#2A4AB6', '#269DDB']}
-                        text='Đăng xuất' 
+                        text='Đăng xuất'
                         onPress={() => navigation.navigate('SignoutConfirm')}
-                        />
+                    />
                 </Flex>
             </Box>
         </Animated.View >
