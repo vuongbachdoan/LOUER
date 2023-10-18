@@ -2,6 +2,7 @@ import { Avatar, Box, Flex, Heading, Input, ScrollView, Stack, Text } from "nati
 import React from "react";
 import { StyleSheet, Animated, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { store } from "../../../state/store";
 
 const messages = [
     {
@@ -54,6 +55,8 @@ export const ChatList = ({ navigation, route }) => {
         }).start();
     }, [fadeAnim]);
 
+    const role = store.useState((state) => state.user.role)
+
     return (
         <Animated.View style={{ flex: 1, opacity: fadeAnim }}>
             <Box
@@ -64,16 +67,15 @@ export const ChatList = ({ navigation, route }) => {
                 flexDirection='column'
                 minHeight='100%'
                 overflow='hidden'
-            >   
+            >
                 <Stack
                     display='flex'
                     justifyContent='space-between'
                     flexDirection='row'
                     alignItems='center'
                     paddingBottom={15}
-                    paddingTop={15}
                 >
-                    <Heading fontSize={36} fontWeight='bold' color='#22A4DD'>Tin nhắn</Heading>
+                    <Heading fontSize={36} fontWeight='bold' color={role == 'Lessor' ?'#22A4DD': '#FF5484'}>Tin nhắn</Heading>
                     <Avatar bg="lightBlue.400" source={{
                         uri: "https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
                     }} size="md">
@@ -93,16 +95,16 @@ export const ChatList = ({ navigation, route }) => {
                                 <TouchableOpacity onPress={() => navigation.navigate('ChatDetail', { chatDetail: item })}>
                                     <Flex
                                         flexDirection='row'
-                                        columnGap={15}
                                         marginBottom='10px'
                                         backgroundColor='#FFF'
                                         borderRadius={15}
                                         paddingX={5}
                                         paddingY={5}
+                                        style={{columnGap: 15}}
                                     >
                                         <Avatar bg="amber.500" source={{
                                             uri: "https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-                                        }} size="md">
+                                        }} size="lg">
                                             NB
                                             <Avatar.Badge bg="green.500" />
                                         </Avatar>
@@ -110,8 +112,8 @@ export const ChatList = ({ navigation, route }) => {
                                         <Stack
                                             flex={1}
                                         >
-                                            <Text fontSize={16} fontWeight='semibold'>{item.receiver}</Text>
-                                            <Text color="gray.500" numberOfLines={1} ellipsizeMode='tail' fontSize={14} fontWeight='semibold'>{item.lastMessage}</Text>
+                                            <Text fontSize='xl' fontWeight='semibold'>{item.receiver}</Text>
+                                            <Text color="gray.500" numberOfLines={1} ellipsizeMode='tail'  fontSize='sm' fontWeight='semibold'>{item.lastMessage}</Text>
                                         </Stack>
                                     </Flex>
                                 </TouchableOpacity>

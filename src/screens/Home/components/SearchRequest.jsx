@@ -63,7 +63,7 @@ export const SearchRequest = ({ navigation }) => {
                 height='100vh'
                 overflow='hidden'
             >
-                <Input backgroundColor='#FFF' leftElement={<Stack padding='15px' backgroundColor='#FFF'><Ionicons color='#B9C6CC' size={22} name="search" /></Stack>} variant="rounded" placeholder="Find requested Property ..." size='1xl' />
+                <Input backgroundColor='#FFF' leftElement={<Stack padding='15px' backgroundColor='#FFF'><Ionicons color='#B9C6CC' size={22} name="search" /></Stack>} variant="rounded" placeholder="Find requested Property ..." size='2xl' />
                 <Box marginBottom={30} marginTop={30}>
                     <ScrollView horizontal>
                         <Badge borderRadius={25} height={35} colorScheme="blue" marginRight={15}>

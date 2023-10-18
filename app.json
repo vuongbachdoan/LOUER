@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Louer",
-    "slug": "Louer",
+    "name": "wallet",
+    "slug": "wallet",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -15,7 +15,10 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSPhotoLibraryUsageDescription": "This app requires access to your photo library for uploading photos."
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -25,9 +28,6 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    },
-    "extra": {
-      "CLERK_PUBLISHABLE_KEY": "pk_test_Zmx1ZW50LXNlYWhvcnNlLTQuY2xlcmsuYWNjb3VudHMuZGV2JA"
     }
   }
 }

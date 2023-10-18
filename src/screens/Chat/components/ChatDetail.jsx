@@ -1,14 +1,17 @@
-import { Avatar, Box, Flex, Image, Input, ScrollView, Stack, Text, View, Badge } from "native-base";
+import { Avatar, Box, Flex, Image, Input, ScrollView, Stack, Text, View } from "native-base";
 import React from "react";
 import { StyleSheet, Animated } from "react-native";
 import { useLayoutEffect } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import prodImage from '../../../assets/images/prod1.png';
 import { GradientButton } from "../../../components/GradientButton";
+import { store } from "../../../state/store";
+import { useEffect } from "react";
 
 export const ChatDetail = ({ navigation, route }) => {
 
     const fadeAnim = React.useRef(new Animated.Value(0)).current;
+    const role = store.useState((state) => state.user.role)
 
     React.useEffect(() => {
         Animated.timing(fadeAnim, {
@@ -18,33 +21,7 @@ export const ChatDetail = ({ navigation, route }) => {
         }).start();
     }, [fadeAnim]);
 
-    React.useEffect(() => {
-        if (window.$paidStat) {
-            productPreview.status = 'renting';
-        }
-    })
-
     const { chatDetail } = route.params;
-
-    const prodStatus = [
-        {
-            status: 'available',
-            colorScheme: 'info'
-        },
-        {
-            status: 'renting',
-            colorScheme: 'success'
-        },
-        {
-            status: 'rented',
-            colorScheme: 'danger'
-        },
-    ]
-
-    const getStatusColorScheme = (status) => {
-        const prod = prodStatus.find(prod => prod.status === status);
-        return prod ? prod.colorScheme : 'gray';
-    }
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -53,13 +30,20 @@ export const ChatDetail = ({ navigation, route }) => {
         });
     }, [navigation, chatDetail]);
 
-    const currentUser = 'K';
+    const [currentUser, setCurrentUser] = React.useState('K');
     const productPreview = {
         thumbnail: prodImage,
         price: '500',
-        name: 'Nikon D7000',
-        status: 'available'
+        name: 'Nikon D7000'
     }
+
+    useEffect(() => {
+        if(role == 'Lessor') {
+            setCurrentUser('A')
+        } else {
+            setCurrentUser('K')
+        }
+    }, [role])
 
     return (
         <Animated.View style={{ flex: 1, opacity: fadeAnim }}>
@@ -83,9 +67,8 @@ export const ChatDetail = ({ navigation, route }) => {
                         alignItems='center'
                         columnGap={15}
                     >
-                        <Flex><Ionicons name="chevron-back" size={22} /></Flex>
+                        <Flex><Ionicons name="chevron-back" size={22} onPress={() => navigation.goBack()}/></Flex>
                         <Text fontSize={22} fontWeight='semibold'>{chatDetail.receiver}</Text>
-
                     </Flex>
                     <Avatar bg="amber.500" source={{
                         uri: "https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
@@ -113,7 +96,7 @@ export const ChatDetail = ({ navigation, route }) => {
                                 marginBottom: 15
                             }}
                         >
-                            <Box width={150} height={100}><Image source={productPreview.thumbnail} borderRadius={10} /></Box>
+                            <Box width={150} height={100}><Image source={productPreview.thumbnail} borderRadius={10} alt="thumbnail"/></Box>
                             <View
                                 style={{ flex: 1 }}
                             >
@@ -127,21 +110,10 @@ export const ChatDetail = ({ navigation, route }) => {
                                         width='100%'
                                         justifyContent='space-between'
                                         alignItems='flex-end'
-                                        paddingBottom={3}                                    
                                     >
                                         <Text>{productPreview.price}k/ngày</Text>
-                                        {/* <GradientButton onPress={() => navigation.navigate('Lessee View Product Details', { product: productPreview })} prefixIcon={<Ionicons name="chevron-forward" color='white' size={18} />} colors={['#2A4AB6', '#269DDB']} width={35} height={35} radius={5} paddingBottom={0} paddingTop={0} paddingLeft={0} paddingRight={0} /> */}
-                                        <GradientButton onPress={() => navigation.navigate('Lessee View Product Details', { product: productPreview })} prefixIcon={<Ionicons name="chevron-forward" color='white' size={18} />} colors={['#2A4AB6', '#269DDB']} width={35} height={35} radius={5} paddingBottom={0} paddingTop={0} paddingLeft={0} paddingRight={0} />
+                                        <GradientButton onPress={() => navigation.navigate('Lessor View Product Details', {product: productPreview})} prefixIcon={<Ionicons name="chevron-forward" color='white' size={18} />} colors={role == 'Lessor' ? ['#269DDB', '#2A46B4'] : ['#9F3553', '#E98EA6']} width={35} height={35} radius={5} paddingBottom={0} paddingTop={0} paddingLeft={0} paddingRight={0} />
                                     </Flex>
-                                    <Box>
-                                        <Badge
-                                            colorScheme='success'
-                                            variant='subtle'
-                                        >
-                                            Renting
-                                            {/* {productPreview.status} */}
-                                        </Badge>
-                                    </Box>
                                 </Flex>
                             </View>
                         </View>
@@ -174,7 +146,7 @@ export const ChatDetail = ({ navigation, route }) => {
                                     >
                                         <Box
                                             width='80%'
-                                            backgroundColor='#4196D2'
+                                            backgroundColor={role == 'Lessor' ? '#4196D2' : '#FF5484'}
                                             paddingX='15px'
                                             paddingY='15px'
                                             borderTopRadius={20}

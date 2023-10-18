@@ -19,7 +19,9 @@ import { LesseeNoteBeforeOrder } from "./LesseeNoteBeforeOrder";
 import { LesseeQR } from "./LesseeQR";
 import { ViewLessorRequest } from "./ViewLessorRequest";
 import { SignoutConfirm } from "./SignoutConfirm";
-import { EditInfo } from "../../Profile/components/EditInfo";
+import { store } from "../../../state/store";
+import { LesseeHome } from "./LesseeHome";
+import { LessorCreateRequest } from "./LessorCreateRequest";
 
 const prodData = [
     {
@@ -59,11 +61,10 @@ const prodData = [
     }
 ]
 
-const isPaid = false;
-
 const HomeTabs = createBottomTabNavigator();
 
 export const HomeRouting = ({ navigation }) => {
+    const role = store.useState((state) => state.user.role)
     return (
         <HomeTabs.Navigator
             sceneContainerStyle={{ height: 60, backgroundColor: '#FAFAFA' }}
@@ -109,22 +110,16 @@ export const HomeRouting = ({ navigation }) => {
                 ),
                 tabBarStyle: {
                     display: 'none'
-                }
+                },
             })}
         >
-            <HomeTabs.Screen name="HomeScreen" component={HomeScreen} options={{ tabBarLabel: '', tabBarLabelStyle: { fontWeight: 'bold', bottom: 5 } }} />
+            <HomeTabs.Screen name="HomeScreen" component={role == 'Lessor' ? HomeScreen : LesseeHome} options={{ tabBarLabel: '', tabBarLabelStyle: { fontWeight: 'bold', bottom: 5 } }} />
             <HomeTabs.Screen name="Activities" component={Activities} options={{ tabBarLabel: '', tabBarLabelStyle: { fontWeight: 'bold', bottom: 5 } }} />
             <HomeTabs.Screen name="History" component={History} options={{ tabBarLabel: '', tabBarLabelStyle: { fontWeight: 'bold', bottom: 5 } }} />
-            <HomeTabs.Screen name="Product details" component={ProductDetail} options={{ tabBarLabel: '', tabBarLabelStyle: { fontWeight: 'bold', bottom: 5 } }} />
-            <HomeTabs.Screen name="Điều khoản thuê" component={LessorRules} options={{ tabBarLabel: '', tabBarLabelStyle: { fontWeight: 'bold', bottom: 5 } }} />
-            <HomeTabs.Screen name="Lessor request sent" component={LessorRequestSent} />
             <HomeTabs.Screen name="Yêu cầu thuê" component={SearchRequest} />
-            <HomeTabs.Screen name="Lessee View Product Details" component={LesseeViewProductDetail} />
             <HomeTabs.Screen name="Lessee note before order" component={LesseeNoteBeforeOrder} />
             <HomeTabs.Screen name="Thanh toán" component={LesseeQR} />
             <HomeTabs.Screen name="View lessor request" component={ViewLessorRequest} />
-            <HomeTabs.Screen name="SignoutConfirm" component={SignoutConfirm} />
-            <HomeTabs.Screen name="Thông tin cá nhân" component={EditInfo} />
         </HomeTabs.Navigator>
     )
 };

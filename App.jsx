@@ -1,17 +1,16 @@
 import * as React from 'react';
 import { NativeBaseProvider } from "native-base";
 import { MainNavigator } from './src/navigator/MainNavigator';
-
-// import { MainNavLessor } from "./src/navigator/MainNavLessor";
-
-window.$paidStat = false;
+import { useEffect } from 'react';
 
 const App = () => {
+  // useEffect(() => {
+  //   document.body.style.overflowY = "hidden";
+  // }, []);
   return (
-      <NativeBaseProvider>
-        <MainNavigator />
-        {/* <MainNavLessor /> */}
-      </NativeBaseProvider>
+    <NativeBaseProvider>
+      <MainNavigator />
+    </NativeBaseProvider>
   );
 };
 

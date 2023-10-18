@@ -1,7 +1,6 @@
 import React from "react";
 import { View, Text, StyleSheet, Animated } from "react-native";
 import GradientText from "react-native-gradient-texts";
-import { useFocusEffect } from "@react-navigation/core";
 
 export const Wellcome1 = ({ navigation }) => {
     React.useEffect(() => {
@@ -12,13 +11,13 @@ export const Wellcome1 = ({ navigation }) => {
 
     const fadeAnim = React.useRef(new Animated.Value(0)).current;
 
-    useFocusEffect(() => {
+    React.useEffect(() => {
         Animated.timing(fadeAnim, {
             toValue: 1,
             duration: 1000,
             useNativeDriver: true,
         }).start();
-    });
+    }, [fadeAnim]);
 
     return (
         <Animated.View style={{ flex: 1, opacity: fadeAnim }}>
