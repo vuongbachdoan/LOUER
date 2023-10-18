@@ -3,10 +3,13 @@ import React from "react";
 import { StyleSheet, Animated } from "react-native";
 import AvatarUser from '../../assets/images/placeholder.png';
 import { Ionicons } from "@expo/vector-icons";
+import { GradientButton } from "../../components/GradientButton";
+import { store } from "../../state/store";
 
 export const Profile = ({ navigation, route }) => {
 
     const fadeAnim = React.useRef(new Animated.Value(0)).current;
+    const currentRole = store.useState((state) => state.user.role);
 
     React.useEffect(() => {
         Animated.timing(fadeAnim, {
@@ -33,53 +36,24 @@ export const Profile = ({ navigation, route }) => {
                     alignItems='center'
                 >
                     <Image alt="user" source={AvatarUser} width={140} height={140} borderRadius={15} />
-                    <Text fontSize={22} fontWeight='semibold' color='#1B6BB5'>Nguyễn Văn A</Text>
-                    <Text fontSize={14} fontWeight='semibold'>anvse170000@fpt.edu.vn</Text>
-                    <Button 
-                        leftIcon={<Ionicons name="person-outline" size={22} />}
-                        width='60%'
-                        background='transparent'
-                        color='#000'
-                        variant='outline'
-                        display='flex'
-                        flexDirection='row'
-                        columnGap={30}
-                        justifyContent='flex-start'
-                    >
-                        <Text>
-                            Thông tin cá nhân
-                        </Text>
-                    </Button>
-                    <Button 
-                        leftIcon={<Ionicons name="star-outline" size={22} />}
-                        width='60%'
-                        background='transparent'
-                        color='#000'
-                        variant='outline'
-                        display='flex'
-                        flexDirection='row'
-                        columnGap={30}
-                        justifyContent='flex-start'
-                    >
-                        <Text>
-                            Đánh giá của tôi
-                        </Text>
-                    </Button>
-                    <Button 
-                        leftIcon={<Ionicons color='#F24545' name="log-out-outline" size={22} />}
-                        width='60%'
-                        background='transparent'
-                        color='#000'
-                        variant='outline'
-                        display='flex'
-                        flexDirection='row'
-                        columnGap={30}
-                        justifyContent='flex-start'
-                    >
-                        <Text color='red.500'>
-                            Đăng xuất
-                        </Text>
-                    </Button>
+                    <Text fontSize='2xl' fontWeight='semibold' color='#1B6BB5'>Nguyễn Văn A</Text>
+                    <Text fontSize='xl' marginBottom={15} fontWeight='semibold'>anvse170000@fpt.edu.vn</Text>
+
+                    <GradientButton
+                        colors={currentRole == 'Lessor' ? ['#2A4AB6', '#269DDB'] : ['#9F3553', '#E98EA6']}
+                        width={240}
+                        onPress={() => navigation.navigate('ProfileInformation')}
+                        text='Thông tin cá nhân' />
+                    <GradientButton
+                        colors={currentRole == 'Lessor' ? ['#2A4AB6', '#269DDB'] : ['#9F3553', '#E98EA6']}
+                        width={240}
+                        text='Đánh giá của tôi' />
+                    <GradientButton
+                        colors={currentRole == 'Lessor' ? ['#2A4AB6', '#269DDB'] : ['#9F3553', '#E98EA6']}
+                        width={240}
+                        text='Đăng xuất'
+                        onPress={() => navigation.navigate('SignoutConfirm')}
+                    />
                 </Flex>
             </Box>
         </Animated.View >

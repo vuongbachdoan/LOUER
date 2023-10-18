@@ -1,6 +1,6 @@
-import { Avatar, Box, CheckIcon, Flex, Heading, Image, ScrollView, Select, Stack, Text } from "native-base";
+import { Avatar, Box, Button, CheckIcon, Divider, Flex, Heading, Icon, Select, Stack, Text, Image } from "native-base";
 import React from "react";
-import { StyleSheet, Animated, View } from "react-native";
+import { StyleSheet, Animated, ScrollView, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { GradientButton } from "../../../components/GradientButton";
 import Prod1 from '../../../assets/images/prod1.png'
@@ -44,8 +44,7 @@ const prodData = [
         thumbnail: Prod1
     }
 ]
-
-export const HomeScreen = ({ navigation }) => {
+export const Dashboard = ({ navigation }) => {
 
     const fadeAnim = React.useRef(new Animated.Value(0)).current;
 
@@ -59,39 +58,37 @@ export const HomeScreen = ({ navigation }) => {
 
     const [service, setService] = React.useState("");
 
-    const handleChangeRoute = (route) => {
-        navigation.navigate(route);
-    }
-
     return (
         <Animated.View style={{ flex: 1, opacity: fadeAnim }}>
-            <Flex
+            <Stack
                 paddingX={15}
                 paddingY={30}
                 width='100%'
+                display='flex'
                 flexDirection='column'
-                height='100%'
+                height='100vh'
                 overflow='hidden'
             >
-                <Flex
+                <Stack
+                    display='flex'
                     justifyContent='space-between'
                     flexDirection='row'
                     alignItems='center'
                     paddingBottom={15}
                 >
-                    <Box>
+                    <Stack>
                         <Heading fontSize={36} fontWeight='bold'>Xin Chào</Heading>
                         <Heading fontSize={36} fontWeight='bold' color='#22A4DD'>Người đẹp trai</Heading>
-                    </Box>
+                    </Stack>
                     <Avatar bg="lightBlue.400" source={{
                         uri: "https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
                     }} size="md">
                         Avt
                         <Avatar.Badge bg="green.500" />
                     </Avatar>
-                </Flex>
+                </Stack>
 
-                <GradientButton onPress={() => navigation.navigate('Yêu cầu thuê')} text='Tìm kiếm yêu cầu' radius={15} colors={['#2A4AB6', '#269DDB']} />
+                <GradientButton text='Tìm kiếm yêu cầu' radius={15} colors={['#2A4AB6', '#269DDB']} />
 
                 <Text paddingY={15} textAlign='center' fontSize={28} fontWeight='bold'>Tài sản trên louer</Text>
 
@@ -104,8 +101,8 @@ export const HomeScreen = ({ navigation }) => {
                         flexDirection='row'
                         style={{ columnGap: 5 }}
                     >
-                        <GradientButton onPress={() => handleChangeRoute('History')} colors={['#2A4AB6', '#269DDB']} width={45} height={45} radius={15} prefixIcon={<Ionicons color='white' name='timer' size={22} />} />
-                        <GradientButton onPress={() => handleChangeRoute('Activities')} colors={['#2A4AB6', '#269DDB']} width={45} height={45} radius={15} prefixIcon={<Ionicons color='white' name='list' size={22} />} />
+                        <GradientButton colors={['#2A4AB6', '#269DDB']} width={45} height={45} radius={15} prefixIcon={<Ionicons color='white' name='timer' size={24} />} />
+                        <GradientButton colors={['#2A4AB6', '#269DDB']} width={45} height={45} radius={15} prefixIcon={<Ionicons color='white' name='list' size={24} />} />
                     </Flex>
 
                     <Select
@@ -122,44 +119,35 @@ export const HomeScreen = ({ navigation }) => {
                             endIcon: <CheckIcon size="5" />
                         }} onValueChange={itemValue => setService(itemValue)}
                     >
-                        <Select.Item label="Pending" value="Pending" />
-                        <Select.Item label="Available" value="Available" />
-                        <Select.Item label="Leasing" value="Leasing" />
-                        <Select.Item label="Damanged" value="Damanged" />
+                        <Select.Item label="All" value="all" />
+                        <Select.Item label="All" value="all" />
+                        <Select.Item label="All" value="all" />
                     </Select>
                 </Flex>
 
-                <Box
-                    flex={1}
-                    overflow='hidden'
-                >
-                    <ScrollView>
-                        {
-                            prodData.map((item, index) => (
-                                <Box
-                                    key={index} // Use a unique key for each item
-                                    style={{
-                                        flexDirection: 'row',
-                                        justifyContent: 'space-between',
-                                        alignItems: 'center',
-                                        paddingBottom: 15,
-                                        columnGap: 15
-                                    }}
-                                >
-                                    <Image alt="thumbnail" source={item.thumbnail} borderRadius={10} width={100} height={100} />
-                                    <Box
-                                        flex={1}
-                                    >
-                                        <Text fontSize='xl' fontWeight='semibold' color='#01005C' marginBottom={15}>{item.name}</Text>
-                                        <Text fontSize='sm' fontWeight='semibold' color={item.statusColor}>{item.statusMessage}</Text>
-                                    </Box>
-                                    <Ionicons onPress={() => navigation.navigate('Product details', { product: item })} name='chevron-forward' size={28} />
-                                </Box>
-                            ))
-                        }
-                    </ScrollView>
-                </Box>
-            </Flex>
+                <ScrollView>
+                    {
+                        prodData.map((item, index) => (
+                            <View
+                                key={index} // Use a unique key for each item
+                                style={{
+                                    flexDirection: 'row',
+                                    justifyContent: 'space-between',
+                                    alignItems: 'center',
+                                    paddingBottom: 15,
+                                }}
+                            >
+                                <Image source={item.thumbnail} borderRadius={10} width={100} />
+                                <View>
+                                    <Text fontSize='xl' fontWeight='semibold' color='#01005C'>{item.name}</Text>
+                                    <Text fontSize='small' fontWeight='semibold' color={item.statusColor}>{item.statusMessage}</Text>
+                                </View>
+                                <Ionicons name='chevron-forward' size={28} />
+                            </View>
+                        ))
+                    }
+                </ScrollView>
+            </Stack>
         </Animated.View>
     );
 };

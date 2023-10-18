@@ -2,31 +2,126 @@ import { Avatar, Box, Flex, Heading, Image, Input, ScrollView, Stack, Text } fro
 import React from "react";
 import { StyleSheet, Animated, TouchableOpacity } from "react-native";
 import Prod1 from '../../assets/images/prod1.png';
+import { store } from "../../state/store";
 
 const notifications = [
     {
         thumbnail: Prod1,
         title: 'Nikon D7000',
+        name: 'Nikon D7000',
         description: 'Đã xác nhận cho thuê. mã số giao dịch: ABCD12345678',
-        isViewed: false
+        isViewed: false,
+        receiver: 'Nguyen Van A',
+        sender: 'Kid',
+        messages: [
+            {
+                sender: 'A',
+                timestamp: '',
+                content: 'Cho mình hỏi về em D7000 với.'
+            },
+            {
+                sender: 'K',
+                timestamp: '',
+                content: 'Con đó tin chuẩn em nhé'
+            },
+            {
+                sender: 'A',
+                timestamp: '',
+                content: 'Vậy khi nào máy đó thuê được ạ?'
+            },
+            {
+                sender: 'K',
+                timestamp: '',
+                content: 'Con máy đó khoảng tuần sau là free đó em, có thông tin gì thêm không?'
+            },
+            {
+                sender: 'A',
+                timestamp: '',
+                content: 'Cho mình hỏi về em D7000 với.'
+            }
+        ],
+        lastMessage: "Con máy đó khoảng tuần sau là có đúng không bạn"
     },
     {
         thumbnail: Prod1,
         title: 'Nikon D7000',
+        name: 'Nikon D7000',
         description: 'Đã xác nhận cho thuê. mã số giao dịch: ABCD12345678',
-        isViewed: false
+        isViewed: false,
+        receiver: 'Nguyen Van A',
+        sender: 'Kid',
+        messages: [
+            {
+                sender: 'A',
+                timestamp: '',
+                content: 'Cho mình hỏi về em D7000 với.'
+            },
+            {
+                sender: 'K',
+                timestamp: '',
+                content: 'Con đó tin chuẩn em nhé'
+            },
+            {
+                sender: 'A',
+                timestamp: '',
+                content: 'Vậy khi nào máy đó thuê được ạ?'
+            },
+            {
+                sender: 'K',
+                timestamp: '',
+                content: 'Con máy đó khoảng tuần sau là free đó em, có thông tin gì thêm không?'
+            },
+            {
+                sender: 'A',
+                timestamp: '',
+                content: 'Cho mình hỏi về em D7000 với.'
+            }
+        ],
+        lastMessage: "Con máy đó khoảng tuần sau là có đúng không bạn"
     },
     {
         thumbnail: Prod1,
         title: 'Nikon D7000',
+        name: 'Nikon D7000',
         description: 'Đã xác nhận cho thuê. mã số giao dịch: ABCD12345678',
-        isViewed: false
+        isViewed: false,
+        receiver: 'Nguyen Van A',
+        sender: 'Kid',
+        messages: [
+            {
+                sender: 'A',
+                timestamp: '',
+                content: 'Cho mình hỏi về em D7000 với.'
+            },
+            {
+                sender: 'K',
+                timestamp: '',
+                content: 'Con đó tin chuẩn em nhé'
+            },
+            {
+                sender: 'A',
+                timestamp: '',
+                content: 'Vậy khi nào máy đó thuê được ạ?'
+            },
+            {
+                sender: 'K',
+                timestamp: '',
+                content: 'Con máy đó khoảng tuần sau là free đó em, có thông tin gì thêm không?'
+            },
+            {
+                sender: 'A',
+                timestamp: '',
+                content: 'Cho mình hỏi về em D7000 với.'
+            }
+        ],
+        lastMessage: "Con máy đó khoảng tuần sau là có đúng không bạn"
     },
 ]
 
 export const Notification = ({ navigation, route }) => {
 
     const fadeAnim = React.useRef(new Animated.Value(0)).current;
+    const role = store.useState((state)=> state.user.role)
 
     React.useEffect(() => {
         Animated.timing(fadeAnim, {
@@ -54,7 +149,7 @@ export const Notification = ({ navigation, route }) => {
                     alignItems='center'
                     paddingBottom={15}
                 >
-                    <Heading fontSize={36} fontWeight='bold' color='#22A4DD'>Thông báo</Heading>
+                    <Heading fontSize={36} fontWeight='bold' color={role == 'Lessor' ? '#22A4DD' : '#FF5484'}>Thông báo</Heading>
                     <Avatar bg="lightBlue.400" source={{
                         uri: "https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
                     }} size="md">
@@ -69,24 +164,23 @@ export const Notification = ({ navigation, route }) => {
                 >
                     <ScrollView>
                         {
-                            notifications.map((item) => (
-                                <TouchableOpacity onPress={() => navigation.navigate('ChatDetail', { chatDetail: item })}>
+                            notifications.map((item, index) => (
+                                <TouchableOpacity key={index} onPress={() => navigation.navigate(role == 'Lessor' ? 'Lessor View Product Details' :'Lessee view product detail', { product: item })}>
                                     <Flex
                                         flexDirection='row'
-                                        columnGap={15}
+                                        columnGap='15px'
                                         marginBottom='10px'
                                         backgroundColor='#FFF'
-                                        borderRadius={15}
-                                        paddingX={5}
                                         paddingY={5}
                                     >
-                                        <Image source={item.thumbnail} width='80px' height='80px' borderRadius={15}/>
+                                        <Image alt='thumbnail' source={item.thumbnail} width='140px' height='140px' borderRadius={15} />
 
                                         <Stack
                                             flex={1}
+                                            marginLeft={15}
                                         >
-                                            <Text fontSize={16} fontWeight='semibold'>{item.title}</Text>
-                                            <Text color="gray.500" numberOfLines={2} ellipsizeMode='tail' fontSize={14} fontWeight='semibold'>{item.description}</Text>
+                                            <Text fontSize='xl' fontWeight='semibold'>{item.title}</Text>
+                                            <Text fontSize='sm' color="gray.500" numberOfLines={2} ellipsizeMode='tail' fontWeight='semibold'>{item.description}</Text>
                                         </Stack>
                                     </Flex>
                                 </TouchableOpacity>
