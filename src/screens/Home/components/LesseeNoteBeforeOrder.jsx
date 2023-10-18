@@ -41,7 +41,7 @@ export const LesseeNoteBeforeOrder = ({ navigation }) => {
                     >
                         <Flex
                             flexDirection='row'
-                            columnGap={15}
+                            style={{columnGap: 15}}
                             width='100%'
                         >
                             <Box marginTop='5px'>
@@ -57,7 +57,7 @@ export const LesseeNoteBeforeOrder = ({ navigation }) => {
 
                         <Flex
                             flexDirection='row'
-                            columnGap={15}
+                            style={{columnGap: 15}}
                             marginBottom={15}
                         >
                             <Stack marginTop='5px'>
@@ -73,7 +73,7 @@ export const LesseeNoteBeforeOrder = ({ navigation }) => {
 
                         <Flex
                             flexDirection='row'
-                            columnGap={15}
+                            style={{columnGap: 15}}
                             marginBottom={15}
                         >
                             <Stack marginTop='5px'>

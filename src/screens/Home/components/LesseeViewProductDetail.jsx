@@ -56,14 +56,14 @@ export const LesseeViewProductDetail = ({ navigation, route }) => {
                     >
                         <Flex
                             flexDirection='row'
-                            columnGap={15}
+                            style={{columnGap: 15}}
                             alignItems='flex-start'
                             width='100%'
                         >
                             <Image alt="image" borderRadius={10} source={Prod1} height={140} width={140} />
                             <Flex flex={1} flexDirection='column' rowGap={7.5}>
                                 <Text fontSize={16} fontWeight='semibold' textAlign='center'>Thông tin người thuê</Text>
-                                <Flex paddingX={2} paddingY={1} flexDirection='row' columnGap={15}>
+                                <Flex paddingX={2} paddingY={1} flexDirection='row' style={{columnGap: 15}}>
                                     <Avatar bg="cyan.500" width={35} height={35} source={{
                                         uri: "https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
                                     }} />
@@ -72,7 +72,7 @@ export const LesseeViewProductDetail = ({ navigation, route }) => {
                                         <Text fontSize={14} fontWeight='semibold' color='gray.500'>SE17000</Text>
                                     </Stack>
                                 </Flex>
-                                <Flex paddingX={2} paddingY={1} width='100%' borderRadius={10} backgroundColor='gray.200' flexDirection='row' columnGap={15} alignItems='center'>
+                                <Flex paddingX={2} paddingY={1} width='100%' borderRadius={10} backgroundColor='gray.200' flexDirection='row' style={{columnGap: 15}} alignItems='center'>
                                     <Flex width={35} height={35}>
                                         <Ionicons name='heart-outline' size={32} />
                                     </Flex>
@@ -95,7 +95,7 @@ export const LesseeViewProductDetail = ({ navigation, route }) => {
                             <Flex
                                 flexDirection='row'
                                 flexWrap='wrap'
-                                columnGap={15}
+                                style={{columnGap: 15}}
                                 rowGap={15}
                                 marginBottom={15}
                             >
@@ -118,7 +118,7 @@ export const LesseeViewProductDetail = ({ navigation, route }) => {
                                 >
                                     <Flex
                                         flexDirection='row'
-                                        columnGap={15}
+                                        style={{columnGap: 15}}
                                     >
                                         <Avatar />
                                         <Stack>
@@ -153,7 +153,7 @@ export const LesseeViewProductDetail = ({ navigation, route }) => {
                                 >
                                     <Flex
                                         flexDirection='row'
-                                        columnGap={15}
+                                        style={{columnGap: 15}}
                                     >
                                         <Avatar />
                                         <Stack>

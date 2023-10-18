@@ -168,7 +168,7 @@ export const Notification = ({ navigation, route }) => {
                                 <TouchableOpacity key={index} onPress={() => navigation.navigate(role == 'Lessor' ? 'Lessor View Product Details' :'Lessee view product detail', { product: item })}>
                                     <Flex
                                         flexDirection='row'
-                                        columnGap='15px'
+                                        style={{columnGap: 15}}
                                         marginBottom='10px'
                                         backgroundColor='#FFF'
                                         paddingY={5}

@@ -97,7 +97,7 @@ export const SearchRequest = ({ navigation }) => {
                                 >
                                     <Text textAlign='left' numberOfLines={1} ellipsizeMode='tail' fontSize={16} fontWeight='semibold' color='#01005C'>{item.title}</Text>
                                     <Text textAlign='left' fontSize={14} fontWeight='semibold' >{item.user}</Text>
-                                    <Flex flexDirection='row' columnGap={15}>
+                                    <Flex flexDirection='row' style={{columnGap: 15}}>
                                         <Ionicons name="heart-outline" size={18} />
                                         <Text textAlign='left' fontSize={14} fontWeight='semibold' >{item.reactions}</Text>
                                     </Flex>

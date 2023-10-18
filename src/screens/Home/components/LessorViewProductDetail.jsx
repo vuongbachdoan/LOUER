@@ -52,7 +52,7 @@ export const LessorViewProductDetail = ({ navigation, route }) => {
                     >
                         <Flex
                             flexDirection='row'
-                            columnGap={15}
+                            style={{columnGap: 15}}
                             justifyContent='center'
                             width='100%'
                         >
@@ -90,7 +90,7 @@ export const LessorViewProductDetail = ({ navigation, route }) => {
                                         <Text textAlign='left' numberOfLines={1} ellipsizeMode='tail' fontSize={16} fontWeight='semibold' color='#01005C'>Người Đẹp Trai</Text>
                                         <Text>MSSV: SE170000</Text>
                                     </Flex>
-                                    <Flex paddingX={2} paddingY={1} width='100%' borderRadius={10} backgroundColor='gray.200' flexDirection='row' columnGap={15} alignItems='center'>
+                                    <Flex paddingX={2} paddingY={1} width='100%' borderRadius={10} backgroundColor='gray.200' flexDirection='row' style={{columnGap: 15}} alignItems='center'>
                                         <Flex width={35} height={35}>
                                             <Ionicons name='heart-outline' size={32} />
                                         </Flex>

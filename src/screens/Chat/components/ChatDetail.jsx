@@ -65,7 +65,7 @@ export const ChatDetail = ({ navigation, route }) => {
                     <Flex
                         flexDirection='row'
                         alignItems='center'
-                        columnGap={15}
+                        style={{columnGap: 15}}
                     >
                         <Flex><Ionicons name="chevron-back" size={22} onPress={() => navigation.goBack()}/></Flex>
                         <Text fontSize={22} fontWeight='semibold'>{chatDetail.receiver}</Text>

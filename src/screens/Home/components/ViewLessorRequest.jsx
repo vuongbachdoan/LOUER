@@ -52,7 +52,7 @@ export const ViewLessorRequest = ({ navigation, route }) => {
                             <Text fontWeight='semibold' fontSize={18} color='#0066FF'>Người Đẹp Trai</Text>
                             <Flex
                                 flexDirection='row'
-                                columnGap={15}
+                                style={{columnGap: 15}}
                             >
                                 <Ionicons name="heart-outline" size={22} />
                                 <Stack>
