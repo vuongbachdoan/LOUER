@@ -11,7 +11,7 @@ import { useEffect } from "react";
 export const ChatDetail = ({ navigation, route }) => {
 
     const fadeAnim = React.useRef(new Animated.Value(0)).current;
-    const userMode = store.useState((state) => state.user.userMode)
+    const role = store.useState((state) => state.user.role)
 
     React.useEffect(() => {
         Animated.timing(fadeAnim, {
@@ -38,12 +38,12 @@ export const ChatDetail = ({ navigation, route }) => {
     }
 
     useEffect(() => {
-        if(userMode == 'Lessor') {
+        if(user.userMode) {
             setCurrentUser('A')
         } else {
             setCurrentUser('K')
         }
-    }, [userMode])
+    }, [role])
 
     return (
         <Animated.View style={{ flex: 1, opacity: fadeAnim }}>
@@ -65,7 +65,7 @@ export const ChatDetail = ({ navigation, route }) => {
                     <Flex
                         flexDirection='row'
                         alignItems='center'
-                        style={{columnGap: 15}}
+                        columnGap={15}
                     >
                         <Flex><Ionicons name="chevron-back" size={22} onPress={() => navigation.goBack()}/></Flex>
                         <Text fontSize={22} fontWeight='semibold'>{chatDetail.receiver}</Text>
@@ -112,7 +112,7 @@ export const ChatDetail = ({ navigation, route }) => {
                                         alignItems='flex-end'
                                     >
                                         <Text>{productPreview.price}k/ngày</Text>
-                                        <GradientButton onPress={() => navigation.navigate('Lessor View Product Details', {product: productPreview})} prefixIcon={<Ionicons name="chevron-forward" color='white' size={18} />} colors={userMode == 'Lessor' ? ['#269DDB', '#2A46B4'] : ['#9F3553', '#E98EA6']} width={35} height={35} radius={5} paddingBottom={0} paddingTop={0} paddingLeft={0} paddingRight={0} />
+                                        <GradientButton onPress={() => navigation.navigate('Lessor View Product Details', {product: productPreview})} prefixIcon={<Ionicons name="chevron-forward" color='white' size={18} />} colors={role == 'Lessor' ? ['#269DDB', '#2A46B4'] : ['#9F3553', '#E98EA6']} width={35} height={35} radius={5} paddingBottom={0} paddingTop={0} paddingLeft={0} paddingRight={0} />
                                     </Flex>
                                 </Flex>
                             </View>
@@ -146,7 +146,7 @@ export const ChatDetail = ({ navigation, route }) => {
                                     >
                                         <Box
                                             width='80%'
-                                            backgroundColor={userMode == 'Lessor' ? '#4196D2' : '#FF5484'}
+                                            backgroundColor={role == 'Lessor' ? '#4196D2' : '#FF5484'}
                                             paddingX='15px'
                                             paddingY='15px'
                                             borderTopRadius={20}

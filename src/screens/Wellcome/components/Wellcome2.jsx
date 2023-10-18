@@ -22,6 +22,9 @@ export const Wellcome2 = ({ navigation }) => {
         setChecked(!isChecked);
     }
 
+
+    
+
     return (
         <Animated.View style={{ flex: 1, opacity: fadeAnim }}>
             <Flex

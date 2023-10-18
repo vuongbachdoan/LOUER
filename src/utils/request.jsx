@@ -10,6 +10,10 @@ const requestZ = axios.create({
     }
 });
 
+export const getBaseLink = async( ) => {
+    return requestZ.baseURL; 
+};
+
 
 export const get = async(path, options ={} ) => {
     const res = await requestZ.get(path, options);

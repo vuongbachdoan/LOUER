@@ -50,27 +50,11 @@ const prodData = [
     }
 ]
 
-export const HomeScreen = ({ navigation }) => {
+export const LessorHome = ({ navigation }) => {
 
-    const fadeAnim = React.useRef(new Animated.Value(0)).current;
-    const userId = '1';
+    const fadeAnim = React.useRef(new Animated.Value(500)).current;
+   
     const user = store.useState((state) => state.user);
-
-
-    React.useEffect(() => {
-        UserService.getById(userId).then((data) => {
-            console.log(data);
-        });
-
-        UserService.getUser().then((user) => {
-            store.update((state) => {
-                state.user = user;
-            });
-        });
-    }, [navigation]);
-
-    
-    
 
 
     React.useEffect(() => {
@@ -105,11 +89,10 @@ export const HomeScreen = ({ navigation }) => {
                 >
                     <Box>
                         <Heading fontSize={36} fontWeight='bold'>Xin Chào</Heading>
-                        <Heading fontSize={36} fontWeight='bold' color='#22A4DD'>Người đẹp trai</Heading>
+                        <Heading fontSize={36} fontWeight='bold' color='#22A4DD'>{user.firstName} {user.middleName} {user.lastName}</Heading>
                     </Box>
-                    <Avatar bg="lightBlue.400" source={{
-                        uri: "https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
-                    }} size="md">
+                    <Avatar bg="lightBlue.400" source={{uri: user.avaLink}} size="md"
+                        onPress={() => navigation.navigate('Profile')}>
                         Avt
                         <Avatar.Badge bg="green.500" />
                     </Avatar>

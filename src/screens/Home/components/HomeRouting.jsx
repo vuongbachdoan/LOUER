@@ -6,7 +6,7 @@ import Prod1 from '../../../assets/images/prod1.png'
 import Prod2 from '../../../assets/images/prod2.png'
 import Prod3 from '../../../assets/images/prod3.png'
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { HomeScreen } from "./HomeScreen";
+import { LessorHome as LessorHome } from "./LessorHome";
 import { Activities } from "./Activities";
 import { History } from "./History";
 import { TouchableOpacity } from "react-native";
@@ -22,6 +22,9 @@ import { SignoutConfirm } from "./SignoutConfirm";
 import { store } from "../../../state/store";
 import { LesseeHome } from "./LesseeHome";
 import { LessorCreateRequest } from "./LessorCreateRequest";
+
+
+import * as UserService from "../../../services/User";
 
 const prodData = [
     {
@@ -65,6 +68,28 @@ const HomeTabs = createBottomTabNavigator();
 
 export const HomeRouting = ({ navigation }) => {
     const userMode = store.useState((state) => state.user.userMode)
+
+    const userId = '1';
+    const user = store.useState((state) => state.user);
+
+
+    React.useEffect(() => {
+        UserService.getById(userId).then((data) => {
+
+            store.update((state) => {
+                state.user = data;
+                state.user.userId = userId;
+                // console.log('STATE User: ',state.user);
+            })
+        });
+        UserService.getAvaLinkById(userId).then((ava) => {
+            store.update((state) => {
+                state.user.avaLink = ava;
+            });
+        });
+        
+    }, [navigation]);
+
     return (
         <HomeTabs.Navigator
             sceneContainerStyle={{ height: 60, backgroundColor: '#FAFAFA' }}
@@ -113,7 +138,7 @@ export const HomeRouting = ({ navigation }) => {
                 },
             })}
         >
-            <HomeTabs.Screen name="HomeScreen" component={userMode == 'Lessor' ? HomeScreen : LesseeHome} options={{ tabBarLabel: '', tabBarLabelStyle: { fontWeight: 'bold', bottom: 5 } }} />
+            <HomeTabs.Screen name="HomeScreen" component={userMode ? LessorHome : LesseeHome} options={{ tabBarLabel: '', tabBarLabelStyle: { fontWeight: 'bold', bottom: 5 } }} />
             <HomeTabs.Screen name="Activities" component={Activities} options={{ tabBarLabel: '', tabBarLabelStyle: { fontWeight: 'bold', bottom: 5 } }} />
             <HomeTabs.Screen name="History" component={History} options={{ tabBarLabel: '', tabBarLabelStyle: { fontWeight: 'bold', bottom: 5 } }} />
             <HomeTabs.Screen name="Yêu cầu thuê" component={SearchRequest} />

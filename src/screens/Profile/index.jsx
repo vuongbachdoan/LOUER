@@ -6,10 +6,11 @@ import { Ionicons } from "@expo/vector-icons";
 import { GradientButton } from "../../components/GradientButton";
 import { store } from "../../state/store";
 
-export const Profile = ({ navigation, route }) => {
+export const Profile = ({ navigation}) => {
 
     const fadeAnim = React.useRef(new Animated.Value(0)).current;
-    const currentuserMode = store.useState((state) => state.user.userMode);
+    const user = store.useState((state) => state.user);
+    const currentUserMode = store.useState((state) => state.user.userMode);
 
     React.useEffect(() => {
         Animated.timing(fadeAnim, {
@@ -35,21 +36,21 @@ export const Profile = ({ navigation, route }) => {
                     rowGap={15}
                     alignItems='center'
                 >
-                    <Image alt="user" source={AvatarUser} width={140} height={140} borderRadius={15} />
-                    <Text fontSize='2xl' fontWeight='semibold' color='#1B6BB5'>Nguyễn Văn A</Text>
-                    <Text fontSize='xl' marginBottom={15} fontWeight='semibold'>anvse170000@fpt.edu.vn</Text>
+                    <Image alt="user" source={user.avaLink} width={140} height={140} borderRadius={15} />
+                    <Text fontSize='2xl' fontWeight='semibold' color='#1B6BB5'>{user.firstName} {user.middleName} {user.lastName}</Text>
+                    <Text fontSize='xl' marginBottom={15} fontWeight='semibold'>{user.email}</Text>
 
                     <GradientButton
-                        colors={currentuserMode == 'Lessor' ? ['#2A4AB6', '#269DDB'] : ['#9F3553', '#E98EA6']}
+                        colors={currentUserMode ? ['#2A4AB6', '#269DDB'] : ['#9F3553', '#E98EA6']}
                         width={240}
                         onPress={() => navigation.navigate('ProfileInformation')}
                         text='Thông tin cá nhân' />
                     <GradientButton
-                        colors={currentuserMode == 'Lessor' ? ['#2A4AB6', '#269DDB'] : ['#9F3553', '#E98EA6']}
+                        colors={currentUserMode ? ['#2A4AB6', '#269DDB'] : ['#9F3553', '#E98EA6']}
                         width={240}
                         text='Đánh giá của tôi' />
                     <GradientButton
-                        colors={currentuserMode == 'Lessor' ? ['#2A4AB6', '#269DDB'] : ['#9F3553', '#E98EA6']}
+                        colors={currentUserMode  ? ['#2A4AB6', '#269DDB'] : ['#9F3553', '#E98EA6']}
                         width={240}
                         text='Đăng xuất'
                         onPress={() => navigation.navigate('SignoutConfirm')}

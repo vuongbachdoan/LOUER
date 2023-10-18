@@ -11,13 +11,16 @@ export const getById = async (userId) => {
     }
 };
 
-export const getImgById = async (userId) => {
+export const getAvaLinkById = async (userId) => {
     try {
-        const res = await request.get('images/users/',{
-            params: {
-                user_id: userId 
-            }
-        })
+        return request.getBaseLink() + `images/users/${userId}`;
+    } catch (error) {
+        outputError(error);
+    }
+};
+export const getAvaById = async (userId) => {
+    try {
+        const res = await request.get(`images/users/${userId}`)
         return res.data;
     } catch (error) {
         outputError(error);
@@ -27,7 +30,7 @@ export const getImgById = async (userId) => {
 export const getDataById = async (userId) => {
     try {
         const userRes = await getById(userId);
-        const imgRes = await getImgById(userId);
+        const imgRes = await getAvaLinkById(userId);
         return { user: userRes.data, img: imgRes };
     } catch (error) {
         outputError(error);
@@ -77,10 +80,20 @@ export const deleteImgById = async(userId,data) =>{
 export const updateById = async (userId, data) => {
     try {
         const res = await request.put(`/users/${userId}`, data)
+        return res.data;
     } catch (error) {
         outputError(error);
     }
    };
+export const updateModeById = async (userId, data) => {
+    try {
+        const res = await request.put(`/users/switchUserMode?userId=${userId}`, data)
+        return res.data;
+    } catch (error) {
+        outputError(error);
+    }
+   };
+
 
 
 

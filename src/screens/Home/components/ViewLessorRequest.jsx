@@ -6,6 +6,8 @@ import { useState } from "react";
 import { useLayoutEffect } from "react";
 import { Ionicons } from "@expo/vector-icons";
 
+import { store } from "../../../state/store";
+
 export const ViewLessorRequest = ({ navigation, route }) => {
 
     const fadeAnim = React.useRef(new Animated.Value(0)).current;

@@ -7,6 +7,14 @@ import Prod1 from '../../../assets/images/prod1.png'
 import Prod2 from '../../../assets/images/prod2.png'
 import Prod3 from '../../../assets/images/prod3.png'
 
+
+
+import { store } from "../../../state/store";
+import * as UserService from "../../../services/User";
+
+
+
+
 const prodData = [
     {
         name: 'Canon EOS 700D',
@@ -48,6 +56,26 @@ export const Dashboard = ({ navigation }) => {
 
     const fadeAnim = React.useRef(new Animated.Value(0)).current;
 
+    const userId = '1';
+    const user = store.useState((state) => state.user);
+
+
+    React.useEffect(() => {
+        UserService.getById(userId).then((data) => {
+            
+            store.update((state) => {
+                state.user = data;
+            })
+            
+        });
+        UserService.getAvaLinkById.then((avaLink) => {
+            store.update((state) => {
+                state.user.avaLink = avaLink;
+            });
+        });
+        console.log('User: ', user);
+    }, [navigation]);
+
     React.useEffect(() => {
         Animated.timing(fadeAnim, {
             toValue: 1,
@@ -78,7 +106,7 @@ export const Dashboard = ({ navigation }) => {
                 >
                     <Stack>
                         <Heading fontSize={36} fontWeight='bold'>Xin Chào</Heading>
-                        <Heading fontSize={36} fontWeight='bold' color='#22A4DD'>Người đẹp trai</Heading>
+                        <Heading fontSize={36} fontWeight='bold' color='#22A4DD'>{user.firstName} {user.middleName} {user.lastName}</Heading>
                     </Stack>
                     <Avatar bg="lightBlue.400" source={{
                         uri: "https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"

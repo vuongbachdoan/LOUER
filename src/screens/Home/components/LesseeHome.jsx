@@ -7,6 +7,13 @@ import Prod2 from '../../../assets/images/prod2.png'
 import Prod3 from '../../../assets/images/prod3.png'
 import { GradientButton } from "../../../components/GradientButton";
 
+
+
+import { store } from "../../../state/store";
+
+
+
+
 const items = [
     {
         prodName: 'Nikon D700',
@@ -32,7 +39,12 @@ const items = [
 
 export const LesseeHome = ({ navigation }) => {
 
+
     const fadeAnim = React.useRef(new Animated.Value(0)).current;
+    const user = store.useState((state) => state.user);
+
+
+
 
     React.useEffect(() => {
         Animated.timing(fadeAnim, {
@@ -62,11 +74,12 @@ export const LesseeHome = ({ navigation }) => {
                     >
                         <Box>
                             <Heading fontSize={36} fontWeight='bold'>Xin Chào</Heading>
-                            <Heading fontSize={36} fontWeight='bold' color='#FF5484'>Người đẹp trai</Heading>
+                            <Heading fontSize={36} fontWeight='bold' color='#FF5484'>{user.firstName} {user.middleName} {user.lastName}</Heading>
                         </Box>
-                        <Avatar bg="lightBlue.400" source={{
-                            uri: "https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
-                        }} size="md">
+                        <Avatar 
+                            bg="lightBlue.400" 
+                            source={{uri: user.avaLink}}
+                            size="md">
                             Avt
                             <Avatar.Badge bg="green.500" />
                         </Avatar>
