@@ -64,7 +64,7 @@ const prodData = [
 const HomeTabs = createBottomTabNavigator();
 
 export const HomeRouting = ({ navigation }) => {
-    const role = store.useState((state) => state.user.role)
+    const userMode = store.useState((state) => state.user.userMode)
     return (
         <HomeTabs.Navigator
             sceneContainerStyle={{ height: 60, backgroundColor: '#FAFAFA' }}
@@ -113,7 +113,7 @@ export const HomeRouting = ({ navigation }) => {
                 },
             })}
         >
-            <HomeTabs.Screen name="HomeScreen" component={role == 'Lessor' ? HomeScreen : LesseeHome} options={{ tabBarLabel: '', tabBarLabelStyle: { fontWeight: 'bold', bottom: 5 } }} />
+            <HomeTabs.Screen name="HomeScreen" component={userMode == 'Lessor' ? HomeScreen : LesseeHome} options={{ tabBarLabel: '', tabBarLabelStyle: { fontWeight: 'bold', bottom: 5 } }} />
             <HomeTabs.Screen name="Activities" component={Activities} options={{ tabBarLabel: '', tabBarLabelStyle: { fontWeight: 'bold', bottom: 5 } }} />
             <HomeTabs.Screen name="History" component={History} options={{ tabBarLabel: '', tabBarLabelStyle: { fontWeight: 'bold', bottom: 5 } }} />
             <HomeTabs.Screen name="Yêu cầu thuê" component={SearchRequest} />

@@ -13,7 +13,7 @@ import { LessorCreateRequest } from "./components/LessorCreateRequest";
 const Tab = createBottomTabNavigator();
 
 export const Home = ({ navigation }) => {
-    const role = store.useState((state) => state.user.role);
+    const userMode = store.useState((state) => state.user.userMode);
 
     return (
         <Tab.Navigator
@@ -59,7 +59,7 @@ export const Home = ({ navigation }) => {
             <Tab.Screen name="Home" component={HomeRouting} options={{ tabBarLabel: '', tabBarLabelStyle: { fontWeight: 'bold', bottom: 5 } }}/>
             <Tab.Screen name="Notification" component={Notification} options={{ tabBarLabel: '', tabBarLabelStyle: { fontWeight: 'bold', bottom: 5 } }} />
             {
-                role == 'Lessor' &&
+                userMode == 'Lessor' &&
                 <Tab.Screen name="LessorCreateRequest" component={LessorCreateRequest} options={{ tabBarLabel: '' }} />
             }
             <Tab.Screen name="Chat" component={Chat} options={{ tabBarLabel: '', tabBarLabelStyle: { fontWeight: 'bold', bottom: 5 } }} />

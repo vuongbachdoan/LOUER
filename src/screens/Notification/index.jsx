@@ -121,7 +121,7 @@ const notifications = [
 export const Notification = ({ navigation, route }) => {
 
     const fadeAnim = React.useRef(new Animated.Value(0)).current;
-    const role = store.useState((state)=> state.user.role)
+    const userMode = store.useState((state)=> state.user.userMode)
 
     React.useEffect(() => {
         Animated.timing(fadeAnim, {
@@ -149,7 +149,7 @@ export const Notification = ({ navigation, route }) => {
                     alignItems='center'
                     paddingBottom={15}
                 >
-                    <Heading fontSize={36} fontWeight='bold' color={role == 'Lessor' ? '#22A4DD' : '#FF5484'}>Thông báo</Heading>
+                    <Heading fontSize={36} fontWeight='bold' color={userMode == 'Lessor' ? '#22A4DD' : '#FF5484'}>Thông báo</Heading>
                     <Avatar bg="lightBlue.400" source={{
                         uri: "https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
                     }} size="md">
@@ -165,7 +165,7 @@ export const Notification = ({ navigation, route }) => {
                     <ScrollView>
                         {
                             notifications.map((item, index) => (
-                                <TouchableOpacity key={index} onPress={() => navigation.navigate(role == 'Lessor' ? 'Lessor View Product Details' :'Lessee view product detail', { product: item })}>
+                                <TouchableOpacity key={index} onPress={() => navigation.navigate(userMode == 'Lessor' ? 'Lessor View Product Details' :'Lessee view product detail', { product: item })}>
                                     <Flex
                                         flexDirection='row'
                                         style={{columnGap: 15}}

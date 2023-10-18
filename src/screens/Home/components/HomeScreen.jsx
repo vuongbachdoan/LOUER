@@ -7,6 +7,11 @@ import Prod1 from '../../../assets/images/prod1.png'
 import Prod2 from '../../../assets/images/prod2.png'
 import Prod3 from '../../../assets/images/prod3.png'
 
+
+
+import { store } from "../../../state/store";
+import * as UserService from "../../../services/User";
+
 const prodData = [
     {
         name: 'Canon EOS 700D',
@@ -48,6 +53,25 @@ const prodData = [
 export const HomeScreen = ({ navigation }) => {
 
     const fadeAnim = React.useRef(new Animated.Value(0)).current;
+    const userId = '1';
+    const user = store.useState((state) => state.user);
+
+
+    React.useEffect(() => {
+        UserService.getById(userId).then((data) => {
+            console.log(data);
+        });
+
+        UserService.getUser().then((user) => {
+            store.update((state) => {
+                state.user = user;
+            });
+        });
+    }, [navigation]);
+
+    
+    
+
 
     React.useEffect(() => {
         Animated.timing(fadeAnim, {

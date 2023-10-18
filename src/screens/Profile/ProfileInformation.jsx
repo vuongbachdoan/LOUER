@@ -12,7 +12,7 @@ import { useEffect } from "react";
 export const ProfileInformation = ({ navigation, route }) => {
 
     const fadeAnim = React.useRef(new Animated.Value(0)).current;
-    const currentRole = store.useState((state) => state.user.role);
+    const currentuserMode = store.useState((state) => state.user.userMode);
 
     React.useEffect(() => {
         Animated.timing(fadeAnim, {
@@ -29,9 +29,9 @@ export const ProfileInformation = ({ navigation, route }) => {
         }, 3000)
     }, [updateStatus])
 
-    const handleChangeRole = (role) => {
+    const handleChangeuserMode = (userMode) => {
         store.update((state) => {
-            state.user.role = role;
+            state.user.userMode = userMode;
         });
     }
 
@@ -100,10 +100,10 @@ export const ProfileInformation = ({ navigation, route }) => {
 
                     <Text fontWeight='semibold'>Thay đổi thông tin cá nhân bên dưới</Text>
                     <Select
-                        selectedValue={currentRole}
+                        selectedValue={currentuserMode}
                         height={45}
                         width={120}
-                        accessibilityLabel="Select Role"
+                        accessibilityLabel="Select userMode"
                         placeholder="Lessor"
                         borderRadius={15}
                         fontSize={14}
@@ -111,7 +111,7 @@ export const ProfileInformation = ({ navigation, route }) => {
                         _selectedItem={{
                             bg: 'gray.100',
                             endIcon: <CheckIcon size="5" />
-                        }} onValueChange={itemValue => handleChangeRole(itemValue)}
+                        }} onValueChange={itemValue => handleChangeuserMode(itemValue)}
                     >
                         <Select.Item label="Lessee" value="Lessee" />
                         <Select.Item label="Lessor" value="Lessor" />
@@ -134,7 +134,7 @@ export const ProfileInformation = ({ navigation, route }) => {
                                 <Text>Cập nhật thông tin thành công</Text>
                             </Badge>
                         }
-                        <GradientButton onPress={() => setUpdateStatus(true)} text='Cập nhật thông tin' colors={currentRole == 'Lessor' ? ['#2A4AB6', '#269DDB'] : ['#9F3553', '#E98EA6']} height={55} radius={15} />
+                        <GradientButton onPress={() => setUpdateStatus(true)} text='Cập nhật thông tin' colors={currentuserMode == 'Lessor' ? ['#2A4AB6', '#269DDB'] : ['#9F3553', '#E98EA6']} height={55} radius={15} />
                     </Flex>
                 </Box>
             </Box>
