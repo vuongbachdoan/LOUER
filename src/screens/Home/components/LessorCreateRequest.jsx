@@ -1,15 +1,21 @@
 import { Box, Button, Checkbox, Flex, Image, Input, Stack, Text } from "native-base";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, Animated, View, Platform } from "react-native";
 import { useLayoutEffect } from "react";
 import { Ionicons } from "@expo/vector-icons";
-import * as ImagePicker from 'react-native-image-picker';
 import { GradientButton } from "../../../components/GradientButton";
 
-export const LessorCreateRequest = ({ navigation, route }) => {
+// import * as ImagePicker from 'react-native-image-picker';
+import * as ImagePicker from 'expo-image-picker';
+
+
+
+
+export const LessorCreateRequest = ({ navigation }) => {
+
+    const uploadLimit = 8;
 
     const fadeAnim = React.useRef(new Animated.Value(0)).current;
-
     React.useEffect(() => {
         Animated.timing(fadeAnim, {
             toValue: 1,
@@ -17,6 +23,30 @@ export const LessorCreateRequest = ({ navigation, route }) => {
             useNativeDriver: true,
         }).start();
     }, [fadeAnim]);
+
+    const [name, setName] = React.useState('');
+    const [description, setDes] = React.useState('');
+    const [photo, setPhoto] = React.useState('');
+
+    const handleNameChange = (text) => {
+        setName(text);
+    };
+
+    const handleDesChange = (text) => {
+        setDes(text);
+    };
+
+    const handlePhotoChange = (response) => {
+        if (response.didCancel) {
+            console.log('User cancelled image picker');
+        } else if (response.error) {
+            console.log('ImagePicker Error: ', response.error);
+        } else {
+            const source = { uri: response.uri };
+            setPhoto(source);
+            product.photos.push(source);
+        }
+    };
 
 
     const handleImageUpload = () => {
@@ -39,6 +69,24 @@ export const LessorCreateRequest = ({ navigation, route }) => {
         });
     };
 
+    const pickImage = async () => {
+        // No permissions request is necessary for launching the image library
+        let result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.All,
+          allowsEditing: true,
+          allowsMultipleSelection: true,
+          selectionLimit: uploadLimit,
+          quality: 1,
+          
+        });
+    
+        console.log(result);
+    
+        if (!result.canceled) {
+          setImage(result.assets[0].uri);
+        }
+      };
+
 
     return (
         <Animated.View style={{ flex: 1, opacity: fadeAnim }}>
@@ -58,7 +106,8 @@ export const LessorCreateRequest = ({ navigation, route }) => {
                     paddingTop={30}
                 >
                     <Flex><Ionicons name="chevron-back" size={22} onPress={() => navigation.goBack()} /></Flex>
-                    <Text textAlign='center' flex={1} fontSize={22} fontWeight='semibold'>Thêm sản phẩm cho thuê</Text>
+                    <Text textAlign='center' flex={1} fontSize={22} fontWeight='semibold'
+                        padding={5}>Thêm sản phẩm cho thuê</Text>
                 </Flex>
 
                 <Box
@@ -70,12 +119,11 @@ export const LessorCreateRequest = ({ navigation, route }) => {
                             rowGap: 15
                         }}
                     >
-                        <Text fontWeight='semibold'>Tên sản phẩm</Text>
-                        <Input placeholder="Cần camera" borderRadius={10} />
+                        <Text fontWeight='semibold' paddingTop={4}>Tên sản phẩm</Text>
+                        <Input placeholder="Vd: Cần camera..." borderRadius={10} onChangeText={handleNameChange} />
                         <Text fontWeight='semibold'>Mô tả sản phẩm</Text>
-                        <Input placeholder="Nikon D700" borderRadius={10} />
+                        <Input placeholder="Vd: Hôm nay đẹp trời tự dưng cái..." borderRadius={10} onChangeText={handleDesChange} />
                         <Text fontWeight='semibold'>+ Hình ảnh (bắt buộc)/video</Text>
-
                         <Flex
                             flexDirection='row'
                             justifyContent='center'
@@ -89,7 +137,11 @@ export const LessorCreateRequest = ({ navigation, route }) => {
                                 columnGap: 15
                             }}
                         >
-                            <GradientButton width={45} height={45} paddingBottom={0} paddingLeft={0} paddingRight={0} paddingTop={0} prefixIcon={<Ionicons name="camera-outline" size={22} color='white' />} colors={['#2A4AB6', '#269DDB']} />
+                            <GradientButton width={45} height={45} paddingBottom={0} paddingLeft={0} paddingRight={0} paddingTop={0} 
+                                prefixIcon={<Ionicons name="camera-outline" size={22} color='white' />} colors={['#2A4AB6', '#269DDB']} 
+                                onPress={pickImage}
+
+                                />
                             <Text>Tải lên ảnh/video</Text>
                         </Flex>
 
@@ -100,8 +152,9 @@ export const LessorCreateRequest = ({ navigation, route }) => {
                             }}
                             alignItems='center'
                         >
-                            <Ionicons color='orange' name="information-circle-outline" size={20} />
-                            <Text>Hình ảnh phải xác thực được tình trạng của sản phẩm</Text>
+                            <Ionicons color='orange' name="information-circle-outline" size={30} />
+                            <Text>Hình ảnh phải xác thực được tình trạng của sản phẩm.{'\n'}</Text>
+                            <Text fontWeight='semibold'>Tối đa {uploadLimit} ảnh/video.</Text>
                         </Flex>
 
                         <Text fontWeight='semibold'>Giá thuê</Text>

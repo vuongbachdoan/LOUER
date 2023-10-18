@@ -17,7 +17,6 @@ export const ProfileInformation = ({ navigation }) => {
     const fadeAnim = React.useRef(new Animated.Value(0)).current;
     const user = store.useState((state) => state.user);
     const currentUserMode = store.useState((state) => state.user.userMode);
-    const changedUserMode = store.useState((state) => state.user.userMode);
 
     React.useEffect(() => {
         Animated.timing(fadeAnim, {
@@ -36,6 +35,17 @@ export const ProfileInformation = ({ navigation }) => {
         }, 3000)
     }, [updateStatus])
 
+    const handleChangeuserMode = (userMode) => {
+
+
+        store.update((state) => {
+            state.user.userMode = userMode;
+        });
+
+        userService.updateModeById(userMode);
+
+
+    }
 
     return (
         <Animated.View style={{ flex: 1, opacity: fadeAnim }}>
@@ -102,7 +112,7 @@ export const ProfileInformation = ({ navigation }) => {
                         height={45}
                         width={120}
                         accessibilityLabel="Select userMode"
-                        placeholder={user.userMode?'Lessee':'Lessor'}
+                        placeholder={user.userMode?'Lessor':'Lessee'}
                         borderRadius={15}
                         fontSize={14}
                         fontWeight={700}
@@ -111,8 +121,8 @@ export const ProfileInformation = ({ navigation }) => {
                             endIcon: <CheckIcon size="5" />
                         }} onValueChange={itemValue => handleChangeuserMode(itemValue)}
                     >
-                        <Select.Item label="Lessee" value="Lessee" />
-                        <Select.Item label="Lessor" value="Lessor" />
+                        <Select.Item label="Lessee" value="false" />
+                        <Select.Item label="Lessor" value="true" />
                     </Select>
                     <Flex
                         marginTop={15}

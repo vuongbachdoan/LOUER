@@ -3,6 +3,8 @@ import React from "react";
 import { StyleSheet, Animated, TouchableOpacity } from "react-native";
 import Prod1 from '../../assets/images/prod1.png';
 import { store } from "../../state/store";
+import { getMainColor } from "../../state/color";
+
 
 const notifications = [
     {
@@ -121,7 +123,7 @@ const notifications = [
 export const Notification = ({ navigation, route }) => {
 
     const fadeAnim = React.useRef(new Animated.Value(0)).current;
-    const userMode = store.useState((state)=> state.user.userMode)
+    const user = store.useState((state)=> state.user);
 
     React.useEffect(() => {
         Animated.timing(fadeAnim, {
@@ -149,9 +151,9 @@ export const Notification = ({ navigation, route }) => {
                     alignItems='center'
                     paddingBottom={15}
                 >
-                    <Heading fontSize={36} fontWeight='bold' color={user.userMode ? '#22A4DD' : '#FF5484'}>Thông báo</Heading>
+                    <Heading fontSize={36} fontWeight='bold' color={getMainColor(user.userMode)}>Thông báo</Heading>
                     <Avatar bg="lightBlue.400" source={{
-                        uri: "https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
+                        uri: user.avaLink
                     }} size="md">
                         Avt
                         <Avatar.Badge bg="green.500" />
@@ -165,7 +167,7 @@ export const Notification = ({ navigation, route }) => {
                     <ScrollView>
                         {
                             notifications.map((item, index) => (
-                                <TouchableOpacity key={index} onPress={() => navigation.navigate(user.user.userMode ? 'Lessor View Product Details' :'Lessee view product detail', { product: item })}>
+                                <TouchableOpacity key={index} onPress={() => navigation.navigate(user.userMode ? 'Lessor View Product Details' :'Lessee view product detail', { product: item })}>
                                     <Flex
                                         flexDirection='row'
                                         style={{columnGap: 15}}

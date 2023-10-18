@@ -67,19 +67,15 @@ const prodData = [
 const HomeTabs = createBottomTabNavigator();
 
 export const HomeRouting = ({ navigation }) => {
-    const userMode = store.useState((state) => state.user.userMode)
-
     const userId = '1';
     const user = store.useState((state) => state.user);
 
 
     React.useEffect(() => {
         UserService.getById(userId).then((data) => {
-
             store.update((state) => {
                 state.user = data;
                 state.user.userId = userId;
-                // console.log('STATE User: ',state.user);
             })
         });
         UserService.getAvaLinkById(userId).then((ava) => {
@@ -138,7 +134,7 @@ export const HomeRouting = ({ navigation }) => {
                 },
             })}
         >
-            <HomeTabs.Screen name="HomeScreen" component={userMode ? LessorHome : LesseeHome} options={{ tabBarLabel: '', tabBarLabelStyle: { fontWeight: 'bold', bottom: 5 } }} />
+            <HomeTabs.Screen name="HomeScreen" component={user.userMode ? LessorHome : LesseeHome} options={{ tabBarLabel: '', tabBarLabelStyle: { fontWeight: 'bold', bottom: 5 } }} />
             <HomeTabs.Screen name="Activities" component={Activities} options={{ tabBarLabel: '', tabBarLabelStyle: { fontWeight: 'bold', bottom: 5 } }} />
             <HomeTabs.Screen name="History" component={History} options={{ tabBarLabel: '', tabBarLabelStyle: { fontWeight: 'bold', bottom: 5 } }} />
             <HomeTabs.Screen name="Yêu cầu thuê" component={SearchRequest} />

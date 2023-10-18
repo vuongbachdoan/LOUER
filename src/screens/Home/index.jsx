@@ -8,13 +8,13 @@ import { Chat } from "../Chat";
 import { Notification } from "../Notification";
 import { Profile } from "../Profile";
 import { store } from "../../state/store";
+import { getGradientColor, getMainColor } from "../../state/color";
 import { LessorCreateRequest } from "./components/LessorCreateRequest";
 
 const Tab = createBottomTabNavigator();
 
 export const Home = ({ navigation }) => {
     const user = store.useState((state) => state.user);
-    const userMode = store.useState((state) => state.user.userMode);
 
     return (
         <Tab.Navigator

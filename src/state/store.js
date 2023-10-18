@@ -21,7 +21,7 @@ export const store = new Store ({
         bankAccount: '',
         
         userStatus: 'Lessee',
-        userMode: '',
+        userMode: false,
         
         acceptedTnC: false,
     },
@@ -45,4 +45,5 @@ export const store = new Store ({
         isDarkMode: false,
         pushNotifications: false,
     },
+    
 });

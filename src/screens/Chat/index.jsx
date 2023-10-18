@@ -1,7 +1,6 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { ChatList } from "./components/ChatList";
-import { ChatDetail } from "./components/ChatDetail";
 
 const Tab = createBottomTabNavigator();
 

@@ -3,11 +3,14 @@ import React from "react";
 import { StyleSheet, Animated, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { store } from "../../../state/store";
+import { getMainColor } from "../../../state/color";
+
 
 const messages = [
     {
         receiver: 'Nguyen Van A',
         sender: 'Kid',
+        userMode: false,
         messages: [
             {
                 sender: 'A',
@@ -55,7 +58,6 @@ export const ChatList = ({ navigation, route }) => {
         }).start();
     }, [fadeAnim]);
 
-    const userMode = store.useState((state) => state.user.userMode)
     const user = store.useState((state) => state.user);
 
 
@@ -77,7 +79,7 @@ export const ChatList = ({ navigation, route }) => {
                     alignItems='center'
                     paddingBottom={15}
                 >
-                    <Heading fontSize={36} fontWeight='bold' color={user.userMode ?'#22A4DD': '#FF5484'}>Tin nhắn</Heading>
+                    <Heading fontSize={36} fontWeight='bold' color={getMainColor(user.userMode)}>Tin nhắn</Heading>
                     <Avatar bg="lightBlue.400" source={{
                         uri: "https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
                     }} size="md">
@@ -105,7 +107,7 @@ export const ChatList = ({ navigation, route }) => {
                                         style={{columnGap: 15}}
                                     >
                                         <Avatar bg="amber.500" source={{
-                                            uri: "https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+                                            uri: user.avaLink
                                         }} size="lg">
                                             NB
                                             <Avatar.Badge bg="green.500" />
