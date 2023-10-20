@@ -62,7 +62,7 @@ export const Wellcome2 = ({ navigation }) => {
                     <GradientButton
                         text='Login with Google account'
                         onPress={() => navigation.navigate('Home')}
-                        colors={isChecked ? ['#2A4AB6', '#269DDB'] : ['#D1D5DB', '#6B7280']}
+                        colors={isChecked ? ['#2A4AB6', '#269DDB'] : ['#6B7280', '#6B7280']}
                         disabled={!isChecked}
                     />
                     <Checkbox marginTop={15} isChecked={isChecked} onChange={handlePolicyAllow} colorScheme="green" display='flex' flexDirection='row'>

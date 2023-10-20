@@ -21,6 +21,16 @@ const getImgByProductId = async (productId) => {
 
 };
 
+const UploadImgByProductId = async (productId, data) => {
+    try {
+        const res = await request.get(`/images/products?product_id=${productId}`);
+        return res.data; 
+    } catch (error) {
+        outputError(error);
+    }
+
+};
+
 
 const outputError = (error) => {
     return console.error(error);

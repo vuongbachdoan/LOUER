@@ -156,7 +156,7 @@ export const ChatDetail = ({ navigation, route }) => {
                                     >
                                         <Box
                                             width='80%'
-                                            backgroundColor={userMode ? '#4196D2' : '#FF5484'}
+                                            backgroundColor={user.userMode ? '#4196D2' : '#FF5484'}
                                             paddingX='15px'
                                             paddingY='15px'
                                             borderTopRadius={20}

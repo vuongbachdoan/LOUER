@@ -9,13 +9,13 @@ export const store = new Store ({
         middleName: '',
         lastName: '',
         email: '',
-        phone: '',
         avaLink: '',
 
         positiveRating: '',
         negativeRating: '',
         rating: '',
-
+        
+        phone: '',
         address: '',
         bankBranch: '',
         bankAccount: '',

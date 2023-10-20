@@ -35,21 +35,27 @@ export const Home = ({ navigation }) => {
                     size = 28
 
                     if (route.name === 'Home') {
-                        iconName = 'home-outline'
+                        console.log('route.name', route.name)
+                        iconName = focused ? 'home-sharp' : 'home-outline' // Change the icon name based on whether the screen is focused or not
                         return <Ionicons name={iconName} size={size} color={color} />
                     } else if (route.name === 'Notification') {
+                        console.log('route.name', route.name)
                         iconName = 'notifications-outline'
                         return <Ionicons name={iconName} size={size} color={color} />
-                    } else if (route.name === 'LessorCreateRequest') {
+                    } else if (route.name === 'LessorCreateRequest' ) {
+                        console.log('route.name', route.name)
                         iconName = 'add-outline'
                         return <Stack style={{ borderRadius: '15px', top: -20 }}><GradientButton onPress={() => navigation.navigate('LessorCreateRequest')} radius={15} colors={['#2A4AB6', '#269DDB']} width={60} height={60} prefixIcon={<Ionicons name={iconName} size={35} color='#FFF' style={{ marginLeft: 2 }} />}></GradientButton></Stack>
                     } else if (route.name === 'Chat') {
+                        console.log('route.name', route.name)
                         iconName = 'chatbubble-outline'
                         return <Ionicons name={iconName} size={size} color={color} />
                     } else if (route.name === 'Profile') {
+                        console.log('route.name', route.name)
                         iconName = 'person-outline'
                         return <Ionicons name={iconName} size={size} color={color} />
                     }
+                    
 
                     return <Ionicons name={iconName} size={size} color={color} />;
                 },
@@ -59,8 +65,7 @@ export const Home = ({ navigation }) => {
         >
             <Tab.Screen name="Home" component={HomeRouting} options={{ tabBarLabel: '', tabBarLabelStyle: { fontWeight: 'bold', bottom: 5 } }}/>
             <Tab.Screen name="Notification" component={Notification} options={{ tabBarLabel: '', tabBarLabelStyle: { fontWeight: 'bold', bottom: 5 } }} />
-            {
-                user.userMode &&
+            {user.userMode &&
                 <Tab.Screen name="LessorCreateRequest" component={LessorCreateRequest} options={{ tabBarLabel: '' }} />
             }
             <Tab.Screen name="Chat" component={Chat} options={{ tabBarLabel: '', tabBarLabelStyle: { fontWeight: 'bold', bottom: 5 } }} />

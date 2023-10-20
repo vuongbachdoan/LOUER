@@ -1,15 +1,10 @@
 import { Avatar, Badge, Box, CheckIcon, Flex, Image, Input, ScrollView, Select, Stack, Text, View } from "native-base";
 import React from "react";
 import { StyleSheet, Animated } from "react-native";
-import { useLayoutEffect } from "react";
 import { Ionicons } from "@expo/vector-icons";
-import prodImage from '../../assets/images/prod1.png';
 import { GradientButton } from "../../components/GradientButton";
-import AvatarUser from '../../assets/images/placeholder.png';
 
 import { store } from "../../state/store";
-import { useEffect } from "react";
-
 import * as userService from "../../services/User";
 
 export const ProfileInformation = ({ navigation }) => {

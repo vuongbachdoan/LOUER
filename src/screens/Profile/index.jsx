@@ -51,6 +51,7 @@ export const Profile = ({ navigation}) => {
                     <GradientButton
                         colors={getGradientColor(user.userMode)}
                         width={240}
+                        onPress={() => navigation.navigate('ProfileReview')}
                         text='Đánh giá của tôi' />
                     <GradientButton
                         colors={getGradientColor(user.userMode)}

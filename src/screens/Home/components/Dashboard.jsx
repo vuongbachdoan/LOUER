@@ -103,6 +103,7 @@ export const Dashboard = ({ navigation }) => {
                     flexDirection='row'
                     alignItems='center'
                     paddingBottom={15}
+                    paddingTop={15}
                 >
                     <Stack>
                         <Heading fontSize={36} fontWeight='bold'>Xin Chào</Heading>

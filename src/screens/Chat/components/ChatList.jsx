@@ -78,6 +78,7 @@ export const ChatList = ({ navigation, route }) => {
                     flexDirection='row'
                     alignItems='center'
                     paddingBottom={15}
+                    paddingTop={15}
                 >
                     <Heading fontSize={36} fontWeight='bold' color={getMainColor(user.userMode)}>Tin nhắn</Heading>
                     <Avatar bg="lightBlue.400" source={{

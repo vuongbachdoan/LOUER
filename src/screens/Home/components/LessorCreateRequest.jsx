@@ -1,21 +1,64 @@
-import { Box, Button, Checkbox, Flex, Image, Input, Stack, Text } from "native-base";
+import { Box, Button, Checkbox, Flex, Image, Input, Stack, Text, Select, CheckIcon } from "native-base";
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Animated, View, Platform } from "react-native";
-import { useLayoutEffect } from "react";
+import { StyleSheet, Animated, View, Platform, ScrollView } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { GradientButton } from "../../../components/GradientButton";
-
-// import * as ImagePicker from 'react-native-image-picker';
+import * as Toast from "../../../components/Toast";
 import * as ImagePicker from 'expo-image-picker';
 
+import { store } from "../../../state/store";
+
+import * as ListingRequest from "../../../services/ListingRequest"
 
 
+const listingRequest = {
+    userId: 0,
+    productName: "",
+    brandName: "",
+    categoryName: "",
+    listingDescription: "",
+    marketPrice: 0,
+    price: 0,
+    photos: [],
+};
+
+
+
+const categoryList = [
+    "Camera",
+    "Laptop",
+    "Ổ cắm điện",
+    "Tai nghe",
+    "Khác",
+];
+
+
+// data: productName, brandName, categoryName, listingDescription, marketPrice, price
 
 export const LessorCreateRequest = ({ navigation }) => {
 
-    const uploadLimit = 8;
+    const user = store.useState((state) => state.user);
+    const [isUploaded, setIsUploaded] = React.useState(false);
+    const [chosenCategory, setChosenCategory] = React.useState("*Chưa chọn*");
+    const UPLOADLIMIT = 6;
 
     const fadeAnim = React.useRef(new Animated.Value(0)).current;
+
+
+
+
+    const makeRequest = async (productRequest) => {
+        try {
+            const response = await request.addProductRequest(productRequest);
+            console.log(response);
+            // handle successful response
+        } catch (error) {
+            console.error(error);
+            // handle error
+        }
+    };
+
+
     React.useEffect(() => {
         Animated.timing(fadeAnim, {
             toValue: 1,
@@ -24,72 +67,113 @@ export const LessorCreateRequest = ({ navigation }) => {
         }).start();
     }, [fadeAnim]);
 
-    const [name, setName] = React.useState('');
-    const [description, setDes] = React.useState('');
-    const [photo, setPhoto] = React.useState('');
 
-    const handleNameChange = (text) => {
-        setName(text);
+    React.useEffect(() => {
+        listingRequest.userId = 0;
+        listingRequest.productName = "";
+        listingRequest.brandName = "";
+        listingRequest.categoryName = "*Chưa chọn*";
+        listingRequest.listingDescription = "";
+        listingRequest.marketPrice = 0;
+        listingRequest.price = 0;
+        listingRequest.photos = [];
+    }, [navigation]);
+
+
+    const handleNameInput = (text) => {
+        listingRequest.productName = text;
     };
 
-    const handleDesChange = (text) => {
-        setDes(text);
+    const handleBrandNameInput = (text) => {
+        listingRequest.brandName = text;
     };
 
-    const handlePhotoChange = (response) => {
-        if (response.didCancel) {
-            console.log('User cancelled image picker');
-        } else if (response.error) {
-            console.log('ImagePicker Error: ', response.error);
-        } else {
-            const source = { uri: response.uri };
-            setPhoto(source);
-            product.photos.push(source);
-        }
+    const handleCategoryNameInput = (text) => {
+        listingRequest.categoryName = text;
     };
 
-
-    const handleImageUpload = () => {
-        let options = {
-            mediaType: 'photo', // 'photo' or 'video'
-            includeBase64: true,
-            maxHeight: 200,
-            maxWidth: 200,
-        };
-
-        ImagePicker.launchImageLibrary(options, (response) => {
-            if (response.didCancel) {
-                console.log('User cancelled image picker');
-            } else if (response.error) {
-                console.log('ImagePicker Error: ', response.error);
-            } else {
-                const source = { uri: response.uri };
-                console.log(source);
-            }
-        });
+    const handleDesCInput = (text) => {
+        listingRequest.listingDescription = text;
     };
+
+    const handleMarketPriceInput = (number) => {
+        listingRequest.marketPrice = number;
+    };
+
+    const handlePriceInput = (number) => {
+        listingRequest.price = number;
+    };
+
+    const handleChangeCategory = (text) => {
+        setChosenCategory(text);
+        listingRequest.categoryName = text;
+    }
+
 
     const pickImage = async () => {
         // No permissions request is necessary for launching the image library
         let result = await ImagePicker.launchImageLibraryAsync({
-          mediaTypes: ImagePicker.MediaTypeOptions.All,
-          allowsEditing: true,
-          allowsMultipleSelection: true,
-          selectionLimit: uploadLimit,
-          quality: 1,
-          
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            // allowsEditing: true,
+            allowsMultipleSelection: true,
+            selectionLimit: UPLOADLIMIT,
+            quality: 1,
         });
-    
-        console.log(result);
-    
-        if (!result.canceled) {
-          setImage(result.assets[0].uri);
+        if (!result.cancelled) {
+            setIsUploaded(true);
+            listingRequest.photos = [];
+            result.assets.forEach((image) => {
+                listingRequest.photos.push(image.uri);
+            });
+            console.log('PROD REQ:', listingRequest);
+            setIsUploaded(true);
+        } else if (result.error) {
+            console.log('ImagePicker Error: ', result.error);
+        } else {
+            setIsUploaded(false);
+            console.log('User cancelled image picker');
         }
-      };
+    };
+
+    const handleAddListing = () => {
+        if (
+            listingRequest.productName === "" ||
+            listingRequest.brandName === "" ||
+            listingRequest.categoryName === "" ||
+            listingRequest.listingDescription === "" ||
+            listingRequest.marketPrice === 0 ||
+            listingRequest.price === 0 ||
+            listingRequest.photos.length === 0
+        ) {
+            console.log("REJECT UPLOAD, One of those parameters in listingRequest are null or 0");
+            Toast.show('Vui lòng điển đủ thông tin.');
+        } else {
+            const requestBodyAdd = [];
+            requestBody.push(listingRequest.productName);
+            requestBody.push(listingRequest.brandName);
+            requestBody.push(listingRequest.categoryName);
+            requestBody.push(listingRequest.listingDescription);
+            requestBody.push(listingRequest.marketPrice);
+            requestBody.push(listingRequest.price);
+            console.log('requestBodyAdd: ', requestBodyAdd);
+            // Make API call to add listing using requestBody array
+            ListingRequest.add(user.userId, requestBodyAdd).then((response) => {
+                console.log("Add listing response: ", response);
+                //get the listingId from response, then addImg by that listingId
+                const listingId = response.listingId;
+                ListingRequest.addImg(listingId, listingRequest.photos).then((responseImg) => {
+                    console.log("Add img response: ", responseImg);
+                });
+            });
+
+
+        }
+    };
 
 
     return (
-        <Animated.View style={{ flex: 1, opacity: fadeAnim }}>
+        <Animated.View
+            style={{ flex: 1, opacity: fadeAnim }}>
             <Box
                 width='100%'
                 display='flex'
@@ -109,75 +193,191 @@ export const LessorCreateRequest = ({ navigation }) => {
                     <Text textAlign='center' flex={1} fontSize={22} fontWeight='semibold'
                         padding={5}>Thêm sản phẩm cho thuê</Text>
                 </Flex>
-
-                <Box
-                    marginX={15}
-                >
-                    <Flex
-                        flexDirection='column'
-                        style={{
-                            rowGap: 15
-                        }}
-                    >
-                        <Text fontWeight='semibold' paddingTop={4}>Tên sản phẩm</Text>
-                        <Input placeholder="Vd: Cần camera..." borderRadius={10} onChangeText={handleNameChange} />
-                        <Text fontWeight='semibold'>Mô tả sản phẩm</Text>
-                        <Input placeholder="Vd: Hôm nay đẹp trời tự dưng cái..." borderRadius={10} onChangeText={handleDesChange} />
-                        <Text fontWeight='semibold'>+ Hình ảnh (bắt buộc)/video</Text>
+                <ScrollView>
+                    <Box marginX={15}>
                         <Flex
-                            flexDirection='row'
-                            justifyContent='center'
-                            borderWidth={1}
-                            borderColor='#9F3553'
-                            borderRadius={15}
-                            padding={3}
-                            borderStyle='dashed'
-                            alignItems='center'
+                            flexDirection='column'
                             style={{
-                                columnGap: 15
+                                rowGap: 15
                             }}
                         >
-                            <GradientButton width={45} height={45} paddingBottom={0} paddingLeft={0} paddingRight={0} paddingTop={0} 
-                                prefixIcon={<Ionicons name="camera-outline" size={22} color='white' />} colors={['#2A4AB6', '#269DDB']} 
-                                onPress={pickImage}
+                            <Text fontWeight='semibold' paddingTop={4}>
+                                Tên sản phẩm<Text fontWeight={'bold'} color='#F65683'> *</Text>
+                            </Text>
+                            <Input placeholder="Vd: Người đẹp thiếu camera..." borderRadius={10} onChangeText={handleNameInput} />
+
+                            <Box
+                                marginX={0}
+                                flexDirection={'row'}
+                                justifyContent='space-between'
+                                alignItems='flex-start'
+                                paddingX={0}
+
+                            >
+                                <Flex
+                                    flexDirection='column'
+                                    style={{
+                                        rowGap: 15
+                                    }}>
+                                    <Text fontWeight='semibold'>Hãng sản phẩm<Text fontWeight={'bold'} color='#F65683'> *</Text></Text>
+                                    <Input placeholder="Vd: Sony, Canon,..." borderRadius={10} onChangeText={handleDesCInput} width={150} />
+                                </Flex>
+                                <Flex
+                                    flexDirection='column'
+                                    style={{
+                                        rowGap: 15,
+                                    }}
+                                >
+                                    <Text fontWeight='semibold'>Phân loại<Text fontWeight={'bold'} color='#F65683'> *</Text></Text>
+                                    <Select
+                                        selectedValue={chosenCategory}
+                                        height={45}
+                                        width={150}
+                                        accessibilityLabel="Select Category"
+                                        placeholder={chosenCategory}
+                                        borderRadius={10}
+                                        fontSize={14}
+                                        fontWeight={700}
+                                        _selectedItem={{
+                                            bg: 'gray.100',
+                                            endIcon: <CheckIcon size="5" />
+                                        }}
+                                        onValueChange={chosenValue => handleChangeCategory(chosenValue)}
+                                    >
+                                        {categoryList.map((category, index) => (
+                                            <Select.Item
+                                                // key={index} 
+                                                label={category.label} value={category.value} />
+                                        ))}
+                                    </Select>
+                                </Flex>
+                            </Box>
+                            <Text fontWeight='semibold'>Mô tả sản phẩm<Text fontWeight={'bold'} color='#F65683'> *</Text></Text>
+                            <Input placeholder="Vd: Hôm nay đẹp trời tự dưng cái..." borderRadius={10} onChangeText={handleDesCInput} multiline={true} numberOfLines={4} />
+                            <Text fontWeight='semibold'>+ Hình ảnh / video <Text fontWeight={'bold'} color='#F65683'> *</Text></Text>
+
+
+                            {isUploaded && (
+                                <ScrollView horizontal={true} _important={true}>
+                                    {listingRequest.photos.map((photo, index) => (
+                                        <Image key={index} source={{ uri: photo }} style={styles.image} padding={2} />
+
+                                    ))}
+                                </ScrollView>
+                            )}
+
+
+                            <Flex
+                                flexDirection='row'
+                                justifyContent='center'
+                                borderWidth={1}
+                                borderColor='#9F3553'
+                                borderRadius={15}
+                                padding={3}
+                                borderStyle='dashed'
+                                alignItems='center'
+                                style={{
+                                    columnGap: 15
+                                }}
+                            >
+                                <GradientButton width={45} height={45} paddingBottom={0} paddingLeft={0} paddingRight={0} paddingTop={0}
+                                    prefixIcon={<Ionicons name="camera-outline" size={22} color='white' />} colors={['#2A4AB6', '#269DDB']}
+                                    onPress={pickImage}
 
                                 />
-                            <Text>Tải lên ảnh/video</Text>
+                                <Text onPress={pickImage}>Tải lên ảnh/video</Text>
+                            </Flex>
+
+                            <Flex
+                                flexDirection='row'
+                                style={{
+                                    columnGap: 5
+                                }}
+                                alignItems='center'
+                            >
+                                <Ionicons color='orange' name="information-circle-outline" size={30} />
+                                <Flex
+                                    flexDirection='column'
+                                    style={{ columnGap: 1 }}
+                                    alignItems='left'
+                                >
+                                    <Text>Hình ảnh phải xác thực được tình trạng{'\n'}của sản phẩm.</Text>
+                                    <Text fontWeight='semibold'>Tối đa {UPLOADLIMIT} ảnh/video.</Text>
+                                </Flex>
+
+
+                            </Flex>
+
+                            <Text fontWeight='semibold'>Giá thị trường của sản phẩm (theo ước tính) <Text fontWeight={'bold'} color='#F65683'> *</Text></Text>
+                            <Flex
+                                flexDirection='row'
+                                alignItems='center'
+                                style={{
+                                    columnGap: 5
+                                }}
+                            >
+                                <Text fontSize={20}>≈</Text>
+                                <Input
+                                    placeholder="Giá" borderRadius={10} width={100}
+                                    onChangeText={text => {
+                                        // Only allow positive integers
+                                        const regex = /^[0-9\b]+$/;
+                                        if (regex.test(text)) {
+                                            handleMarketPriceInput(text);
+                                        }
+                                        else {
+                                            Toast.show('Giá phải là số')
+                                        }
+                                    }}
+                                    keyboardType='numeric'
+                                />
+                            </Flex>
+
+                            <Text fontWeight='semibold'>Giá thuê<Text fontWeight={'bold'} color='#F65683'> *</Text></Text>
+                            <Flex
+                                flexDirection='row'
+                                alignItems='center'
+                                style={{
+                                    columnGap: 5
+                                }}
+                            >
+                                <Input
+                                    placeholder="Giá" borderRadius={10} width={100}
+                                    onChangeText={text => {
+                                        // Only allow positive integers
+                                        const regex = /^[0-9\b]+$/;
+                                        if (regex.test(text)) {
+                                            handlePriceInput(text);
+                                        }
+                                        else {
+                                            Toast.show('Giá phải là số')
+                                        }
+                                    }}
+                                    keyboardType='numeric'
+                                    inputMode="numeric"
+                                />
+                                <Text>/ Ngày</Text>
+                            </Flex>
+
+
+
+
                         </Flex>
 
-                        <Flex
-                            flexDirection='row'
-                            style={{
-                                columnGap: 5
-                            }}
-                            alignItems='center'
+                        <Stack
+                            marginTop={30}
                         >
-                            <Ionicons color='orange' name="information-circle-outline" size={30} />
-                            <Text>Hình ảnh phải xác thực được tình trạng của sản phẩm.{'\n'}</Text>
-                            <Text fontWeight='semibold'>Tối đa {uploadLimit} ảnh/video.</Text>
-                        </Flex>
+                            <GradientButton onPress={() => handleAddListing()} text='Thêm sản phẩm' radius={10} fontSize={18} height={55} colors={['#2A4AB6', '#269DDB']} />
+                        </Stack>
 
-                        <Text fontWeight='semibold'>Giá thuê</Text>
-                        <Flex
-                            flexDirection='row'
-                            alignItems='center'
-                            style={{
-                                columnGap: 5
-                            }}
-                        >
-                            <Input placeholder="Giá" borderRadius={10} width={100} />
-                            <Text>/ Ngày</Text>
-                        </Flex>
-                    </Flex>
+                        <Box height={120}/>
+                    </Box>
+                </ScrollView>
 
-                    <Stack
-                        marginTop={30}
-                    >
-                        <GradientButton onPress={() => navigation.navigate('HomeScreen')} text='Thêm sản phẩm' radius={10} fontSize={18} height={55} colors={['#2A4AB6', '#269DDB']} />
-                    </Stack>
-                </Box>
             </Box>
         </Animated.View>
+
+
     );
 };
 
@@ -221,9 +421,11 @@ const styles = StyleSheet.create({
         elevation: 5,
     },
     image: {
-        width: 200,
-        height: 200,
+        width: 100,
+        height: 100,
         borderRadius: 8,
+        padding: 2,
+        flex: 1,
     },
     errorText: {
         color: "red",

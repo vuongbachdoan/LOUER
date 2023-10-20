@@ -71,6 +71,7 @@ export const LesseeHome = ({ navigation }) => {
                         flexDirection='row'
                         alignItems='center'
                         paddingBottom={15}
+                        paddingTop={15}
                     >
                         <Box>
                             <Heading fontSize={36} fontWeight='bold'>Xin Chào</Heading>
