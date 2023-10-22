@@ -1,9 +1,18 @@
 import React, { useState } from "react";
-import { Image, Animated } from "react-native";
+import { Image, Animated, Button } from "react-native";
 import LogoLouer from '../../../assets/images/logo.png';
 import { GradientButton } from "../../../components/GradientButton";
 import { Checkbox, Flex, Link, Stack, Text } from "native-base";
 import GradientText from "react-native-gradient-texts";
+import * as WebBrowser from 'expo-web-browser';
+import { makeRedirectUri, useAuthRequest } from 'expo-auth-session';
+
+WebBrowser.maybeCompleteAuthSession();
+const discovery = {
+    authorizationEndpoint: 'https://www.louerapp.com/api/oauth2/authorization/google',
+    // tokenEndpoint: '<Your Token Endpoint>',
+    // revocationEndpoint: '<Your Revocation Endpoint>',
+};
 
 export const Wellcome2 = ({ navigation }) => {
     const fadeAnim = React.useRef(new Animated.Value(0)).current;
@@ -21,6 +30,18 @@ export const Wellcome2 = ({ navigation }) => {
     const handlePolicyAllow = () => {
         setChecked(!isChecked);
     }
+
+    const [request, response, promptAsync] = useAuthRequest(
+        {
+            clientId: '474537956556-h50sfld2rhg0per77f5dqkuod0hn8h2h.apps.googleusercontent.com',
+            scopes: ['openid', 'profile', 'email'],
+            redirectUri: makeRedirectUri({
+                native: 'exp://192.168.110.35:8081',
+                useProxy: true,
+            }),
+        },
+        discovery
+    );
 
     return (
         <Animated.View style={{ flex: 1, opacity: fadeAnim }}>
@@ -58,7 +79,7 @@ export const Wellcome2 = ({ navigation }) => {
                     <Text fontSize={16} fontWeight='semibold' color='coolGray.500' marginBottom={15}>Sử dụng mail FPT Edu / Google của bạn</Text>
                     <GradientButton
                         text='Login with Google account'
-                        onPress={() => navigation.navigate('Home')}
+                        onPress={() => promptAsync()}
                         colors={['#2A4AB6', '#269DDB']}
                     />
                     <Checkbox marginTop={15} isChecked={isChecked} onChange={handlePolicyAllow} colorScheme="green" display='flex' flexDirection='row'>
