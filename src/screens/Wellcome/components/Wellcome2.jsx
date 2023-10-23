@@ -11,6 +11,7 @@ export const Wellcome2 = ({ navigation }) => {
     const [isChecked, setChecked] = useState(false);
     const CLERK_PUBLISHABLE_KEY = 'pk_test_Zmx1ZW50LXNlYWhvcnNlLTQuY2xlcmsuYWNjb3VudHMuZGV2JA';
 
+
     const [user, setUser] = useState(null);
 
     React.useEffect(() => {
