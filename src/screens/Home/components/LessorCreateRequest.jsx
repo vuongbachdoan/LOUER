@@ -1,6 +1,6 @@
 import { Box, Button, Checkbox, Flex, Image, Input, Stack, Text, Select, CheckIcon } from "native-base";
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Animated, View, Platform, ScrollView } from "react-native";
+import { StyleSheet, Animated, View, Platform, ScrollView, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { GradientButton } from "../../../components/GradientButton";
 import * as Toast from "../../../components/Toast";
@@ -8,7 +8,7 @@ import * as ImagePicker from 'expo-image-picker';
 
 import { store } from "../../../state/store";
 
-import * as ListingRequest from "../../../services/ListingRequest"
+import {add, addImg} from "../../../services/ListingRequest"
 
 
 const listingRequest = {
@@ -43,10 +43,6 @@ export const LessorCreateRequest = ({ navigation }) => {
     const UPLOADLIMIT = 6;
 
     const fadeAnim = React.useRef(new Animated.Value(0)).current;
-
-
-
-
     const makeRequest = async (productRequest) => {
         try {
             const response = await request.addProductRequest(productRequest);
@@ -88,10 +84,6 @@ export const LessorCreateRequest = ({ navigation }) => {
         listingRequest.brandName = text;
     };
 
-    const handleCategoryNameInput = (text) => {
-        listingRequest.categoryName = text;
-    };
-
     const handleDesCInput = (text) => {
         listingRequest.listingDescription = text;
     };
@@ -104,17 +96,18 @@ export const LessorCreateRequest = ({ navigation }) => {
         listingRequest.price = number;
     };
 
+    const [categoryName, setCategoryName] = useState('*Choose category*')
+    useEffect(() => {
+        handleChangeCategory(categoryName)
+    }, [categoryName])
     const handleChangeCategory = (text) => {
-        setChosenCategory(text);
         listingRequest.categoryName = text;
     }
 
 
     const pickImage = async () => {
-        // No permissions request is necessary for launching the image library
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
-            // allowsEditing: true,
             allowsMultipleSelection: true,
             selectionLimit: UPLOADLIMIT,
             quality: 1,
@@ -145,23 +138,25 @@ export const LessorCreateRequest = ({ navigation }) => {
             listingRequest.price === 0 ||
             listingRequest.photos.length === 0
         ) {
-            console.log("REJECT UPLOAD, One of those parameters in listingRequest are null or 0");
-            Toast.show('Vui lòng điển đủ thông tin.');
+            try {
+                alert("REJECT UPLOAD, One of those parameters in listingRequest are null or 0");
+            } catch {
+                Toast.show('Vui lòng điển đủ thông tin.');
+            }
         } else {
             const requestBodyAdd = [];
-            requestBody.push(listingRequest.productName);
-            requestBody.push(listingRequest.brandName);
-            requestBody.push(listingRequest.categoryName);
-            requestBody.push(listingRequest.listingDescription);
-            requestBody.push(listingRequest.marketPrice);
-            requestBody.push(listingRequest.price);
+            requestBodyAdd.push(listingRequest.productName);
+            requestBodyAdd.push(listingRequest.brandName);
+            requestBodyAdd.push(listingRequest.categoryName);
+            requestBodyAdd.push(listingRequest.listingDescription);
+            requestBodyAdd.push(listingRequest.marketPrice);
+            requestBodyAdd.push(listingRequest.price);
             console.log('requestBodyAdd: ', requestBodyAdd);
-            // Make API call to add listing using requestBody array
-            ListingRequest.add(user.userId, requestBodyAdd).then((response) => {
+
+        add(user.userId, requestBodyAdd).then((response) => {
                 console.log("Add listing response: ", response);
-                //get the listingId from response, then addImg by that listingId
                 const listingId = response.listingId;
-                ListingRequest.addImg(listingId, listingRequest.photos).then((responseImg) => {
+                addImg(listingId, listingRequest.photos).then((responseImg) => {
                     console.log("Add img response: ", responseImg);
                 });
             });
@@ -220,7 +215,7 @@ export const LessorCreateRequest = ({ navigation }) => {
                                         rowGap: 15
                                     }}>
                                     <Text fontWeight='semibold'>Hãng sản phẩm<Text fontWeight={'bold'} color='#F65683'> *</Text></Text>
-                                    <Input placeholder="Vd: Sony, Canon,..." borderRadius={10} onChangeText={handleDesCInput} width={150} />
+                                    <Input placeholder="Vd: Sony, Canon,..." borderRadius={10} onChangeText={handleBrandNameInput} width={150} />
                                 </Flex>
                                 <Flex
                                     flexDirection='column'
@@ -230,11 +225,11 @@ export const LessorCreateRequest = ({ navigation }) => {
                                 >
                                     <Text fontWeight='semibold'>Phân loại<Text fontWeight={'bold'} color='#F65683'> *</Text></Text>
                                     <Select
-                                        selectedValue={chosenCategory}
+                                        selectedValue={categoryName}
                                         height={45}
                                         width={150}
                                         accessibilityLabel="Select Category"
-                                        placeholder={chosenCategory}
+                                        placeholder={categoryName}
                                         borderRadius={10}
                                         fontSize={14}
                                         fontWeight={700}
@@ -242,12 +237,12 @@ export const LessorCreateRequest = ({ navigation }) => {
                                             bg: 'gray.100',
                                             endIcon: <CheckIcon size="5" />
                                         }}
-                                        onValueChange={chosenValue => handleChangeCategory(chosenValue)}
+                                        onValueChange={chosenValue => setCategoryName(chosenValue)}
                                     >
                                         {categoryList.map((category, index) => (
                                             <Select.Item
                                                 // key={index} 
-                                                label={category.label} value={category.value} />
+                                                label={category} value={category} />
                                         ))}
                                     </Select>
                                 </Flex>
@@ -267,26 +262,28 @@ export const LessorCreateRequest = ({ navigation }) => {
                             )}
 
 
-                            <Flex
-                                flexDirection='row'
-                                justifyContent='center'
-                                borderWidth={1}
-                                borderColor='#9F3553'
-                                borderRadius={15}
-                                padding={3}
-                                borderStyle='dashed'
-                                alignItems='center'
-                                style={{
-                                    columnGap: 15
-                                }}
+                            <TouchableOpacity
+                                onPress={pickImage}
                             >
-                                <GradientButton width={45} height={45} paddingBottom={0} paddingLeft={0} paddingRight={0} paddingTop={0}
-                                    prefixIcon={<Ionicons name="camera-outline" size={22} color='white' />} colors={['#2A4AB6', '#269DDB']}
-                                    onPress={pickImage}
-
-                                />
-                                <Text onPress={pickImage}>Tải lên ảnh/video</Text>
-                            </Flex>
+                                <Flex
+                                    flexDirection='row'
+                                    justifyContent='center'
+                                    borderWidth={1}
+                                    borderColor='#9F3553'
+                                    borderRadius={15}
+                                    padding={3}
+                                    borderStyle='dashed'
+                                    alignItems='center'
+                                    style={{
+                                        columnGap: 15
+                                    }}
+                                >
+                                    <GradientButton width={45} height={45} paddingBottom={0} paddingLeft={0} paddingRight={0} paddingTop={0}
+                                        prefixIcon={<Ionicons name="camera-outline" size={22} color='white' />} colors={['#2A4AB6', '#269DDB']}
+                                    />
+                                    <Text>Tải lên ảnh/video</Text>
+                                </Flex>
+                            </TouchableOpacity>
 
                             <Flex
                                 flexDirection='row'
@@ -370,7 +367,7 @@ export const LessorCreateRequest = ({ navigation }) => {
                             <GradientButton onPress={() => handleAddListing()} text='Thêm sản phẩm' radius={10} fontSize={18} height={55} colors={['#2A4AB6', '#269DDB']} />
                         </Stack>
 
-                        <Box height={120}/>
+                        <Box height={120} />
                     </Box>
                 </ScrollView>
 

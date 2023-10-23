@@ -38,7 +38,7 @@ const getImgById = async (listingId) => {
     }
 };
 
-const add = async (userId, data) => {
+export const add = async (userId, data) => {
     // data: productName, brandName, categoryName, listingDescription, marketPrice, price
     try {
         const res = await request.post(`/listings/add?userId=${userId}`, data);
@@ -48,7 +48,7 @@ const add = async (userId, data) => {
     }
 };
 
-const addImg = async (listingId, data) => {
+export const addImg = async (listingId, data) => {
     try {
         const res = await request.post(`/images/listings/upload?listing_id=${listingId}`, data);
         return res.data; 
