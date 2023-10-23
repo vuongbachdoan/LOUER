@@ -6,7 +6,7 @@ import Prod1 from '../../../assets/images/prod1.png'
 import Prod2 from '../../../assets/images/prod2.png'
 import Prod3 from '../../../assets/images/prod3.png'
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { HomeScreen } from "./HomeScreen";
+import { LessorHome as LessorHome } from "./LessorHome";
 import { Activities } from "./Activities";
 import { History } from "./History";
 import { TouchableOpacity } from "react-native";
@@ -14,6 +14,17 @@ import { ProductDetail } from "./ProductDetail";
 import { LessorRules } from "./LessorRules";
 import { LessorRequestSent } from "./LessorRequestSent";
 import { SearchRequest } from "./SearchRequest";
+import { LesseeViewProductDetail } from "./LesseeViewProductDetail";
+import { LesseeNoteBeforeOrder } from "./LesseeNoteBeforeOrder";
+import { LesseeQR } from "./LesseeQR";
+import { ViewLessorRequest } from "./ViewLessorRequest";
+import { SignoutConfirm } from "./SignoutConfirm";
+import { store } from "../../../state/store";
+import { LesseeHome } from "./LesseeHome";
+import { LessorCreateRequest } from "./LessorCreateRequest";
+
+
+import * as UserService from "../../../services/User";
 
 const prodData = [
     {
@@ -56,6 +67,25 @@ const prodData = [
 const HomeTabs = createBottomTabNavigator();
 
 export const HomeRouting = ({ navigation }) => {
+    const userId = '1';
+    const user = store.useState((state) => state.user);
+
+
+    React.useEffect(() => {
+        UserService.getById(userId).then((data) => {
+            store.update((state) => {
+                state.user = data;
+                state.user.userId = userId;
+            })
+        });
+        UserService.getAvaLinkById(userId).then((ava) => {
+            store.update((state) => {
+                state.user.avaLink = ava;
+            });
+        });
+        
+    }, [navigation]);
+
     return (
         <HomeTabs.Navigator
             sceneContainerStyle={{ height: 60, backgroundColor: '#FAFAFA' }}
@@ -101,16 +131,16 @@ export const HomeRouting = ({ navigation }) => {
                 ),
                 tabBarStyle: {
                     display: 'none'
-                }
+                },
             })}
         >
-            <HomeTabs.Screen name="HomeScreen" component={HomeScreen} options={{ tabBarLabel: '', tabBarLabelStyle: { fontWeight: 'bold', bottom: 5 } }} />
+            <HomeTabs.Screen name="HomeScreen" component={user.userMode ? LessorHome : LesseeHome} options={{ tabBarLabel: '', tabBarLabelStyle: { fontWeight: 'bold', bottom: 5 } }} />
             <HomeTabs.Screen name="Activities" component={Activities} options={{ tabBarLabel: '', tabBarLabelStyle: { fontWeight: 'bold', bottom: 5 } }} />
             <HomeTabs.Screen name="History" component={History} options={{ tabBarLabel: '', tabBarLabelStyle: { fontWeight: 'bold', bottom: 5 } }} />
-            <HomeTabs.Screen name="Product details" component={ProductDetail} options={{ tabBarLabel: '', tabBarLabelStyle: { fontWeight: 'bold', bottom: 5 } }} />
-            <HomeTabs.Screen name="Điều khoản thuê" component={LessorRules} options={{ tabBarLabel: '', tabBarLabelStyle: { fontWeight: 'bold', bottom: 5 } }} />
-            <HomeTabs.Screen name="Lessor request sent" component={LessorRequestSent} />
             <HomeTabs.Screen name="Yêu cầu thuê" component={SearchRequest} />
+            <HomeTabs.Screen name="Lessee note before order" component={LesseeNoteBeforeOrder} />
+            <HomeTabs.Screen name="Thanh toán" component={LesseeQR} />
+            <HomeTabs.Screen name="View lessor request" component={ViewLessorRequest} />
         </HomeTabs.Navigator>
     )
 };

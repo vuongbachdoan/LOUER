@@ -1,13 +1,12 @@
-import { Avatar, Box, Checkbox, Flex, Image, Input, ScrollView, Stack, Text } from "native-base";
+import { Box, Button, Checkbox, Flex, Image, Input, Stack, Text } from "native-base";
 import React from "react";
-import { StyleSheet, Animated } from "react-native";
-import Prod1 from '../../../assets/images/prod1.png'
+import { StyleSheet, Animated, View, Platform } from "react-native";
 import { useLayoutEffect } from "react";
 import { Ionicons } from "@expo/vector-icons";
-import { useState } from "react";
+import * as ImagePicker from 'react-native-image-picker';
 import { GradientButton } from "../../../components/GradientButton";
 
-export const ProductDetail = ({ navigation, route }) => {
+export const LesseeCreateRequest = ({ navigation, route }) => {
 
     const fadeAnim = React.useRef(new Animated.Value(0)).current;
 
@@ -19,21 +18,27 @@ export const ProductDetail = ({ navigation, route }) => {
         }).start();
     }, [fadeAnim]);
 
-    const { product } = route.params;
 
-    const [isBanking, setIsBanking] = useState(false);
+    const handleImageUpload = () => {
+        let options = {
+            mediaType: 'photo', // 'photo' or 'video'
+            includeBase64: true,
+            maxHeight: 200,
+            maxWidth: 200,
+        };
 
-    useLayoutEffect(() => {
-        navigation.setOptions({
-            headerTitle: () => <Text fontWeight='bold'>{product.name}</Text>,
+        ImagePicker.launchImageLibrary(options, (response) => {
+            if (response.didCancel) {
+                console.log('User cancelled image picker');
+            } else if (response.error) {
+                console.log('ImagePicker Error: ', response.error);
+            } else {
+                const source = { uri: response.uri };
+                console.log(source);
+            }
         });
-    }, [navigation, product]);
+    };
 
-    const toggleIsBanking = () => {
-        setIsBanking(!isBanking)
-    }
-
-    const [isEnding, setIsEnding] = useState(false);
 
     return (
         <Animated.View style={{ flex: 1, opacity: fadeAnim }}>
@@ -52,12 +57,102 @@ export const ProductDetail = ({ navigation, route }) => {
                     paddingX={15}
                     paddingTop={30}
                 >
-
                     <Flex><Ionicons name="chevron-back" size={22} onPress={() => navigation.goBack()} /></Flex>
-                    <Text textAlign='center' flex={1} fontSize={22} fontWeight='semibold'>{product.name}</Text>
+                    <Text textAlign='center' flex={1} fontSize={22} fontWeight='semibold'>Tạo yêu cầu cho thuê</Text>
                 </Flex>
 
-                <ScrollView>
+                <Box
+                    marginX={15}
+                >
+                    <Flex
+                        flexDirection='column'
+                        style={{
+                            rowGap: 15
+                        }}
+                    >
+                        <Text fontWeight='semibold'>Tiêu đề</Text>
+                        <Input placeholder="Cần camera" borderRadius={10} />
+                        <Text fontWeight='semibold'>Sản phẩm (không bắt buộc)</Text>
+                        <Input placeholder="Nikon D700" borderRadius={10} />
+                        <Text fontWeight='semibold'>+ Hình ảnh</Text>
+
+                        <Flex
+                            flexDirection='row'
+                            justifyContent='center'
+                            borderWidth={1}
+                            borderColor='#9F3553'
+                            borderRadius={15}
+                            padding={3}
+                            borderStyle='dashed'
+                            alignItems='center'
+                            style={{
+                                columnGap: 15
+                            }}
+                        >
+                            <GradientButton width={45} height={45} paddingBottom={0} paddingLeft={0} paddingRight={0} paddingTop={0} prefixIcon={<Ionicons name="camera-outline" size={22} color='white' />} colors={['#9F3553', '#E98EA6']} />
+                            <Text>Tải lên ảnh/video</Text>
+                        </Flex>
+
+                        <Flex
+                            display='flex'
+                            flexDirection='row'
+                            flexWrap='wrap'
+                            justifyContent='space-between'
+                            style={{columnGap: 15}}
+                        >
+                            <Stack marginTop={15}>
+                                <Text fontSize={16} fontWeight='semibold'>Ngày bắt đầu</Text>
+                                <Flex flexDirection='row' style={{columnGap: 15}} alignItems='flex-end'>
+                                    <Stack>
+                                        <Text textAlign='right'>Ngày</Text>
+                                        <Text color="gray.500" fontSize={20} fontWeight='semibold'>12/03</Text>
+                                    </Stack>
+                                    <Text fontSize={20} fontWeight='semibold'>,</Text>
+                                    <Stack>
+                                        <Text textAlign='right'>Buổi</Text>
+                                        <Text color="gray.500" fontSize={20} fontWeight='semibold'>Sáng</Text>
+                                    </Stack>
+                                </Flex>
+                            </Stack>
+
+                            <Stack marginTop={15}>
+                                <Text fontSize={16} fontWeight='semibold'>Ngày kết thúc</Text>
+                                <Flex flexDirection='row' style={{columnGap: 15}} alignItems='flex-end'>
+                                    <Stack>
+                                        <Text textAlign='right'>Ngày</Text>
+                                        <Text color="gray.500" fontSize={20} fontWeight='semibold'>12/03</Text>
+                                    </Stack>
+                                    <Text fontSize={20} fontWeight='semibold'>,</Text>
+                                    <Stack>
+                                        <Text textAlign='right'>Buổi</Text>
+                                        <Text color="gray.500" fontSize={20} fontWeight='semibold'>Sáng</Text>
+                                    </Stack>
+                                </Flex>
+                            </Stack>
+
+                            <Stack
+                                marginTop={15}
+                            >
+                                <Text fontSize={16} fontWeight='semibold'>Phương thức thanh toán</Text>
+                                <Checkbox colorScheme="green">
+                                    Chuyển khoản (khuyên dùng)
+                                </Checkbox>
+                                <Checkbox colorScheme="green">
+                                    Tiền mặt
+                                </Checkbox>
+                            </Stack>
+                        </Flex>
+                    </Flex>
+
+                    <Stack
+                        marginTop={30}
+                    >
+                        <GradientButton text='Tiếp tục' radius={10} fontSize={18} height={55} colors={['#9F3553', '#E98EA6']} />
+                    </Stack>
+                </Box>
+
+
+                {/* <ScrollView>
                     <Stack
                         paddingX={15}
                         paddingY={30}
@@ -154,49 +249,8 @@ export const ProductDetail = ({ navigation, route }) => {
                             <Text fontSize={16} fontWeight='semibold'>Tổng tiền</Text>
                             <Text color="gray.500" fontSize={20} fontWeight='semibold'>624.000 vnđ</Text>
                         </Stack>
-
-                        {
-                            (product.status === 'pending' && isEnding === false) &&
-                            <Stack marginTop={30}>
-                                <GradientButton onPress={() => setIsEnding(true)} text='Kết thúc giao dịch' colors={['#2A4AB6', '#269DDB']} height={45} radius={15} />
-                            </Stack>
-                        }
-                        {
-                            (product.status === 'pending' && isEnding === true) &&
-                            <>
-                                <Text marginTop={15} fontSize={16} fontWeight='semibold'>Xác nhận kết thúc giao dịch trước hạn</Text>
-                                <Flex
-                                    flexDirection='row'
-                                    justifyContent='space-between'
-                                    style={{columnGap: 15}}
-                                >
-                                    <GradientButton onPress={() => setIsEnding(false)} text='Từ chối' colors={['#9F3553', '#E98EA6']} width={180} height={45} radius={15} />
-                                    <GradientButton onPress={() => navigation.navigate('HomeScreen')} text=' Chấp nhận' colors={['#2A4AB6', '#269DDB']} width={180} height={45} radius={15} />
-                                </Flex>
-                            </>
-                        }
-                        {
-                            product.status === 'available' &&
-                            <>
-                                <Input
-                                    marginTop={15}
-                                    backgroundColor='#FFF'
-                                    leftElement={
-                                        <Stack padding='15px' backgroundColor='#FFF'>
-                                            <Ionicons color='#B9C6CC' size={22} name="chatbox-ellipses-outline" />
-                                        </Stack>
-                                    }
-                                    placeholder="Note"
-                                    size='2xl'
-                                    borderRadius={15}
-                                />
-                                <Stack marginTop={30}>
-                                    <GradientButton onPress={() => navigation.navigate('Điều khoản thuê')} text='Tiếp tục' colors={['#2A4AB6', '#269DDB']} height={55} radius={15} />
-                                </Stack>
-                            </>
-                        }
                     </Stack>
-                </ScrollView>
+                </ScrollView> */}
             </Box>
         </Animated.View>
     );
@@ -215,5 +269,39 @@ const styles = StyleSheet.create({
     text: {
         textTransform: 'uppercase',
         color: '#FFF'
-    }
+    },
+    button: {
+        backgroundColor: "#007AFF",
+        padding: 10,
+        borderRadius: 8,
+        marginBottom: 16,
+        shadowColor: "#000000",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.4,
+        shadowRadius: 4,
+        elevation: 5,
+    },
+    buttonText: {
+        color: "#FFFFFF",
+        fontSize: 16,
+        fontWeight: "bold",
+    },
+    imageContainer: {
+        borderRadius: 8,
+        marginBottom: 16,
+        shadowColor: "#000000",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.4,
+        shadowRadius: 4,
+        elevation: 5,
+    },
+    image: {
+        width: 200,
+        height: 200,
+        borderRadius: 8,
+    },
+    errorText: {
+        color: "red",
+        marginTop: 16,
+    },
 })
