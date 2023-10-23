@@ -10,6 +10,7 @@
     "ionic:serve": "npm run start"
   },
   "dependencies": {
+    "@clerk/clerk-expo": "^0.19.11",
     "@expo/vector-icons": "^13.0.0",
     "@expo/webpack-config": "^19.0.0",
     "@material-ui/core": "^4.12.4",
@@ -20,9 +21,11 @@
     "@react-navigation/native-stack": "^6.9.13",
     "axios": "^1.5.1",
     "expo": "^49.0.13",
+    "expo-auth-session": "^5.2.0",
     "expo-checkbox": "~2.4.0",
     "expo-image-picker": "~14.3.2",
     "expo-linear-gradient": "^12.3.0",
+    "expo-splash-screen": "~0.20.5",
     "expo-status-bar": "~1.6.0",
     "expo-web-browser": "~12.3.2",
     "native-base": "^3.4.28",
@@ -46,8 +49,7 @@
     "react-native-text-gradient": "^0.1.7",
     "react-native-toast-message": "^2.1.6",
     "react-native-vector-icons": "^10.0.0",
-    "react-native-web": "~0.19.6",
-    "expo-splash-screen": "~0.20.5"
+    "react-native-web": "~0.19.6"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

@@ -3,16 +3,23 @@ import { Image, Animated } from "react-native";
 import LogoLouer from '../../../assets/images/logo.png';
 import { Checkbox, Flex, Link, Stack, Text } from "native-base";
 import GradientText from "react-native-gradient-texts";
-import { ClerkProvider, SignedOut, SignedIn } from "@clerk/clerk-expo";
+import { Clerk, ClerkProvider, SignedOut, SignedIn} from "@clerk/clerk-expo";
 import SignInWithOAuth from "../../../components/SignInWithOAuth";
+
+import { store } from "../../../state/store";
+import { enviroment} from "../../../state/enviroment";
+
+import * as UserService from "../../../services/User";
 
 export const Wellcome2 = ({ navigation }) => {
     const fadeAnim = React.useRef(new Animated.Value(0)).current;
     const [isChecked, setChecked] = useState(false);
-    const CLERK_PUBLISHABLE_KEY = 'pk_test_Zmx1ZW50LXNlYWhvcnNlLTQuY2xlcmsuYWNjb3VudHMuZGV2JA';
 
 
-    const [user, setUser] = useState(null);
+    const user = store.useState((state) => state.user);
+    const clerkPublicKey = enviroment.useState((state) => state.clerkPublicKey);
+    // user = 
+
 
     React.useEffect(() => {
         Animated.timing(fadeAnim, {
@@ -22,13 +29,34 @@ export const Wellcome2 = ({ navigation }) => {
         }).start();
     }, [fadeAnim]);
 
+
+    const handleUserFromServer = async () => {
+        Clerk.
+        UserService.getById(userId).then((data) => {
+            store.update((state) => {
+                state.user = data;
+                state.user.userId = userId;
+            })
+        });
+        UserService.getAvaLinkById(userId).then((ava) => {
+            store.update((state) => {
+                state.user.avaLink = ava;
+            });
+        });
+    }
+
+    const handleUserFromClerk = () => {
+        // const res =  useUser().user;
+        // console.log(res);
+        {/* {navigation.navigate('Home')} */}
+    }
     
 
 
 
 
     return (
-        <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY}>
+        <ClerkProvider publishableKey={clerkPublicKey}>
             <Animated.View style={{ flex: 1, opacity: fadeAnim }}>
                 <Flex
                     display='flex'
@@ -63,7 +91,9 @@ export const Wellcome2 = ({ navigation }) => {
                         <Text fontSize={22} fontWeight='bold' marginBottom={7.5}>Đăng ký / Đăng nhập</Text>
                         <Text fontSize={16} fontWeight='semibold' color='coolGray.500' marginBottom={15}>Sử dụng mail FPT Edu / Google của bạn</Text>
                         <SignedIn>
-                            {navigation.navigate('Home')}
+                            {handleUserFromClerk()}
+                            
+
                         </SignedIn>
                         <SignedOut>
                             <SignInWithOAuth/>

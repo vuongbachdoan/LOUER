@@ -1,6 +1,5 @@
 import { Store } from 'pullstate';
 
-
 export const color = new Store({
     value: true,
     main: {

@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "wallet",
-    "slug": "wallet",
+    "name": "Louer",
+    "slug": "Louer",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -29,6 +29,11 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "ade80a89-3444-4834-acd2-7645d34e3971"
+      }
     }
   }
 }
