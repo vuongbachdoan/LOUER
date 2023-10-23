@@ -6,8 +6,8 @@ export const Wellcome1 = ({ navigation }) => {
     React.useEffect(() => {
         setTimeout(() => {
             navigation.navigate('Wellcome2')
-        }, 3000)
-    }, []);
+        }, 2000)
+    }, [navigation]);
 
     const fadeAnim = React.useRef(new Animated.Value(0)).current;
 
@@ -17,7 +17,7 @@ export const Wellcome1 = ({ navigation }) => {
             duration: 1000,
             useNativeDriver: true,
         }).start();
-    }, [fadeAnim]);
+    }, [fadeAnim, navigation]);
 
     return (
         <Animated.View style={{ flex: 1, opacity: fadeAnim }}>

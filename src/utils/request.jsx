@@ -22,17 +22,18 @@ export const get = async(path, options ={} ) => {
 
 export const put = async(path, data) => {
     const res = await requestZ.put(path, data);
-    return res.status;
+    return res.data;
 };
 
 export const del = async(path) => {
     const res = await requestZ.delete(path);
-    return res.status;
+    return res.data;
 };
 
 export const post = async(path, data) => { 
-    const res  = await requestZ.post(path, data);
-    return res.status;
+    const json = JSON.stringify(data);
+    const res = await requestZ.put(path, json);
+    return res.data;
 }
 
 

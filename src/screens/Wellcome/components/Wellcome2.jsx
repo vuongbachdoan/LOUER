@@ -3,13 +3,15 @@ import { Image, Animated, Button } from "react-native";
 import LogoLouer from '../../../assets/images/logo.png';
 import { Checkbox, Flex, Link, Stack, Text } from "native-base";
 import GradientText from "react-native-gradient-texts";
-import { ClerkProvider, SignedOut, SignedIn } from "@clerk/clerk-expo";
+import {SignedOut} from "@clerk/clerk-expo";
 import SignInWithOAuth from "../../../components/SignInWithOAuth";
+import { useUser } from "@clerk/clerk-react";
+
 
 export const Wellcome2 = ({ navigation }) => {
     const fadeAnim = React.useRef(new Animated.Value(0)).current;
-    const [isChecked, setChecked] = useState(false);
-    const CLERK_PUBLISHABLE_KEY = 'pk_test_Zmx1ZW50LXNlYWhvcnNlLTQuY2xlcmsuYWNjb3VudHMuZGV2JA';
+
+    const { isSignedIn, isLoaded } = useUser();
 
     React.useEffect(() => {
         Animated.timing(fadeAnim, {
@@ -17,10 +19,19 @@ export const Wellcome2 = ({ navigation }) => {
             duration: 1000,
             useNativeDriver: true,
         }).start();
-    }, [fadeAnim]);
+    }, [fadeAnim, navigation]);
+
+    const handleSignedIn = () => {
+        navigation.navigate('SignedIn');
+    }
+
+    React.useEffect(() => {
+        if (isSignedIn && isLoaded) {
+            handleSignedIn();
+        }
+    }, [isSignedIn, isLoaded, navigation]);
 
     return (
-        <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY}>
             <Animated.View style={{ flex: 1, opacity: fadeAnim }}>
                 <Flex
                     display='flex'
@@ -54,14 +65,12 @@ export const Wellcome2 = ({ navigation }) => {
 
                         <Text fontSize={22} fontWeight='bold' marginBottom={7.5}>Đăng ký / Đăng nhập</Text>
                         <Text fontSize={16} fontWeight='semibold' color='coolGray.500' marginBottom={15}>Sử dụng mail FPT Edu / Google của bạn</Text>
-                        <SignedIn redirectUrl='/HomeScreen'/>
+                        {isSignedIn && isLoaded && console.log('Go to Signed In') && handleSignedIn()}
                         <SignedOut>
                             <SignInWithOAuth navigation={navigation}/>
                         </SignedOut>
                     </Stack>
                 </Flex>
             </Animated.View>
-        </ClerkProvider>
-
     );
 };

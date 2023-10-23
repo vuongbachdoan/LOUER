@@ -11,6 +11,7 @@ import Prod3 from '../../../assets/images/prod3.png'
 
 import { store } from "../../../state/store";
 import * as UserService from "../../../services/User";
+import * as ListingService from "../../../services/Listing";
 
 const prodData = [
     {
@@ -55,6 +56,9 @@ export const LessorHome = ({ navigation }) => {
     const fadeAnim = React.useRef(new Animated.Value(500)).current;
    
     const user = store.useState((state) => state.user);
+    const listing = store.useState((state) => state.listing);
+
+    const [service, setService] = React.useState("");
 
 
     React.useEffect(() => {
@@ -65,7 +69,15 @@ export const LessorHome = ({ navigation }) => {
         }).start();
     }, [fadeAnim]);
 
-    const [service, setService] = React.useState("");
+    React.useEffect(() => {
+        ListingService.getByUserId(user.userId).then((data) => {
+            store.update((state) => {
+                state.listing = data;
+                // console.log('DATA: ', data);
+                // console.log('Listing: ', state.listing);
+            })
+        });
+    }, [navigation]);
 
     const handleChangeRoute = (route) => {
         navigation.navigate(route);
@@ -90,7 +102,8 @@ export const LessorHome = ({ navigation }) => {
                 >
                     <Box>
                         <Heading fontSize={36} fontWeight='bold'>Xin Chào</Heading>
-                        <Heading fontSize={36} fontWeight='bold' color='#22A4DD'>{user.firstName} {user.middleName} {user.lastName}</Heading>
+                        <Heading fontSize={36} fontWeight='bold' color='#22A4DD'>{user.firstName} {user.lastName}</Heading>
+                        {console.log('USER: ', user)}
                     </Box>
                     <Avatar bg="lightBlue.400" source={{uri: user.avaLink}} size="md"
                         onPress={() => navigation.navigate('Profile')}>

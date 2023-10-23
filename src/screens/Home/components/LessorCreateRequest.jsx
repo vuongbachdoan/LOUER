@@ -8,7 +8,7 @@ import * as ImagePicker from 'expo-image-picker';
 
 import { store } from "../../../state/store";
 
-import {add, addImg} from "../../../services/ListingRequest"
+import { add, addImg } from "../../../services/ListingRequest"
 
 
 const listingRequest = {
@@ -39,7 +39,6 @@ export const LessorCreateRequest = ({ navigation }) => {
 
     const user = store.useState((state) => state.user);
     const [isUploaded, setIsUploaded] = React.useState(false);
-    const [chosenCategory, setChosenCategory] = React.useState("*Chưa chọn*");
     const UPLOADLIMIT = 6;
 
     const fadeAnim = React.useRef(new Animated.Value(0)).current;
@@ -76,13 +75,23 @@ export const LessorCreateRequest = ({ navigation }) => {
     }, [navigation]);
 
 
+    const handleUserIdInput = () => {
+        listingRequest.userId = user.userId;
+    }
+
     const handleNameInput = (text) => {
         listingRequest.productName = text;
+        handleUserIdInput();
     };
 
     const handleBrandNameInput = (text) => {
         listingRequest.brandName = text;
     };
+
+    const handleCategoryInput = (text) => {
+        listingRequest.categoryName = text;
+    };
+
 
     const handleDesCInput = (text) => {
         listingRequest.listingDescription = text;
@@ -105,6 +114,7 @@ export const LessorCreateRequest = ({ navigation }) => {
     }
 
 
+
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -119,6 +129,7 @@ export const LessorCreateRequest = ({ navigation }) => {
                 listingRequest.photos.push(image.uri);
             });
             console.log('PROD REQ:', listingRequest);
+
             setIsUploaded(true);
         } else if (result.error) {
             console.log('ImagePicker Error: ', result.error);
@@ -130,19 +141,17 @@ export const LessorCreateRequest = ({ navigation }) => {
 
     const handleAddListing = () => {
         if (
-            listingRequest.productName === "" ||
-            listingRequest.brandName === "" ||
-            listingRequest.categoryName === "" ||
-            listingRequest.listingDescription === "" ||
-            listingRequest.marketPrice === 0 ||
-            listingRequest.price === 0 ||
-            listingRequest.photos.length === 0
+            listingRequest.productName == "" ||
+            listingRequest.brandName == "" ||
+            listingRequest.categoryName == "" ||
+            listingRequest.listingDescription == "" ||
+            listingRequest.marketPrice <= 0 ||
+            listingRequest.price <= 0 ||
+            listingRequest.photos.length == 0
         ) {
-            try {
-                alert("REJECT UPLOAD, One of those parameters in listingRequest are null or 0");
-            } catch {
-                Toast.show('Vui lòng điển đủ thông tin.');
-            }
+            console.log('PROD REQ:', listingRequest);
+            console.log('REJECT UPLOAD, missing info');
+            Toast.show('Vui lòng điển đủ thông tin.');
         } else {
             const requestBodyAdd = [];
             requestBodyAdd.push(listingRequest.productName);
@@ -153,12 +162,18 @@ export const LessorCreateRequest = ({ navigation }) => {
             requestBodyAdd.push(listingRequest.price);
             console.log('requestBodyAdd: ', requestBodyAdd);
 
-        add(user.userId, requestBodyAdd).then((response) => {
-                console.log("Add listing response: ", response);
-                const listingId = response.listingId;
-                addImg(listingId, listingRequest.photos).then((responseImg) => {
-                    console.log("Add img response: ", responseImg);
-                });
+            add(user.userId, requestBodyAdd).then((response) => {
+                if (!response) {
+                    console.log("Add listing response: ", response);
+                    const listingId = response.listingId;
+                    addImg(listingId, listingRequest.photos).then((responseImg) => {
+                        console.log("Add img response: ", responseImg);
+                    });
+                }else{
+                    console.log("Add listing response: ", response);
+                    Toast.show('Có lỗi lúc thêm sản phẩm.');
+                }
+
             });
 
 
@@ -237,7 +252,7 @@ export const LessorCreateRequest = ({ navigation }) => {
                                             bg: 'gray.100',
                                             endIcon: <CheckIcon size="5" />
                                         }}
-                                        onValueChange={chosenValue => setCategoryName(chosenValue)}
+                                        onValueChange={chosenValue => setCategoryName(chosenValue) && handleCategoryInput(chosenValue)}
                                     >
                                         {categoryList.map((category, index) => (
                                             <Select.Item
@@ -327,6 +342,7 @@ export const LessorCreateRequest = ({ navigation }) => {
                                         }
                                     }}
                                     keyboardType='numeric'
+                                    onChange={handleMarketPriceInput}
                                 />
                             </Flex>
 
@@ -352,6 +368,7 @@ export const LessorCreateRequest = ({ navigation }) => {
                                     }}
                                     keyboardType='numeric'
                                     inputMode="numeric"
+                                    onChange={handlePriceInput}
                                 />
                                 <Text>/ Ngày</Text>
                             </Flex>

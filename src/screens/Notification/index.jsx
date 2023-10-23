@@ -153,6 +153,7 @@ export const Notification = ({ navigation, route }) => {
                     paddingTop={15}
                 >
                     <Heading fontSize={36} fontWeight='bold' color={getMainColor(user.userMode)}>Thông báo</Heading>
+                    {console.log(user)}
                     <Avatar bg="lightBlue.400" source={{
                         uri: user.avaLink
                     }} size="md">

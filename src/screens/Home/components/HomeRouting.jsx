@@ -67,24 +67,7 @@ const prodData = [
 const HomeTabs = createBottomTabNavigator();
 
 export const HomeRouting = ({ navigation }) => {
-    const userId = '1';
     const user = store.useState((state) => state.user);
-
-
-    React.useEffect(() => {
-        UserService.getById(userId).then((data) => {
-            store.update((state) => {
-                state.user = data;
-                state.user.userId = userId;
-            })
-        });
-        UserService.getAvaLinkById(userId).then((ava) => {
-            store.update((state) => {
-                state.user.avaLink = ava;
-            });
-        });
-        
-    }, [navigation]);
 
     return (
         <HomeTabs.Navigator

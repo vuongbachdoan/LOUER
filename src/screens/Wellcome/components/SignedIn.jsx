@@ -2,25 +2,58 @@ import React from "react";
 import { View, Text, StyleSheet, Animated } from "react-native";
 import GradientText from "react-native-gradient-texts";
 import { GradientButton } from "../../../components/GradientButton";
-import { Box, Stack } from "native-base";
+import { Box, Stack, Heading, Avatar, Flex } from "native-base";
 import { useLayoutEffect } from "react";
 import Toast from "../../../components/Toast";
-import { ClerkProvider } from "@clerk/clerk-expo";
-
-import { useUser } from "@clerk/clerk-react";
-
+import { useUser, useAuth } from "@clerk/clerk-expo";
 import { store } from "../../../state/store";
-import { enviroment} from "../../../state/enviroment";
+import * as UserService from "../../../services/User";
 
 export const SignedIn = ({ navigation }) => {
 
-    React.useEffect(() => {
-    }, []);
+    const userId = '1';
+    const userMain = store.useState((state) => state.user);
+    const { isSignedIn, user, isLoaded } = useUser();
+    const { getToken } = useAuth();
 
-    const clerkPublicKey = enviroment.useState((state) => state.clerkPublicKey);
-    const { isSignedIn, userClerk, isLoaded } = useUser();
 
     const fadeAnim = React.useRef(new Animated.Value(0)).current;
+
+    React.useEffect(() => {
+        handleUserServer();
+        handleUserClerk();
+    }, [isSignedIn,navigation]);
+
+    const handleUserServer = () => {
+        UserService.getById(userId).then((data) => {
+            store.update(state => {
+                state.user = data;
+            })
+            console.log('userMain FROM SERVER', userMain);
+
+        });
+
+        // UserService.getAvaLinkById(userId).then((ava) => {
+        //     store.update((state) => {
+        //         state.user.avaLink = ava;
+        //     });
+        // });
+    }
+
+    const handleUserClerk = () => {
+        // userMain.studentId = user.emailAddress.match(/(.{8})@fpt.edu.vn/)[1];
+        store.replace(state => {
+            state.user
+        });
+        userMain.firstName = user.firstName;
+        userMain.lastName = user.lastName;
+        userMain.email = user.emailAddresses;
+        userMain.phoneNumber = user.phoneNumbers;
+        userMain.avaLink = user.imageUrl;
+        console.log('userMain FROM CLERKKKKK', userMain);
+    }
+
+
 
     React.useEffect(() => {
         Animated.timing(fadeAnim, {
@@ -38,52 +71,78 @@ export const SignedIn = ({ navigation }) => {
     }, [navigation]);
 
 
-    if (isLoaded) {
-        if (isSignedIn) {
-            return (
-                <ClerkProvider publishableKey={clerkPublicKey}>
-                    <Animated.View style={{ flex: 1, opacity: fadeAnim }}>
-                    <Stack
-                        paddingLeft={15}
-                        paddingRight={15}
-                        paddingTop={30}
-                        flex={1}
-                        display='flex'
-                        justifyContent='center'
-                        alignItems='center'
-                        width='100%'
-                    >
-                        <GradientText
-                            text={"Chào mừng, "}
-                            fontSize={95}
-                            fontWeight={1000}
-                            isGradientFill
-                            gradientColors={['#FF5484', '#26A0DD']}
-                        />
-                        {/* <GradientText
-                            text={userClerk.fullName}
-                            fontSize={95}
-                            fontWeight={1000}
-                            isGradientFill
-                            gradientColors={['#FF5484', '#26A0DD']}
-                        /> */}
+    return (
+        <Animated.View style={{ flex: 1, opacity: fadeAnim }}>
 
-                        <Box width='100%'>
-                            <Box height={15}></Box>
-                            <GradientButton onPress={() => navigation.goBack()} fontSize={18} height={55} radius={10} colors={['#22A4DD', '#F45985']} text='Tiếp tục' />
-                        </Box>
-                    </Stack>
-                </Animated.View>
-                </ClerkProvider>
-                
-            );
-        } else {
-            Toast.show('Bạn chưa đăng nhập, xin vui lòng thử lại.');
-            navigation.goBack();
-        }
-    }
+            <Stack
+                paddingLeft={15}
+                paddingRight={15}
+                paddingTop={0}
+                flex={1}
+                display='flex'
+                justifyContent='center'
+                alignItems='center'
+                width='100%'
+                height='100%'
+            >
+                {isLoaded && isSignedIn ? (
+                    <>
+                        <Flex
+                            paddingX={15}
+                            paddingY={30}
+                            width='100%'
+                            flexDirection='column'
+                            height='100%'
+                            overflow='hidden'
+                        >
+                            <Box height={30} />
+                            <Flex
+                                justifyContent='space-between'
+                                flexDirection='row'
+                                alignItems='center'
+                                paddingBottom={15}
+                                paddingTop={15}
+                            >
+                                <Box>
+                                    <Text style={{ fontSize: 36, fontWeight: '900', textAlign: 'left' }}>Chào mừng</Text>
+                                    <Text style={{ fontSize: 36, fontWeight: '900' }}>tới Louer,</Text>
+                                </Box>
+                                <Avatar bg="lightBlue.400" source={{ uri: user.imageUrl }} size="xl">
+                                    Avt
+                                    <Avatar.Badge bg="green.500" />
+                                </Avatar>
+                            </Flex>
+                            <Box height={50} />
+                            <Box>
+                                <GradientText
+                                    text={user.firstName}
+                                    fontSize={90}
+                                    fontWeight={1000}
+                                    isGradientFill
+                                    gradientColors={['#FF5484', '#26A0DD']}
+                                />
+                                <GradientText
+                                    text={user.lastName + '!'}
+                                    fontSize={90}
+                                    fontWeight={1000}
+                                    isGradientFill
+                                    gradientColors={['#FF5484', '#26A0DD']}
+                                />
+                            </Box>
+                            <Box height={85} />
+                            <Box>
+                                <Box height={15}></Box>
+                                <GradientButton onPress={() => navigation.navigate('Home')} fontSize={22} height={55} radius={30} colors={['#22A4DD', '#F45985']} text='Tiếp tục' />
+                            </Box>
+                        </Flex>
 
+                    </>
+                ) : null}
 
+            </Stack>
+        </Animated.View>
+
+    );
 };
 
 const styles = StyleSheet.create({
@@ -98,7 +157,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    text: {
-        textTransform: 'uppercase',
-    }
+    // text: {
+    //     textTransform: 'uppercase',
+    // }
 })
