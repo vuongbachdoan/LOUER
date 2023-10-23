@@ -1,14 +1,17 @@
 import React, { useState } from "react";
 import { Image, Animated } from "react-native";
 import LogoLouer from '../../../assets/images/logo.png';
-import { GradientButton } from "../../../components/GradientButton";
 import { Checkbox, Flex, Link, Stack, Text } from "native-base";
 import GradientText from "react-native-gradient-texts";
+import { ClerkProvider, SignedOut, SignedIn } from "@clerk/clerk-expo";
+import SignInWithOAuth from "../../../components/SignInWithOAuth";
 
 export const Wellcome2 = ({ navigation }) => {
     const fadeAnim = React.useRef(new Animated.Value(0)).current;
     const [isChecked, setChecked] = useState(false);
+    const CLERK_PUBLISHABLE_KEY = 'pk_test_Zmx1ZW50LXNlYWhvcnNlLTQuY2xlcmsuYWNjb3VudHMuZGV2JA';
 
+    const [user, setUser] = useState(null);
 
     React.useEffect(() => {
         Animated.timing(fadeAnim, {
@@ -18,58 +21,57 @@ export const Wellcome2 = ({ navigation }) => {
         }).start();
     }, [fadeAnim]);
 
-    const handlePolicyAllow = () => {
-        setChecked(!isChecked);
-    }
-
-
     
 
+
+
+
     return (
-        <Animated.View style={{ flex: 1, opacity: fadeAnim }}>
-            <Flex
-                display='flex'
-                justifyContent='center'
-                alignItems='center'
-                flexDirection='column'
-                height='100%'
-                width='100%'
-            >
-                <Stack
+        <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY}>
+            <Animated.View style={{ flex: 1, opacity: fadeAnim }}>
+                <Flex
+                    display='flex'
+                    justifyContent='center'
                     alignItems='center'
-                    marginLeft={15}
-                    marginRight={15}
+                    flexDirection='column'
+                    height='100%'
+                    width='100%'
                 >
-                    <Image
-                        style={{
-                            width: 280,
-                            height: 280,
-                            resizeMode: 'contain',
-                        }}
-                        source={LogoLouer}
-                    />
+                    <Stack
+                        alignItems='center'
+                        marginLeft={15}
+                        marginRight={15}
+                    >
+                        <Image
+                            style={{
+                                width: 280,
+                                height: 280,
+                                resizeMode: 'contain',
+                            }}
+                            source={LogoLouer}
+                        />
 
-                    <GradientText
-                        text={"Louer"}
-                        fontSize={95}
-                        fontWeight={1000}
-                        isGradientFill
-                        gradientColors={['#FF5484', '#26A0DD']}
-                    />
+                        <GradientText
+                            text={"Louer"}
+                            fontSize={95}
+                            fontWeight={1000}
+                            isGradientFill
+                            gradientColors={['#FF5484', '#26A0DD']}
+                        />
 
-                    <Text fontSize={22} fontWeight='bold' marginBottom={7.5}>Đăng ký / Đăng nhập</Text>
-                    <Text fontSize={16} fontWeight='semibold' color='coolGray.500' marginBottom={15}>Sử dụng mail FPT Edu / Google của bạn</Text>
-                    <GradientButton
-                        text='Login with Google account'
-                        onPress={() => navigation.navigate('Home')}
-                        colors={isChecked ? ['#2A4AB6', '#269DDB'] : ['#6B7280', '#6B7280']}
-                        disabled={!isChecked}
-                    />
-                    <Checkbox marginTop={15} isChecked={isChecked} onChange={handlePolicyAllow} colorScheme="green" display='flex' flexDirection='row'>
-                        <Text>By click, you aggree with our</Text><Link href='/policy'>Tern and Conditional</Link>
-                    </Checkbox>
-                </Stack>
-            </Flex>
-        </Animated.View>
+                        <Text fontSize={22} fontWeight='bold' marginBottom={7.5}>Đăng ký / Đăng nhập</Text>
+                        <Text fontSize={16} fontWeight='semibold' color='coolGray.500' marginBottom={15}>Sử dụng mail FPT Edu / Google của bạn</Text>
+                        <SignedIn>
+                            {navigation.navigate('Home')}
+                        </SignedIn>
+                        <SignedOut>
+                            <SignInWithOAuth/>
+                        </SignedOut>
+                        
+                    </Stack>
+                </Flex>
+            </Animated.View>
+        </ClerkProvider>
+
     );
 };
