@@ -1,5 +1,5 @@
 import { Avatar, Box, Button, Flex, Icon, Image, Text } from "native-base";
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, Animated } from "react-native";
 import AvatarUser from '../../assets/images/placeholder.png';
 import { Ionicons } from "@expo/vector-icons";
@@ -10,7 +10,7 @@ import { store } from "../../state/store";
 import { getGradientColor, getMainColor } from "../../state/color";
 
 
-export const Profile = ({ navigation}) => {
+export const Profile = ({ navigation }) => {
 
     const fadeAnim = React.useRef(new Animated.Value(0)).current;
     const user = store.useState((state) => state.user);
@@ -22,6 +22,11 @@ export const Profile = ({ navigation}) => {
             useNativeDriver: true,
         }).start();
     }, [fadeAnim]);
+
+    const [userData, setUserData] = useState(false);
+    React.useEffect(() => {
+        setUserData(user)
+    }, [user])
 
     return (
         <Animated.View style={{ flex: 1, opacity: fadeAnim }}>
@@ -39,25 +44,25 @@ export const Profile = ({ navigation}) => {
                     rowGap={15}
                     alignItems='center'
                 >
-                    <Image alt="user" source={user.avaLink} width={140} height={140} borderRadius={15} />
-                    <Text fontSize='2xl' fontWeight='semibold' color={getMainColor(user.userMode)}>{user.firstName} {user.middleName} {user.lastName}</Text>
-                    <Text fontSize='xl' marginBottom={15} fontWeight='semibold'>{user.email}</Text>
+                    <Image alt="user" src={userData.avaLink} width={140} height={140} borderRadius={15} />
+                    <Text fontSize='2xl' fontWeight='semibold' color={getMainColor(userData.userMode)}>{user.firstName} {user.middleName} {user.lastName}</Text>
+                    {/* <Text fontSize='xl' marginBottom={15} fontWeight='semibold'>{user.email}</Text> */}
 
                     <GradientButton
-                        colors={getGradientColor(user.userMode)}
+                        colors={getGradientColor(userData.userMode)}
                         width={240}
                         onPress={() => navigation.navigate('ProfileInformation')}
                         text='Thông tin cá nhân' />
                     <GradientButton
-                        colors={getGradientColor(user.userMode)}
+                        colors={getGradientColor(userData.userMode)}
                         width={240}
                         onPress={() => navigation.navigate('ProfileReview')}
                         text='Đánh giá của tôi' />
                     <GradientButton
-                        colors={getGradientColor(user.userMode)}
+                        colors={getGradientColor(userData.userMode)}
                         width={240}
                         text='Đăng xuất'
-                        onPress={() => navigation.navigate('SignoutConfirm')}
+                        onPress={() => navigation.navigate('SignoutConfirm', { userData: userData })}
                     />
                 </Flex>
             </Box>

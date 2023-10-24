@@ -1,17 +1,30 @@
 import { Avatar, Badge, Box, CheckIcon, Flex, Image, Input, ScrollView, Select, Stack, Text, View } from "native-base";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, Animated } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { GradientButton } from "../../components/GradientButton";
-
 import { store } from "../../state/store";
-import * as userService from "../../services/User";
+
+const styles = StyleSheet.create({
+    container: {
+        paddingTop: 50,
+        paddingBottom: 25,
+        paddingLeft: 25,
+        paddingRight: 25,
+        width: '100%',
+        height: '100%',
+        backgroundColor: '#FAFAFA',
+    },
+    text: {
+        textTransform: 'uppercase',
+        color: '#FFF'
+    }
+})
 
 export const ProfileInformation = ({ navigation }) => {
-
     const fadeAnim = React.useRef(new Animated.Value(0)).current;
     const user = store.useState((state) => state.user);
-    const currentUserMode = store.useState((state) => state.user.userMode);
+    const [updateStatus, setUpdateStatus] = React.useState(false);
 
     React.useEffect(() => {
         Animated.timing(fadeAnim, {
@@ -21,25 +34,10 @@ export const ProfileInformation = ({ navigation }) => {
         }).start();
     }, [fadeAnim]);
 
-    const [updateStatus, setUpdateStatus] = React.useState(false);
-    React.useEffect(() => {
-        userService.updateById(user.userId, user);
-        userService.updateModeById(user.userId)
-        setTimeout(() => {
-            setUpdateStatus(false);
-        }, 3000)
-    }, [updateStatus])
-
     const handleChangeuserMode = (userMode) => {
-
-
         store.update((state) => {
             state.user.userMode = userMode;
         });
-
-        userService.updateModeById(userMode);
-
-
     }
 
     return (
@@ -62,12 +60,12 @@ export const ProfileInformation = ({ navigation }) => {
                     <Flex
                         flexDirection='row'
                         alignItems='center'
-                        style={{columnGap: 15}}
+                        style={{ columnGap: 15 }}
                     >
                         <Flex><Ionicons name="chevron-back" size={22} onPress={() => navigation.goBack()} /></Flex>
                         <Text fontSize={22} fontWeight='semibold'>Thông tin cá nhân</Text>
                     </Flex>
-                    
+
                 </Flex>
                 <Box
                     flex={1}
@@ -87,7 +85,7 @@ export const ProfileInformation = ({ navigation }) => {
                             marginBottom: 15
                         }}
                     >
-                        <Box ><Image width={100} height={100} source={{uri: user.avaLink}} borderRadius={10} alt="thumbnail" /></Box>
+                        <Box ><Image width={100} height={100} source={{ uri: user?.avaLink ?? '' }} borderRadius={10} alt="thumbnail" /></Box>
                         <View
                             style={{ flex: 1 }}
                         >
@@ -95,19 +93,19 @@ export const ProfileInformation = ({ navigation }) => {
                                 flexDirection='column'
                                 justifyContent='space-between'
                             >
-                                <Text textAlign='left' numberOfLines={1} ellipsizeMode='tail' fontSize={16} fontWeight='semibold' color='#01005C'>{user.firstName} {user.middleName} {user.lastName}</Text>
-                                <Text>MSSV: {user.studentId}</Text>
+                                <Text textAlign='left' numberOfLines={1} ellipsizeMode='tail' fontSize={16} fontWeight='semibold' color='#01005C'>{user?.firstName ?? ''} {user?.middleName ?? ''} {user?.lastName ?? ''}</Text>
+                                <Text>MSSV: {user?.studentId ?? ''}</Text>
                             </Flex>
                         </View>
                     </View>
 
                     <Text fontWeight='semibold'>Thay đổi thông tin cá nhân bên dưới</Text>
                     <Select
-                        selectedValue={user.userMode?'Lessor':'Lessee'}
+                        selectedValue={updateStatus ? 'Lessor' : 'Lessee'}
                         height={45}
                         width={120}
                         accessibilityLabel="Select userMode"
-                        placeholder={user.userMode?'Lessor':'Lessee'}
+                        placeholder={updateStatus ? 'Lessor' : 'Lessee'}
                         borderRadius={15}
                         fontSize={14}
                         fontWeight={700}
@@ -116,8 +114,8 @@ export const ProfileInformation = ({ navigation }) => {
                             endIcon: <CheckIcon size="5" />
                         }} onValueChange={itemValue => handleChangeuserMode(itemValue)}
                     >
-                        <Select.Item label="Lessee" value="false" />
-                        <Select.Item label="Lessor" value="true" />
+                        <Select.Item label="Lessee" value={false} />
+                        <Select.Item label="Lessor" value={true} />
                     </Select>
                     <Flex
                         marginTop={15}
@@ -126,10 +124,10 @@ export const ProfileInformation = ({ navigation }) => {
                             rowGap: 15
                         }}
                     >
-                        <Input fontSize={18} placeholder={user.email} leftElement={<Stack marginLeft={15}><Ionicons name="at-outline" size={22} /></Stack>} height='50px' borderRadius={15} editable={false} />
-                        <Input fontSize={18} placeholder={user.phone} leftElement={<Stack marginLeft={15}><Ionicons name="call-outline" size={22} /></Stack>} height='50px' borderRadius={15} />
-                        <Input fontSize={18} placeholder="Địa điểm thuê" leftElement={<Stack marginLeft={15}><Ionicons name="home-outline" size={22} /></Stack>} height='50px' borderRadius={15} />
-                        <Input fontSize={18} placeholder="Số tài khoản" leftElement={<Stack marginLeft={15}><Ionicons name="card-outline" size={22} /></Stack>} height='50px' borderRadius={15} />
+                        <Input fontSize={18} value={user?.email} placeholder='Email' leftElement={<Stack marginLeft={15}><Ionicons name="at-outline" size={22} /></Stack>} height='50px' borderRadius={15} editable={false} />
+                        <Input fontSize={18} value={user?.phone} placeholder='Phone' leftElement={<Stack marginLeft={15}><Ionicons name="call-outline" size={22} /></Stack>} height='50px' borderRadius={15} />
+                        <Input fontSize={18} value={user?.address} placeholder="Địa điểm thuê" leftElement={<Stack marginLeft={15}><Ionicons name="home-outline" size={22} /></Stack>} height='50px' borderRadius={15} />
+                        <Input fontSize={18} value={user?.bankAccount} placeholder="Số tài khoản" leftElement={<Stack marginLeft={15}><Ionicons name="card-outline" size={22} /></Stack>} height='50px' borderRadius={15} />
 
                         {
                             updateStatus &&
@@ -137,30 +135,16 @@ export const ProfileInformation = ({ navigation }) => {
                                 <Text>Cập nhật thông tin thành công</Text>
                             </Badge>
                         }
-                        <GradientButton 
-                            onPress={() => 
+                        <GradientButton
+                            onPress={() =>
                                 setUpdateStatus(true)
-                            } 
-                            text='Cập nhật thông tin' colors={currentUserMode ? ['#2A4AB6', '#269DDB'] : ['#9F3553', '#E98EA6']} height={55} radius={15} />
+                            }
+                            text='Cập nhật thông tin'
+                            colors={user?.userMode ? ['#2A4AB6', '#269DDB'] : ['#9F3553', '#E98EA6']}
+                            height={55} radius={15} />
                     </Flex>
                 </Box>
             </Box>
         </Animated.View >
     );
-};
-
-const styles = StyleSheet.create({
-    container: {
-        paddingTop: 50,
-        paddingBottom: 25,
-        paddingLeft: 25,
-        paddingRight: 25,
-        width: '100%',
-        height: '100%',
-        backgroundColor: '#FAFAFA',
-    },
-    text: {
-        textTransform: 'uppercase',
-        color: '#FFF'
-    }
-})
+}
