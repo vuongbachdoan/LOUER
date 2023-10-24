@@ -5,7 +5,10 @@ import GradientText from "react-native-gradient-texts";
 export const Wellcome1 = ({ navigation }) => {
     React.useEffect(() => {
         setTimeout(() => {
-            navigation.navigate('Wellcome2')
+            navigation.reset({
+                index: 0,
+                routes: [{ name: 'Wellcome2' }],
+            });
         }, 2000)
     }, [navigation]);
 
@@ -17,6 +20,7 @@ export const Wellcome1 = ({ navigation }) => {
             duration: 1000,
             useNativeDriver: true,
         }).start();
+        
     }, [fadeAnim, navigation]);
 
     return (

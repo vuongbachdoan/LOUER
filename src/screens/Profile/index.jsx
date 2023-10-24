@@ -39,7 +39,8 @@ export const Profile = ({ navigation}) => {
                     rowGap={15}
                     alignItems='center'
                 >
-                    <Image alt="user" source={user.avaLink} width={140} height={140} borderRadius={15} />
+                    <Box height={30} />
+                    <Image alt="user" source={{uri: user.avaLink}} width={140} height={140} borderRadius={15} />
                     <Text fontSize='2xl' fontWeight='semibold' color={getMainColor(user.userMode)}>{user.firstName} {user.middleName} {user.lastName}</Text>
                     <Text fontSize='xl' marginBottom={15} fontWeight='semibold'>{user.email}</Text>
 

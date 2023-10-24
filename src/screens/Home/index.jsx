@@ -11,13 +11,12 @@ import { store } from "../../state/store";
 import { getGradientColor, getMainColor } from "../../state/color";
 import { LessorCreateRequest } from "./components/LessorCreateRequest";
 import { enviroment } from "../../state/enviroment";
+import { ClerkProvider } from "@clerk/clerk-expo";
 
 const Tab = createBottomTabNavigator();
 
 export const Home = ({ navigation }) => {
     const user = store.useState((state) => state.user);
-
-    const CLERK_PUBLISHABLE_KEY = enviroment.useState((state) => state.clerkPublicKey);
 
     return (
             <Tab.Navigator

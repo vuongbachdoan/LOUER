@@ -22,7 +22,7 @@ export const store = new Store({
         bankAccount: '',
 
         userStatus: 'Lessee',
-        userMode: false,
+        userMode: true,
 
         acceptedTnC: false,
     },

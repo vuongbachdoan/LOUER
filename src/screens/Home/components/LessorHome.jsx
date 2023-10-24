@@ -71,12 +71,12 @@ export const LessorHome = ({ navigation }) => {
 
     React.useEffect(() => {
         ListingService.getByUserId(user.userId).then((data) => {
-            store.update((state) => {
-                state.listing = data;
-                // console.log('DATA: ', data);
-                // console.log('Listing: ', state.listing);
-            })
+            console.log('DATA: ', data);
+            // store.update((state) => {
+            //     state.listing = data;
+            // })
         });
+        console.log('Listing : ', listing);
     }, [navigation]);
 
     const handleChangeRoute = (route) => {
@@ -103,9 +103,8 @@ export const LessorHome = ({ navigation }) => {
                     <Box>
                         <Heading fontSize={36} fontWeight='bold'>Xin Chào</Heading>
                         <Heading fontSize={36} fontWeight='bold' color='#22A4DD'>{user.firstName} {user.lastName}</Heading>
-                        {console.log('USER: ', user)}
                     </Box>
-                    <Avatar bg="lightBlue.400" source={{uri: user.avaLink}} size="md"
+                    <Avatar bg="lightBlue.400" source={{uri: user.avaLink}} size="lg"
                         onPress={() => navigation.navigate('Profile')}>
                         Avt
                         <Avatar.Badge bg="green.500" />

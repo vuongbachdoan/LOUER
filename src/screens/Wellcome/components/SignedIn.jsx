@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, Animated } from "react-native";
 import GradientText from "react-native-gradient-texts";
 import { GradientButton } from "../../../components/GradientButton";
@@ -8,23 +8,70 @@ import Toast from "../../../components/Toast";
 import { useUser, useAuth } from "@clerk/clerk-expo";
 import { store } from "../../../state/store";
 import * as UserService from "../../../services/User";
+import * as LoginService from "../../../services/Login";
+
 
 export const SignedIn = ({ navigation }) => {
 
     const userMain = store.useState((state) => state.user);
     const { isSignedIn, user, isLoaded } = useUser();
+    const [resLogin, setResLogin] = useState(null);
 
     useEffect(() => {
-        if (user) {
+        const email = user.primaryEmailAddress.emailAddress;
+            switch (true) {
+                //Case FPT
+                case /[a-z0-9]{8,}@fpt\.edu\.vn/.test(email):
+                    setResLogin(LoginService.mailFPT(user.fullName, user.primaryEmailAddress.emailAddress, user.imageUrl))
+                    break;
+                //Case Gmail
+                case /^[a-z0-9]{8,}@gmail\.com$/.test(email):
+                    if (user.lastName !== null && user.middleName === null) {
+                        setResLogin(LoginService.mail(user.fullName, user.primaryEmailAddress.emailAddress, user.imageUrl, user.lastName));
+                    } else if (user.middleName !== null && user.lastName === null) {
+                        setResLogin(LoginService.mail(user.fullName, user.primaryEmailAddress.emailAddress, user.imageUrl, null, user.middleName));
+                    } else if (user.lastName !== null && user.middleName !== null) {
+                        setResLogin(LoginService.mail(user.fullName, user.primaryEmailAddress.emailAddress, user.imageUrl, user.lastName, user.middleName));
+                    }
+                    break;
+                default:
+                    setResLogin(LoginService.mailOther(user.fullName, user.primaryEmailAddress.emailAddress, user.imageUrl));
+                    break;
+            }
+            console.log('ResLogin',resLogin);
             store.update(s => {
-                s.user.firstName = user.firstName;
-                s.user.lastName = user.lastName;
-                s.user.email = user.emailAddresses;
-                s.user.phone = user.phoneNumbers;
-                s.user.avaLink = user.imageUrl;
+                //Example response
+                // {
+                //     "userId": 31,
+                //     "studentId": "PTIA168224",
+                //     "firstName": "B",
+                //     "lastName": "A",
+                //     "middleName": "",
+                //     "email": "haptia168224@fpt.edu.vn",
+                //     "phone": null,
+                //     "positiveRating": 0,
+                //     "negativeRating": 0,
+                //     "rating": 100.0,
+                //     "userStatus": true,
+                //     "userMode": false,
+                //     "images": ["https://www.louerapp.com/api/images/users/55"]
+                // }
+                s.user.userId = setResLogin.userId;
+                s.user.studentId = setResLogin.studentId;
+                s.user.firstName = setResLogin.firstName;
+                s.user.lastName = setResLogin.lastName;
+                s.user.middleName = setResLogin.middleName;
+                s.user.email = setResLogin.email;
+                s.user.phone = setResLogin.phone;
+                s.user.positiveRating = setResLogin.positiveRating;
+                s.user.negativeRating = setResLogin.negativeRating;
+                s.user.rating = setResLogin.rating;
+                s.user.userStatus = setResLogin.userStatus;
+                s.user.userMode = setResLogin.userMode;
+                s.user.images = setResLogin.images;
             });
-        }
-    }, [user])
+        console.log('User MAIN',userMain);
+    }, [isSignedIn, navigation]);
 
 
     const fadeAnim = React.useRef(new Animated.Value(0)).current;
@@ -107,7 +154,12 @@ export const SignedIn = ({ navigation }) => {
                             <Box height={85} />
                             <Box>
                                 <Box height={15}></Box>
-                                <GradientButton onPress={() => navigation.navigate('Home')} fontSize={22} height={55} radius={30} colors={['#22A4DD', '#F45985']} text='Tiếp tục' />
+                                <GradientButton onPress={() => {
+                                    navigation.reset({
+                                        index: 0,
+                                        routes: [{ name: 'Home' }],
+                                    });
+                                }} fontSize={22} height={55} radius={30} colors={['#22A4DD', '#F45985']} text='Tiếp tục' />
                             </Box>
                         </Flex>
 

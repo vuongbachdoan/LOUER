@@ -6,7 +6,6 @@ import GradientText from "react-native-gradient-texts";
 import { SignedOut } from "@clerk/clerk-expo";
 import SignInWithOAuth from "../../../components/SignInWithOAuth";
 import { useUser } from "@clerk/clerk-react";
-import LoadScreen from "../../../components/LoadScreen";
 
 
 export const Wellcome2 = ({ navigation }) => {
@@ -69,7 +68,6 @@ export const Wellcome2 = ({ navigation }) => {
                     {isSignedIn && isLoaded && console.log('Go to Signed In') && handleSignedIn()}
                     <SignedOut>
                         <SignInWithOAuth navigation={navigation} />
-                        <LoadScreen />
                     </SignedOut>
                 </Stack>
             </Flex>

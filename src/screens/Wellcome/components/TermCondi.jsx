@@ -38,6 +38,7 @@ export const TermCondi = ({ navigation }) => {
                     paddingX={15}
                     paddingTop={30}
                 >
+                <Box height={20} />
                     <Text textAlign='center' flex={1} fontSize={22} fontWeight='semibold'>Điều khoản sử dụng</Text>
                 </Flex>
 

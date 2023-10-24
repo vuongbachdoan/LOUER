@@ -31,12 +31,9 @@ export const ProfileInformation = ({ navigation }) => {
     }, [updateStatus])
 
     const handleChangeuserMode = (userMode) => {
-
-
         store.update((state) => {
             state.user.userMode = userMode;
         });
-
         userService.updateModeById(userMode);
 
 
@@ -87,7 +84,7 @@ export const ProfileInformation = ({ navigation }) => {
                             marginBottom: 15
                         }}
                     >
-                        <Box ><Image width={100} height={100} source={{uri: user.avaLink}} borderRadius={10} alt="thumbnail" /></Box>
+                        <Box ><Image width={100} height={100} source={{uri: user.avaLink}} borderRadius={30} alt="thumbnail" /></Box>
                         <View
                             style={{ flex: 1 }}
                         >
@@ -127,10 +124,10 @@ export const ProfileInformation = ({ navigation }) => {
                         }}
                     >
                         <Input fontSize={18} placeholder={user.email} leftElement={<Stack marginLeft={15}><Ionicons name="at-outline" size={22} /></Stack>} height='50px' borderRadius={15} editable={false} />
-                        <Input fontSize={18} placeholder={user.phone} leftElement={<Stack marginLeft={15}><Ionicons name="call-outline" size={22} /></Stack>} height='50px' borderRadius={15} />
-                        <Input fontSize={18} placeholder="Địa điểm thuê" leftElement={<Stack marginLeft={15}><Ionicons name="home-outline" size={22} /></Stack>} height='50px' borderRadius={15} />
-                        <Input fontSize={18} placeholder="Số tài khoản" leftElement={<Stack marginLeft={15}><Ionicons name="card-outline" size={22} /></Stack>} height='50px' borderRadius={15} />
-
+                        <Input fontSize={18} placeholder={(user.phone)?(user.phone):("Số điện thoại")} leftElement={<Stack marginLeft={15}><Ionicons name="call-outline" size={22} /></Stack>} height='50px' borderRadius={15} />
+                        <Input fontSize={18} placeholder={(user.address)?(user.address):("Địa điểm thuê")} leftElement={<Stack marginLeft={15}><Ionicons name="home-outline" size={22} /></Stack>} height='50px' borderRadius={15} />
+                        <Input fontSize={18} placeholder={(user.bankBranch)?(user.bankBranch):("Ngân hàng")} leftElement={<Stack marginLeft={15}><Ionicons name="card-outline" size={22} /></Stack>} height='50px' borderRadius={15} />
+                        <Input fontSize={18} placeholder={(user.bankAccount)?(user.bankAccount):("Số tài khoản ngân hàng")} leftElement={<Stack marginLeft={15}><Ionicons name="card-outline" size={22} /></Stack>} height='50px' borderRadius={15} />
                         {
                             updateStatus &&
                             <Badge width='100%' padding='15px' borderRadius={10} colorScheme="green">

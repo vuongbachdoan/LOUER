@@ -20,129 +20,134 @@ import { LesseeViewProductDetail } from '../screens/Home/components/LesseeViewPr
 import { LessorViewProductDetail } from '../screens/Home/components/LessorViewProductDetail';
 import { LessorCreateRequest } from '../screens/Home/components/LessorCreateRequest';
 
+import { ClerkProvider } from '@clerk/clerk-expo';
+import { enviroment } from '../state/enviroment';
+
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
 export const MainNavigator = () => {
   return (
-    <NavigationContainer theme={{
-      colors: {
-        background: 'transparent'
-      }
-    }}>
-      <Stack.Navigator
-        screenOptions={{
-          headerStyle: {
-            backgroundColor: '#FAFAFA',
-          },
-          headerTintColor: '#FAFAFA',
-        }}
-      >
-        <Stack.Screen
-          name="Wellcome"
-          component={Wellcome}
-          options={{
-            headerShown: false
+    <ClerkProvider publishableKey={enviroment.useState((state) => state.clerkPublicKey)}>
+      <NavigationContainer theme={{
+        colors: {
+          background: 'transparent'
+        }
+      }}>
+        <Stack.Navigator
+          screenOptions={{
+            headerStyle: {
+              backgroundColor: '#FAFAFA',
+            },
+            headerTintColor: '#FAFAFA',
           }}
-        />
+        >
+          <Stack.Screen
+            name="Wellcome"
+            component={Wellcome}
+            options={{
+              headerShown: false
+            }}
+          />
 
-        <Stack.Screen
-          name="Home"
-          component={Home}
-          options={{
-            headerShown: false
-          }}
-        />
-        <Stack.Screen
-          name="Chat"
-          component={Chat}
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen
-          name="Notification"
-          component={Notification}
-          options={{
-            headerShown: false,
-          }}
-        />
+          <Stack.Screen
+            name="Home"
+            component={Home}
+            options={{
+              headerShown: false
+            }}
+          />
+          <Stack.Screen
+            name="Chat"
+            component={Chat}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="Notification"
+            component={Notification}
+            options={{
+              headerShown: false,
+            }}
+          />
 
-        <Stack.Screen
-          name="Profile"
-          component={Profile}
-          options={{
-            headerShown: true,
-          }}
-        />
+          <Stack.Screen
+            name="Profile"
+            component={Profile}
+            options={{
+              headerShown: true,
+            }}
+          />
 
-        <Tab.Screen
-          name="ChatDetail"
-          component={ChatDetail}
-          options={{
-            headerShown: false,
-          }}
-        />
-
-
-        <Tab.Screen
-          name="Product details"
-          component={ProductDetail}
-          options={{
-            headerShown: false,
-          }} />
-
-        <Tab.Screen name="Điều khoản thuê" component={LessorRules}
-          options={{
-            headerShown: false,
-          }} />
-
-        <Tab.Screen name="Lessor request sent" component={LessorRequestSent}
-          options={{
-            headerShown: false,
-          }} />
+          <Tab.Screen
+            name="ChatDetail"
+            component={ChatDetail}
+            options={{
+              headerShown: false,
+            }}
+          />
 
 
-        <Tab.Screen name="SignoutConfirm" component={SignoutConfirm}
-          options={{
-            headerShown: false,
-          }} />
+          <Tab.Screen
+            name="Product details"
+            component={ProductDetail}
+            options={{
+              headerShown: false,
+            }} />
 
-        <Tab.Screen name="ProfileInformation" component={ProfileInformation}
-          options={{
-            headerShown: false,
-          }} />
+          <Tab.Screen name="Điều khoản thuê" component={LessorRules}
+            options={{
+              headerShown: false,
+            }} />
 
-        <Tab.Screen name="ProfileReview" component={ProfileReview}
-          options={{
-            headerShown: false,
-          }} />
+          <Tab.Screen name="Lessor request sent" component={LessorRequestSent}
+            options={{
+              headerShown: false,
+            }} />
 
-        <Tab.Screen name="LesseeRecentActivity" component={LesseeRecentActivity}
-          options={{
-            headerShown: true,
-          }} />
 
-        <Tab.Screen name="LesseeCreateRequest" component={LesseeCreateRequest}
-          options={{
-            headerShown: false,
-          }} />
+          <Tab.Screen name="SignoutConfirm" component={SignoutConfirm}
+            options={{
+              headerShown: false,
+            }} />
 
-        <Tab.Screen name="LessorCreateRequest" component={LessorCreateRequest}
-          options={{
-            headerShown: false,
-          }} />
+          <Tab.Screen name="ProfileInformation" component={ProfileInformation}
+            options={{
+              headerShown: false,
+            }} />
 
-        <Tab.Screen name="Lessee view product detail" component={LesseeViewProductDetail}
-          options={{
-            headerShown: true,
-          }} />
+          <Tab.Screen name="ProfileReview" component={ProfileReview}
+            options={{
+              headerShown: false,
+            }} />
 
-        <Tab.Screen name="Lessor View Product Details" component={LessorViewProductDetail}
-          options={{
-            headerShown: true,
-          }} />
-      </Stack.Navigator>
-    </NavigationContainer>
+          <Tab.Screen name="LesseeRecentActivity" component={LesseeRecentActivity}
+            options={{
+              headerShown: true,
+            }} />
+
+          <Tab.Screen name="LesseeCreateRequest" component={LesseeCreateRequest}
+            options={{
+              headerShown: false,
+            }} />
+
+          <Tab.Screen name="LessorCreateRequest" component={LessorCreateRequest}
+            options={{
+              headerShown: false,
+            }} />
+
+          <Tab.Screen name="Lessee view product detail" component={LesseeViewProductDetail}
+            options={{
+              headerShown: true,
+            }} />
+
+          <Tab.Screen name="Lessor View Product Details" component={LessorViewProductDetail}
+            options={{
+              headerShown: true,
+            }} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </ClerkProvider>
   );
 };
