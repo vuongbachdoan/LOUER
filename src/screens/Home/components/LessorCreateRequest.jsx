@@ -9,18 +9,19 @@ import * as ImagePicker from 'expo-image-picker';
 import { store } from "../../../state/store";
 
 import { add, addImg } from "../../../services/ListingRequest"
+import { createRequest, uploadImage } from "../../../utils/request";
 
 
-const listingRequest = {
-    userId: 0,
-    productName: "",
-    brandName: "",
-    categoryName: "",
-    listingDescription: "",
-    marketPrice: 0,
-    price: 0,
-    photos: [],
-};
+// const listingRequest = {
+//     userId: 0,
+//     productName: "",
+//     brandName: "",
+//     categoryName: "",
+//     listingDescription: "",
+//     marketPrice: 0,
+//     price: 0,
+//     photos: [],
+// };
 
 
 
@@ -39,7 +40,7 @@ export const LessorCreateRequest = ({ navigation }) => {
 
     const UPLOADLIMIT = 6;
 
-    
+
     const user = store.useState((state) => state.user);
     const [isUploaded, setIsUploaded] = React.useState(false);
     const [categoryName, setCategoryName] = useState('*Chưa chọn*')
@@ -65,57 +66,16 @@ export const LessorCreateRequest = ({ navigation }) => {
         }).start();
     }, [fadeAnim]);
 
-
-    React.useEffect(() => {
-        listingRequest.userId = user.userId;
-        listingRequest.productName = "";
-        listingRequest.brandName = "";
-        listingRequest.categoryName = "*Chưa chọn*";
-        listingRequest.listingDescription = "";
-        listingRequest.marketPrice = 0;
-        listingRequest.price = 0;
-        listingRequest.photos = [];
-    }, [navigation]);
-
-
-    const handleUserIdInput = () => {
-        listingRequest.userId = user.userId;
-    }
-
-    const handleNameInput = (text) => {
-        listingRequest.productName = text;
-        handleUserIdInput();
-    };
-
-    const handleBrandNameInput = (text) => {
-        listingRequest.brandName = text;
-    };
-
-    const handleCategoryInput = (text) => {
-        listingRequest.categoryName = text;
-    };
-
-
-    const handleDesCInput = (text) => {
-        listingRequest.listingDescription = text;
-    };
-
-    const handleMarketPriceInput = (number) => {
-        listingRequest.marketPrice = number;
-    };
-
-    const handlePriceInput = (number) => {
-        listingRequest.price = number;
-    };
-
-    useEffect(() => {
-        handleChangeCategory(categoryName)
-    }, [categoryName])
-    const handleChangeCategory = (text) => {
-        listingRequest.categoryName = text;
-    }
-
-
+    const [listingRequest, setListingRequest] = useState({
+        userId: user.userId,
+        productName: "",
+        brandName: "",
+        categoryName: "",
+        listingDescription: "",
+        marketPrice: 0,
+        price: 0,
+        photos: [],
+    })
 
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -126,12 +86,14 @@ export const LessorCreateRequest = ({ navigation }) => {
         });
         if (!result.cancelled) {
             setIsUploaded(true);
-            listingRequest.photos = [];
-            result.assets.forEach((image) => {
-                listingRequest.photos.push(image.uri);
-            });
-            console.log('PROD REQ:', listingRequest);
-
+            const listPhotos = result.assets.map((image) => image.uri);
+            setListingRequest({
+                ...listingRequest,
+                photos: [
+                    ...listingRequest.photos,
+                    listPhotos
+                ],
+            })
             setIsUploaded(true);
         } else if (result.error) {
             console.log('ImagePicker Error: ', result.error);
@@ -142,46 +104,78 @@ export const LessorCreateRequest = ({ navigation }) => {
     };
 
     const handleAddListing = () => {
-        if (
-            listingRequest.productName == "" ||
-            listingRequest.brandName == "" ||
-            listingRequest.categoryName == "" ||
-            listingRequest.listingDescription == "" ||
-            listingRequest.marketPrice <= 0 ||
-            listingRequest.price <= 0 ||
-            listingRequest.photos.length == 0
-        ) {
-            console.log('PROD REQ:', listingRequest);
-            console.log('REJECT UPLOAD, missing info');
-            Toast.show('Vui lòng điển đủ thông tin.');
-        } else {
-            const requestBodyAdd = [];
-            requestBodyAdd.push(listingRequest.productName);
-            requestBodyAdd.push(listingRequest.brandName);
-            requestBodyAdd.push(listingRequest.categoryName);
-            requestBodyAdd.push(listingRequest.listingDescription);
-            requestBodyAdd.push(listingRequest.marketPrice);
-            requestBodyAdd.push(listingRequest.price);
-            console.log('requestBodyAdd: ', requestBodyAdd);
+        //         + productName: Long
+        // + brandName: String
+        // + categoryName: String
+        // + listingDescription: String
+        // + marketPrice: Integer, giá thị trường của sản phẩm
+        // + price: Integer, giá cho thuê của sản phẩm
 
-            add(user.userId, requestBodyAdd).then((response) => {
-                if (!response) {
-                    console.log("Add listing response: ", response);
-                    const listingId = response.listingId;
-                    addImg(listingId, listingRequest.photos).then((responseImg) => {
-                        console.log("Add img response: ", responseImg);
-                    });
-                }else{
-                    console.log("Add listing response: ", response);
-                    Toast.show('Có lỗi lúc thêm sản phẩm.');
-                }
+        alert(listingRequest.userId)
 
-            });
+        createRequest(listingRequest.userId, {
+            // productName: listingRequest.productName,
+            // brandName: listingRequest.brandName,
+            // categoryName: listingRequest.categoryName,
+            // listingDescription: listingRequest.listingDescription,
+            // marketPrice: listingRequest.marketPrice,
+            // price: listingRequest.price,
+            productName: listingRequest.productName,
+            brandName: listingRequest.brandName,
+            categoryName: listingRequest.categoryName,
+            listingDescription: listingRequest.listingDescription,
+            marketPrice: Number(listingRequest.marketPrice),
+            price: Number(listingRequest.price),
+        })
+            .then((res) => {
+                uploadImage(res.listingId, listingRequest.photos)
+                    .then((responseImg) => {
+                        alert("Add img response: ", responseImg);
+                    })
+            })
+    }
 
+    const handleChangeProductName = (e) => {
+        setListingRequest({
+            ...listingRequest,
+            productName: e,
+        })
+    }
 
-        }
-    };
+    const handleBrandNameInput = (e) => {
+        setListingRequest({
+            ...listingRequest,
+            brandName: e,
+        })
+    }
 
+    const hanleCategoryName = (e) => {
+        setListingRequest({
+            ...listingRequest,
+            categoryName: e,
+        })
+    }
+
+    const handleDesCInput = (e) => {
+        setListingRequest({
+            ...listingRequest,
+            listingDescription: e,
+        })
+    }
+
+    const handleMarketPriceInput = (e) => {
+        setListingRequest({
+            ...listingRequest,
+            price: 100,
+        })
+    }
+
+    const handlePriceInput = (e) => [
+        setListingRequest({
+            ...listingRequest,
+            marketPrice: 100,
+        })
+    ]
 
     return (
         <Animated.View
@@ -216,7 +210,7 @@ export const LessorCreateRequest = ({ navigation }) => {
                             <Text fontWeight='semibold' paddingTop={4}>
                                 Tên sản phẩm<Text fontWeight={'bold'} color='#F65683'> *</Text>
                             </Text>
-                            <Input placeholder="Vd: Người đẹp thiếu camera..." borderRadius={10} onChangeText={handleNameInput} />
+                            <Input value={listingRequest.productName} onChangeText={handleChangeProductName} placeholder="Vd: Người đẹp thiếu camera..." borderRadius={10} />
 
                             <Box
                                 marginX={0}
@@ -232,7 +226,7 @@ export const LessorCreateRequest = ({ navigation }) => {
                                         rowGap: 15
                                     }}>
                                     <Text fontWeight='semibold'>Hãng sản phẩm<Text fontWeight={'bold'} color='#F65683'> *</Text></Text>
-                                    <Input placeholder="Vd: Sony, Canon,..." borderRadius={10} onChangeText={handleBrandNameInput} width={150} />
+                                    <Input value={listingRequest.brandName} placeholder="Vd: Sony, Canon,..." borderRadius={10} onChangeText={handleBrandNameInput} width={150} />
                                 </Flex>
                                 <Flex
                                     flexDirection='column'
@@ -242,11 +236,11 @@ export const LessorCreateRequest = ({ navigation }) => {
                                 >
                                     <Text fontWeight='semibold'>Phân loại<Text fontWeight={'bold'} color='#F65683'> *</Text></Text>
                                     <Select
-                                        selectedValue={categoryName}
+                                        selectedValue={listingRequest.categoryName}
                                         height={45}
                                         width={150}
                                         accessibilityLabel="Select Category"
-                                        placeholder={categoryName}
+                                        placeholder={listingRequest.categoryName !== '' ? listingRequest.categoryName : '*Phân loại'}
                                         borderRadius={10}
                                         fontSize={14}
                                         fontWeight={700}
@@ -254,7 +248,7 @@ export const LessorCreateRequest = ({ navigation }) => {
                                             bg: 'gray.100',
                                             endIcon: <CheckIcon size="5" />
                                         }}
-                                        onValueChange={chosenValue => setCategoryName(chosenValue) && handleCategoryInput(chosenValue)}
+                                        onValueChange={chosenValue => hanleCategoryName(chosenValue)}
                                     >
                                         {categoryList.map((category, index) => (
                                             <Select.Item
@@ -265,16 +259,16 @@ export const LessorCreateRequest = ({ navigation }) => {
                                 </Flex>
                             </Box>
                             <Text fontWeight='semibold'>Mô tả sản phẩm<Text fontWeight={'bold'} color='#F65683'> *</Text></Text>
-                            <Input placeholder="Vd: Hôm nay đẹp trời tự dưng cái..." borderRadius={10} onChangeText={handleDesCInput} multiline={true} numberOfLines={4} />
+                            <Input value={listingRequest.listingDescription} placeholder="Vd: Hôm nay đẹp trời tự dưng cái..." borderRadius={10} onChangeText={handleDesCInput} multiline={true} numberOfLines={4} />
                             <Text fontWeight='semibold'>+ Hình ảnh / video <Text fontWeight={'bold'} color='#F65683'> *</Text></Text>
 
 
                             {isUploaded && (
                                 <ScrollView horizontal={true} _important={true}>
-                                    {listingRequest.photos.map((photo, index) => (
-                                        <Image key={index} source={{ uri: photo }} style={styles.image} padding={2} />
-
-                                    ))}
+                                    {
+                                        listingRequest.photos.map((photo, index) => (
+                                            <Image key={index} source={{ uri: photo }} style={styles.image} padding={2} />
+                                        ))}
                                 </ScrollView>
                             )}
 
@@ -332,6 +326,8 @@ export const LessorCreateRequest = ({ navigation }) => {
                             >
                                 <Text fontSize={20}>≈</Text>
                                 <Input
+                                    value={listingRequest.price}
+                                    type="number"
                                     placeholder="Giá" borderRadius={10} width={100}
                                     onChangeText={text => {
                                         // Only allow positive integers
@@ -344,7 +340,6 @@ export const LessorCreateRequest = ({ navigation }) => {
                                         }
                                     }}
                                     keyboardType='numeric'
-                                    onChange={handleMarketPriceInput}
                                 />
                             </Flex>
 
@@ -357,6 +352,8 @@ export const LessorCreateRequest = ({ navigation }) => {
                                 }}
                             >
                                 <Input
+                                    value={listingRequest.marketPrice}
+                                    type="number"
                                     placeholder="Giá" borderRadius={10} width={100}
                                     onChangeText={text => {
                                         // Only allow positive integers
@@ -370,7 +367,6 @@ export const LessorCreateRequest = ({ navigation }) => {
                                     }}
                                     keyboardType='numeric'
                                     inputMode="numeric"
-                                    onChange={handlePriceInput}
                                 />
                                 <Text>/ Ngày</Text>
                             </Flex>

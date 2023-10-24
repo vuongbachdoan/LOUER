@@ -10,35 +10,52 @@ const requestZ = axios.create({
     }
 });
 
-export const getBaseLink = async( ) => {
-    return requestZ.baseURL; 
+export const getBaseLink = async () => {
+    return requestZ.baseURL;
 };
 
 
-export const get = async(path, options ={} ) => {
+export const get = async (path, options = {}) => {
     const res = await requestZ.get(path, options);
-    return res.data; 
+    return res.data;
 };
 
-export const put = async(path, data) => {
+export const put = async (path, data) => {
     const res = await requestZ.put(path, data);
     return res.data;
 };
 
-export const del = async(path) => {
+export const del = async (path) => {
     const res = await requestZ.delete(path);
     return res.data;
 };
 
-export const post = async(path, data) => { 
+export const post = async (path, data) => {
     const json = JSON.stringify(data);
-    const res = await requestZ.put(path, json);
+    const res = await requestZ.post(path, json);
     return res.data;
 }
 
+export const createRequest = async (userId, data) => {
+    const res = await axios.post("https://www.louerapp.com/api/listings/add", JSON.stringify(data), {
+        headers: {
+            "Content-Type": "application/json; charset=UTF-8"
+        },
+        params: {
+            userId: userId
+        }
+    })
+    return res.data
+}
 
-
-
+export const uploadImage = async (listingId, data) => {
+    const res = await axios.post("https://www.louerapp.com/api/images/listings/upload", data, {
+        params: {
+            listing_id: listingId
+        }
+    })
+    return res.data
+}
 
 
 export default requestZ;
