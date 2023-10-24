@@ -4,6 +4,8 @@ import { StyleSheet, Animated, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { store } from "../../../state/store";
 import { getMainColor } from "../../../state/color";
+import * as MessagingService from "../../../services/Messaging";
+
 
 
 const messages = [
@@ -46,10 +48,14 @@ const messages = [
     }
 ]
 
-export const ChatList = ({ navigation, route }) => {
+export const ChatList = ({ navigation }) => {
+
+    const user = store.useState((state) => state.user);
+    const [chatList, setChatList] = React.useState([]);
+
+
 
     const fadeAnim = React.useRef(new Animated.Value(0)).current;
-
     React.useEffect(() => {
         Animated.timing(fadeAnim, {
             toValue: 1,
@@ -58,7 +64,26 @@ export const ChatList = ({ navigation, route }) => {
         }).start();
     }, [fadeAnim]);
 
-    const user = store.useState((state) => state.user);
+    const handleGetAllChat = async () => {
+        const res = await MessagingService.getAllChat(user.userId);
+        setChatList(res);
+    }
+
+
+
+    React.useEffect(() => {
+        
+        const interval = setInterval(() => {
+            handleGetAllChat().then((res) => {
+                console.log('RES: ', res);
+                setChatList(res);
+            });
+        }, 2000);
+        console.log('ChatList: ', chatList);
+        return () => clearInterval(interval);
+        
+    }, [navigation, chatList]);
+
 
 
     return (
@@ -94,37 +119,43 @@ export const ChatList = ({ navigation, route }) => {
                     flex={1}
                     marginTop={15}
                 >
-                    <ScrollView>
-                        {
-                            messages.map((item) => (
-                                <TouchableOpacity onPress={() => navigation.navigate('ChatDetail', { chatDetail: item })}>
-                                    <Flex
-                                        flexDirection='row'
-                                        marginBottom='10px'
-                                        backgroundColor='#FFF'
-                                        borderRadius={15}
-                                        paddingX={5}
-                                        paddingY={5}
-                                        style={{columnGap: 15}}
-                                    >
-                                        <Avatar bg="amber.500" source={{
-                                             uri: "https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
-                                        }} size="lg">
-                                            NB
-                                            <Avatar.Badge bg="green.500" />
-                                        </Avatar>
+                    {(chatList.length === 0) ?
+                        (<Text fontSize='xl' fontWeight='semibold' color='gray.500'>Không có tin nhắn nào</Text>) :
+                        (<>
+                            <ScrollView>
+                                {
+                                    chatList.map((item) => (
+                                        <TouchableOpacity onPress={() => navigation.navigate('ChatDetail', { chatDetail: item })}>
+                                            <Flex
+                                                flexDirection='row'
+                                                marginBottom='10px'
+                                                backgroundColor='#FFF'
+                                                borderRadius={15}
+                                                paddingX={5}
+                                                paddingY={5}
+                                                style={{ columnGap: 15 }}
+                                            >
+                                                <Avatar bg="amber.500" source={{
+                                                    uri: "https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
+                                                }} size="lg">
+                                                    NB
+                                                    <Avatar.Badge bg="green.500" />
+                                                </Avatar>
 
-                                        <Stack
-                                            flex={1}
-                                        >
-                                            <Text fontSize='xl' fontWeight='semibold'>{item.receiver}</Text>
-                                            <Text color="gray.500" numberOfLines={1} ellipsizeMode='tail'  fontSize='sm' fontWeight='semibold'>{item.lastMessage}</Text>
-                                        </Stack>
-                                    </Flex>
-                                </TouchableOpacity>
-                            ))
-                        }
-                    </ScrollView>
+                                                <Stack
+                                                    flex={1}
+                                                >
+                                                    <Text fontSize='xl' fontWeight='semibold'>{item.receiver}</Text>
+                                                    <Text color="gray.500" numberOfLines={1} ellipsizeMode='tail' fontSize='sm' fontWeight='semibold'>{item.lastMessage}</Text>
+                                                </Stack>
+                                            </Flex>
+                                        </TouchableOpacity>
+                                    ))
+                                }
+                            </ScrollView>
+                        </>)
+                    }
+
                 </Box>
             </Box>
         </Animated.View >

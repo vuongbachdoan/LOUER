@@ -17,7 +17,6 @@ export const SignedIn = ({ navigation }) => {
     const [resLogin, setResLogin] = useState('');
     const [isImported, setIsImported] = useState(true);
     React.useEffect(() => {
-        console.log("user ID", userMain.userId);
         if (userMain === undefined) {
             setTimeout(() => {
                 handleGetData().then(() => {
@@ -30,6 +29,7 @@ export const SignedIn = ({ navigation }) => {
             });
         }
     }, [userMain]);
+
 
     const handleGetData = async () => {
         const email = user.primaryEmailAddress.emailAddress;
@@ -83,7 +83,6 @@ export const SignedIn = ({ navigation }) => {
             s.user.userMode = resLogin.userMode;
             s.user.images = resLogin.images;
         });
-        console.log('User MAIN', userMain);
     }
 
     const fadeAnim = React.useRef(new Animated.Value(0)).current;
