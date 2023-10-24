@@ -1,7 +1,6 @@
 import { Store } from 'pullstate';
 
-export const color = new Store({
-    value: true,
+export const color = {
     main: {
         lessee: '#22A4DD',
         lessor: '#FF5484'
@@ -10,15 +9,13 @@ export const color = new Store({
         lessee: ['#269DDB', '#2A46B4'],
         lessor: ['#9F3553', '#E98EA6'],
     }
-});
+}
 
 export const getMainColor = (userMode) => {
-    const { main } = color.useState();
-    return userMode ? main.lessee : main.lessor;
+    return userMode ? color.main.lessee : color.main.lessor;
 };
 
 export const getGradientColor = (userMode) => {
-    const { gradient } = color.useState();
-    return userMode ? gradient.lessee : gradient.lessor;
+    return userMode ? color.gradient.lessee : color.gradient.lessor;
 };
 
