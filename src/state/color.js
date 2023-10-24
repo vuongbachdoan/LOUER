@@ -1,5 +1,3 @@
-import { Store } from 'pullstate';
-
 export const color = {
     main: {
         lessee: '#22A4DD',
@@ -18,4 +16,3 @@ export const getMainColor = (userMode) => {
 export const getGradientColor = (userMode) => {
     return userMode ? color.gradient.lessee : color.gradient.lessor;
 };
-

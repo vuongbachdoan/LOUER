@@ -144,22 +144,19 @@ export const SignedIn = ({ navigation }) => {
                                 <Avatar.Badge bg="green.500" />
                             </Avatar>
                         </Flex>
-                        <Box height={50} />
                         <Box>
                             {user.fullName.split(' ').map((word, index) => (
                                 <GradientText
                                     key={index}
                                     text={word}
-                                    fontSize={90}
+                                    fontSize={50}
                                     fontWeight={1000}
                                     isGradientFill
                                     gradientColors={['#FF5484', '#26A0DD']}
                                 />
                             ))}
                         </Box>
-                        <Box height={75} />
                         <Box>
-                            <Box height={15}></Box>
                             <GradientButton
                                 disabled={userMain.userId === ''}
                                 onPress={() => {
