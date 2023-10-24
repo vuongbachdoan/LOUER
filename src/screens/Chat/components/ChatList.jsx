@@ -82,7 +82,7 @@ export const ChatList = ({ navigation, route }) => {
                 >
                     <Heading fontSize={36} fontWeight='bold' color={getMainColor(user.userMode)}>Tin nhắn</Heading>
                     <Avatar bg="lightBlue.400" source={{
-                        uri: user.avaLink
+                        uri: user.images[0]
                     }} size="md">
                         Avt
                         <Avatar.Badge bg="green.500" />

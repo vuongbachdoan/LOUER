@@ -104,7 +104,7 @@ export const LessorHome = ({ navigation }) => {
                         <Heading fontSize={36} fontWeight='bold'>Xin Chào</Heading>
                         <Heading fontSize={36} fontWeight='bold' color='#22A4DD'>{user.firstName} {user.lastName}</Heading>
                     </Box>
-                    <Avatar bg="lightBlue.400" source={{uri: user.avaLink}} size="lg"
+                    <Avatar bg="lightBlue.400" source={{uri: user.images[0]}} size="lg"
                         onPress={() => navigation.navigate('Profile')}>
                         Avt
                         <Avatar.Badge bg="green.500" />

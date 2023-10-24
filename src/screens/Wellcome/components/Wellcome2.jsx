@@ -65,7 +65,7 @@ export const Wellcome2 = ({ navigation }) => {
 
                     <Text fontSize={22} fontWeight='bold' marginBottom={7.5}>Đăng ký / Đăng nhập</Text>
                     <Text fontSize={16} fontWeight='semibold' color='coolGray.500' marginBottom={15}>Sử dụng mail FPT Edu / Google của bạn</Text>
-                    {isSignedIn && isLoaded && console.log('Go to Signed In') && handleSignedIn()}
+                    {isSignedIn && isLoaded && handleSignedIn()}
                     <SignedOut>
                         <SignInWithOAuth navigation={navigation} />
                     </SignedOut>

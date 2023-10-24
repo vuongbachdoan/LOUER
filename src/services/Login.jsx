@@ -32,7 +32,8 @@ export const mailFPT = async (fullname, email, avaLink) => {
         picture: avaLink
     };
     const res = await requestZ.post('users/FPT/signIn', json);
-    return res;
+    // console.log('MAIL FPT SIGNIN:',res.data);
+    return res.data;
 };
 
 export const mailOther = async (fullname, email, avaLink) => {

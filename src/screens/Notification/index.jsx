@@ -155,7 +155,7 @@ export const Notification = ({ navigation, route }) => {
                     <Heading fontSize={36} fontWeight='bold' color={getMainColor(user.userMode)}>Thông báo</Heading>
                     {console.log(user)}
                     <Avatar bg="lightBlue.400" source={{
-                        uri: user.avaLink
+                        uri: user.images[0]
                     }} size="md">
                         Avt
                         <Avatar.Badge bg="green.500" />

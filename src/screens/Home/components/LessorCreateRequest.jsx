@@ -37,9 +37,12 @@ const categoryList = [
 
 export const LessorCreateRequest = ({ navigation }) => {
 
+    const UPLOADLIMIT = 6;
+
+    
     const user = store.useState((state) => state.user);
     const [isUploaded, setIsUploaded] = React.useState(false);
-    const UPLOADLIMIT = 6;
+    const [categoryName, setCategoryName] = useState('*Chưa chọn*')
 
     const fadeAnim = React.useRef(new Animated.Value(0)).current;
     const makeRequest = async (productRequest) => {
@@ -64,7 +67,7 @@ export const LessorCreateRequest = ({ navigation }) => {
 
 
     React.useEffect(() => {
-        listingRequest.userId = 0;
+        listingRequest.userId = user.userId;
         listingRequest.productName = "";
         listingRequest.brandName = "";
         listingRequest.categoryName = "*Chưa chọn*";
@@ -105,7 +108,6 @@ export const LessorCreateRequest = ({ navigation }) => {
         listingRequest.price = number;
     };
 
-    const [categoryName, setCategoryName] = useState('*Choose category*')
     useEffect(() => {
         handleChangeCategory(categoryName)
     }, [categoryName])

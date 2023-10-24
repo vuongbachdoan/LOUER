@@ -77,9 +77,10 @@ export const LesseeHome = ({ navigation }) => {
                             <Heading fontSize={36} fontWeight='bold'>Xin Chào</Heading>
                             <Heading fontSize={36} fontWeight='bold' color='#FF5484'>{user.firstName} {user.middleName} {user.lastName}</Heading>
                         </Box>
+                        {console.log('IMAGE', user.images[0])}
                         <Avatar 
                             bg="lightBlue.400" 
-                            source={{uri: user.avaLink}}
+                            source={{uri: user.images[0]}}
                             size="md">
                             Avt
                             <Avatar.Badge bg="green.500" />

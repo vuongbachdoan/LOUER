@@ -60,21 +60,7 @@ export const Dashboard = ({ navigation }) => {
     const user = store.useState((state) => state.user);
 
 
-    // React.useEffect(() => {
-    //     UserService.getById(userId).then((data) => {
-            
-    //         store.update((state) => {
-    //             state.user = data;
-    //         })
-            
-    //     });
-    //     UserService.getAvaLinkById.then((avaLink) => {
-    //         store.update((state) => {
-    //             state.user.avaLink = avaLink;
-    //         });
-    //     });
-    //     console.log('User: ', user);
-    // }, [navigation]);
+
 
     React.useEffect(() => {
         Animated.timing(fadeAnim, {

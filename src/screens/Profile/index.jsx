@@ -23,11 +23,6 @@ export const Profile = ({ navigation }) => {
         }).start();
     }, [fadeAnim]);
 
-    const [userData, setUserData] = useState(false);
-    React.useEffect(() => {
-        setUserData(user)
-    }, [user])
-
     return (
         <Animated.View style={{ flex: 1, opacity: fadeAnim }}>
             <Box
@@ -44,25 +39,26 @@ export const Profile = ({ navigation }) => {
                     rowGap={15}
                     alignItems='center'
                 >
-                    <Image alt="user" src={userData.avaLink} width={140} height={140} borderRadius={15} />
-                    <Text fontSize='2xl' fontWeight='semibold' color={getMainColor(userData.userMode)}>{user.firstName} {user.middleName} {user.lastName}</Text>
+                    <Box padding={5}/>
+                    <Image alt="user" src={user.images[0]} width={140} height={140} borderRadius={15} />
+                    <Text fontSize='2xl' fontWeight='semibold' color={getMainColor(user.userMode)}>{user.firstName} {user.middleName} {user.lastName}</Text>
                     {/* <Text fontSize='xl' marginBottom={15} fontWeight='semibold'>{user.email}</Text> */}
 
                     <GradientButton
-                        colors={getGradientColor(userData.userMode)}
+                        colors={getGradientColor(user.userMode)}
                         width={240}
                         onPress={() => navigation.navigate('ProfileInformation')}
                         text='Thông tin cá nhân' />
                     <GradientButton
-                        colors={getGradientColor(userData.userMode)}
+                        colors={getGradientColor(user.userMode)}
                         width={240}
                         onPress={() => navigation.navigate('ProfileReview')}
                         text='Đánh giá của tôi' />
                     <GradientButton
-                        colors={getGradientColor(userData.userMode)}
+                        colors={getGradientColor(user.userMode)}
                         width={240}
                         text='Đăng xuất'
-                        onPress={() => navigation.navigate('SignoutConfirm', { userData: userData })}
+                        onPress={() => navigation.navigate('SignoutConfirm', { userData: user })}
                     />
                 </Flex>
             </Box>

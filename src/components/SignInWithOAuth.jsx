@@ -11,7 +11,7 @@ import { store } from "../state/store";
 import { enviroment } from "../state/enviroment";
 
 import * as UserService from "../services/User";
-
+import { Toast } from "../components/Toast";
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -19,10 +19,6 @@ const SignInWithOAuth = ({ navigation }) => {
     // Warm up the android browser to improve UX
     // https://docs.expo.dev/guides/authentication/#improving-user-experience
 
-
-    const user = store.useState((state) => state.user);
-    const { isSignedIn, userClerk, isLoaded } = useUser();
-    const { getToken } = useAuth();
     useWarmUpBrowser();
     const [isChecked, setChecked] = useState(false);
     const handlePolicyAllow = () => {
@@ -45,6 +41,7 @@ const SignInWithOAuth = ({ navigation }) => {
                 // Use signIn or signUp for next steps such as MFA
             }
         } catch (err) {
+            Toast.show('Có lỗi xảy ra, vui lòng thử lại sau.');
             console.error("OAuth error", err);
         }
     }, []);

@@ -4,13 +4,12 @@ import { Store } from 'pullstate';
 export const store = new Store({
     user: {
         userId: '',
-
         studentId: '',
         firstName: '',
         middleName: '',
         lastName: '',
         email: '',
-        avaLink: '',
+        images: '',
 
         positiveRating: '',
         negativeRating: '',

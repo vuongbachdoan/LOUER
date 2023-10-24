@@ -84,9 +84,9 @@ export const updateById = async (userId, data) => {
         outputError(error);
     }
    };
-export const updateModeById = async (userId, data) => {
+export const updateModeById = async (userId) => {
     try {
-        const res = await request.put(`/users/switchUserMode?userId=${userId}`, data)
+        const res = await request.put(`/users/switchUserMode?userId=${userId}`)
         return res.data;
     } catch (error) {
         outputError(error);
