@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Louer",
-    "slug": "Louer",
+    "slug": "louer",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -32,8 +32,9 @@
     },
     "extra": {
       "eas": {
-        "projectId": "ade80a89-3444-4834-acd2-7645d34e3971"
+        "projectId": "feb3b579-2696-41a6-a60b-a63e0402768f"
       }
-    }
+    },
+    "owner": "dathtd119"
   }
 }

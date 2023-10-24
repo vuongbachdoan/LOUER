@@ -1,5 +1,5 @@
 {
-  "name": "wallet",
+  "name": "Louer",
   "version": "1.0.0",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
@@ -7,7 +7,9 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "ionic:serve": "npm run start"
+    "ionic:serve": "yarn run start",
+    "build": "babel src -d lib",
+    "test": "jest"
   },
   "dependencies": {
     "@clerk/clerk-expo": "^0.19.11",
