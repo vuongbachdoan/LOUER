@@ -3,9 +3,10 @@ import { Image, Animated, Button } from "react-native";
 import LogoLouer from '../../../assets/images/logo.png';
 import { Checkbox, Flex, Link, Stack, Text } from "native-base";
 import GradientText from "react-native-gradient-texts";
-import {SignedOut} from "@clerk/clerk-expo";
+import { SignedOut } from "@clerk/clerk-expo";
 import SignInWithOAuth from "../../../components/SignInWithOAuth";
 import { useUser } from "@clerk/clerk-react";
+import LoadScreen from "../../../components/LoadScreen";
 
 
 export const Wellcome2 = ({ navigation }) => {
@@ -32,45 +33,46 @@ export const Wellcome2 = ({ navigation }) => {
     }, [isSignedIn, isLoaded, navigation]);
 
     return (
-            <Animated.View style={{ flex: 1, opacity: fadeAnim }}>
-                <Flex
-                    display='flex'
-                    justifyContent='center'
+        <Animated.View style={{ flex: 1, opacity: fadeAnim }}>
+            <Flex
+                display='flex'
+                justifyContent='center'
+                alignItems='center'
+                flexDirection='column'
+                height='100%'
+                width='100%'
+            >
+                <Stack
                     alignItems='center'
-                    flexDirection='column'
-                    height='100%'
-                    width='100%'
+                    marginLeft={15}
+                    marginRight={15}
                 >
-                    <Stack
-                        alignItems='center'
-                        marginLeft={15}
-                        marginRight={15}
-                    >
-                        <Image
-                            style={{
-                                width: 280,
-                                height: 280,
-                                resizeMode: 'contain',
-                            }}
-                            source={LogoLouer}
-                        />
+                    <Image
+                        style={{
+                            width: 280,
+                            height: 280,
+                            resizeMode: 'contain',
+                        }}
+                        source={LogoLouer}
+                    />
 
-                        <GradientText
-                            text={"Louer"}
-                            fontSize={95}
-                            fontWeight={1000}
-                            isGradientFill
-                            gradientColors={['#FF5484', '#26A0DD']}
-                        />
+                    <GradientText
+                        text={"Louer"}
+                        fontSize={95}
+                        fontWeight={1000}
+                        isGradientFill
+                        gradientColors={['#FF5484', '#26A0DD']}
+                    />
 
-                        <Text fontSize={22} fontWeight='bold' marginBottom={7.5}>Đăng ký / Đăng nhập</Text>
-                        <Text fontSize={16} fontWeight='semibold' color='coolGray.500' marginBottom={15}>Sử dụng mail FPT Edu / Google của bạn</Text>
-                        {isSignedIn && isLoaded && console.log('Go to Signed In') && handleSignedIn()}
-                        <SignedOut>
-                            <SignInWithOAuth navigation={navigation}/>
-                        </SignedOut>
-                    </Stack>
-                </Flex>
-            </Animated.View>
+                    <Text fontSize={22} fontWeight='bold' marginBottom={7.5}>Đăng ký / Đăng nhập</Text>
+                    <Text fontSize={16} fontWeight='semibold' color='coolGray.500' marginBottom={15}>Sử dụng mail FPT Edu / Google của bạn</Text>
+                    {isSignedIn && isLoaded && console.log('Go to Signed In') && handleSignedIn()}
+                    <SignedOut>
+                        <SignInWithOAuth navigation={navigation} />
+                        <LoadScreen />
+                    </SignedOut>
+                </Stack>
+            </Flex>
+        </Animated.View>
     );
 };
