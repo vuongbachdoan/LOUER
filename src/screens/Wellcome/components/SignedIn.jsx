@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View, Text, StyleSheet, Animated } from "react-native";
 import GradientText from "react-native-gradient-texts";
 import { GradientButton } from "../../../components/GradientButton";
@@ -11,48 +11,23 @@ import * as UserService from "../../../services/User";
 
 export const SignedIn = ({ navigation }) => {
 
-    const userId = '1';
     const userMain = store.useState((state) => state.user);
     const { isSignedIn, user, isLoaded } = useUser();
-    const { getToken } = useAuth();
+
+    useEffect(() => {
+        if (user) {
+            store.update(s => {
+                s.user.firstName = user.firstName;
+                s.user.lastName = user.lastName;
+                s.user.email = user.emailAddresses;
+                s.user.phone = user.phoneNumbers;
+                s.user.avaLink = user.imageUrl;
+            });
+        }
+    }, [user])
 
 
     const fadeAnim = React.useRef(new Animated.Value(0)).current;
-
-    React.useEffect(() => {
-        handleUserServer();
-        handleUserClerk();
-    }, [isSignedIn,navigation]);
-
-    const handleUserServer = () => {
-        UserService.getById(userId).then((data) => {
-            store.update(state => {
-                state.user = data;
-            })
-            console.log('userMain FROM SERVER', userMain);
-
-        });
-
-        // UserService.getAvaLinkById(userId).then((ava) => {
-        //     store.update((state) => {
-        //         state.user.avaLink = ava;
-        //     });
-        // });
-    }
-
-    const handleUserClerk = () => {
-        // userMain.studentId = user.emailAddress.match(/(.{8})@fpt.edu.vn/)[1];
-        store.replace(state => {
-            state.user
-        });
-        userMain.firstName = user.firstName;
-        userMain.lastName = user.lastName;
-        userMain.email = user.emailAddresses;
-        userMain.phoneNumber = user.phoneNumbers;
-        userMain.avaLink = user.imageUrl;
-        console.log('userMain FROM CLERKKKKK', userMain);
-    }
-
 
 
     React.useEffect(() => {
@@ -85,7 +60,7 @@ export const SignedIn = ({ navigation }) => {
                 width='100%'
                 height='100%'
             >
-                {isLoaded && isSignedIn ? (
+                {userMain ? (
                     <>
                         <Flex
                             paddingX={15}
@@ -107,7 +82,7 @@ export const SignedIn = ({ navigation }) => {
                                     <Text style={{ fontSize: 36, fontWeight: '900', textAlign: 'left' }}>Chào mừng</Text>
                                     <Text style={{ fontSize: 36, fontWeight: '900' }}>tới Louer,</Text>
                                 </Box>
-                                <Avatar bg="lightBlue.400" source={{ uri: user.imageUrl }} size="xl">
+                                <Avatar bg="lightBlue.400" source={{ uri: userMain.avaLink }} size="xl">
                                     Avt
                                     <Avatar.Badge bg="green.500" />
                                 </Avatar>
@@ -115,14 +90,14 @@ export const SignedIn = ({ navigation }) => {
                             <Box height={50} />
                             <Box>
                                 <GradientText
-                                    text={user.firstName}
+                                    text={userMain.firstName}
                                     fontSize={90}
                                     fontWeight={1000}
                                     isGradientFill
                                     gradientColors={['#FF5484', '#26A0DD']}
                                 />
                                 <GradientText
-                                    text={user.lastName + '!'}
+                                    text={userMain.lastName + '!'}
                                     fontSize={90}
                                     fontWeight={1000}
                                     isGradientFill
@@ -137,7 +112,7 @@ export const SignedIn = ({ navigation }) => {
                         </Flex>
 
                     </>
-                ) : null}
+                ) : <Text>Loading</Text>}
 
             </Stack>
         </Animated.View>

@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import * as WebBrowser from "expo-web-browser";
 import { Button } from "react-native";
 import { useOAuth } from "@clerk/clerk-expo";
-import { useUser,useAuth } from "@clerk/clerk-react";
+import { useUser, useAuth } from "@clerk/clerk-react";
 import { useWarmUpBrowser } from "../hooks/WarmUpBrowser";
 import { GradientButton } from "./GradientButton";
 import { Checkbox, Flex, Link, Stack, Text } from "native-base";
@@ -15,7 +15,7 @@ import * as UserService from "../services/User";
 
 WebBrowser.maybeCompleteAuthSession();
 
-const SignInWithOAuth = ({navigation}) => {
+const SignInWithOAuth = ({ navigation }) => {
     // Warm up the android browser to improve UX
     // https://docs.expo.dev/guides/authentication/#improving-user-experience
 
@@ -33,24 +33,6 @@ const SignInWithOAuth = ({navigation}) => {
         navigation.navigate('TermCondi');
     }
 
-    const handleGetUserFromServer = () => {
-        let data = userClerk;
-        console.log('data',data);
-        getToken().then((data) => console.log(data));
-        // UserService.getById(userId).then((data) => {
-        //     store.update((state) => {
-        //         state.user = data;
-        //         state.user.userId = userId;
-        //     })
-        // });
-        // UserService.getAvaLinkById(userId).then((ava) => {
-        //     store.update((state) => {
-        //         state.user.avaLink = ava;
-        //     });
-        // });
-    }
-
-
     const { startOAuthFlow } = useOAuth({ strategy: "oauth_google" });
 
     const onPress = React.useCallback(async () => {
@@ -58,11 +40,7 @@ const SignInWithOAuth = ({navigation}) => {
             const { createdSessionId, signIn, signUp, setActive } =
                 await startOAuthFlow();
             if (createdSessionId) {
-                setActive({ session: createdSessionId });
-                if(isLoaded) {
-                    handleGetUserFromServer();
-                    navigation.navigate('SignedIn')
-                }
+                setActive({ session: createdSessionId })
             } else {
                 // Use signIn or signUp for next steps such as MFA
             }
