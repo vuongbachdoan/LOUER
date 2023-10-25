@@ -42,20 +42,21 @@ export const LessorCreateRequest = ({ navigation }) => {
 
 
     const user = store.useState((state) => state.user);
-    const [isUploaded, setIsUploaded] = React.useState(false);
-    const [categoryName, setCategoryName] = useState('*Chưa chọn*')
+    const [isUploaded, setUploaded] = React.useState(false);
+    const [isAllowUpload, setAllowUpload] = React.useState(false);
+
 
     const fadeAnim = React.useRef(new Animated.Value(0)).current;
-    const makeRequest = async (productRequest) => {
-        try {
-            const response = await request.addProductRequest(productRequest);
-            console.log(response);
-            // handle successful response
-        } catch (error) {
-            console.error(error);
-            // handle error
-        }
-    };
+    // const makeRequest = async (productRequest) => {
+    //     try {
+    //         const response = await request.addProductRequest(productRequest);
+    //         console.log(response);
+    //         // handle successful response
+    //     } catch (error) {
+    //         console.error(error);
+    //         // handle error
+    //     }
+    // };
 
 
     React.useEffect(() => {
@@ -65,6 +66,22 @@ export const LessorCreateRequest = ({ navigation }) => {
             useNativeDriver: true,
         }).start();
     }, [fadeAnim]);
+
+
+    React.useEffect(() => {
+        setTimeout(() => {
+            if (listingRequest.productName !== '' && listingRequest.brandName !== '' &&
+                listingRequest.categoryName !== '' && listingRequest.listingDescription !== '' &&
+                listingRequest.marketPrice !== '' && listingRequest.price !== '') {
+                setAllowUpload(true);
+            } else {
+                setAllowUpload(false);
+            }
+        }, 500);
+        console.log('listingRequest: ', listingRequest);
+        console.log('isAllowUpload: ', isAllowUpload);
+        console.log('isUploaded: ', isUploaded);
+    }, [listingRequest]);
 
     const [listingRequest, setListingRequest] = useState({
         userId: user.userId,
@@ -77,6 +94,12 @@ export const LessorCreateRequest = ({ navigation }) => {
         photos: [],
     })
 
+    const [photoInfo, setPhotoInfo] = React.useState({
+        type: "",
+        name: "",
+
+    });
+
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -85,15 +108,18 @@ export const LessorCreateRequest = ({ navigation }) => {
             quality: 1,
         });
         if (!result.cancelled) {
-            setIsUploaded(true);
             // Remove the old images from the listingRequest state variable.
+            setUploaded(true);
+            // result.assets.
             setListingRequest({
                 ...listingRequest,
                 photos: []
+
             });
 
             // Add the new images to the listingRequest state variable.
             const listPhotos = result.assets.map((image) => image.uri);
+            console.log('listPhotos: ', listPhotos);
             setListingRequest({
                 ...listingRequest,
                 photos: [
@@ -101,16 +127,17 @@ export const LessorCreateRequest = ({ navigation }) => {
                     listPhotos
                 ],
             })
-            setIsUploaded(true);
+            setUploaded(true);
         } else if (result.error) {
+            setUploaded(false);
             console.log('ImagePicker Error: ', result.error);
         } else {
-            setIsUploaded(false);
+            setUploaded(false);
             console.log('User cancelled image picker');
         }
     };
 
-    const handleAddListing = () => {
+    const handleAddListing = async () => {
         //         + productName: Long
         // + brandName: String
         // + categoryName: String
@@ -126,21 +153,29 @@ export const LessorCreateRequest = ({ navigation }) => {
             price: Number(listingRequest.price),
         })
             .then((res) => {
-                // uploadImage(res.listingId, listingRequest.photos.toString())
+                // uploadImage(res.listingId, listingRequest.photos.toString()).then((resImg) => {
+                //     alert('Res IMG: ', resImg)
+                // });
                 console.log("Add listing response: ", JSON.stringify(res));
                 listingRequest.photos.map((photo) => {
-                    photo.map((p) => {
-                        console.log("EACH PHOTO:", p);
-                        uploadImage(res.listingId, p)
+                    uploadImage(res.listingId, photo)
                             .then((resImg) => {
-                                if (resImg==200) {
+                                if (resImg.status == 200) {
                                     Toast.show('Thêm sản phẩm thành công');
-                                } else {
-                                    Toast.show('Thêm ảnh thất bại, lỗi:', {resImg});
+                                    setUploaded(true);
+                                } else if (resImg.status == 400) {
+                                    Toast.show('Thêm ảnh thất bại, lỗi: Mạng không ổn định');
+                                    setUploaded(false);
+                                } else if (resImg.status == 500) {
+                                    Toast.show('Thêm ảnh thất bại, lỗi: Lỗi phía server');
+                                    setUploaded(false);
+                                }
+                                else {
+                                    Toast.show('Thêm ảnh thất bại, vui lòng liên hệ với Sharkionares.');
+                                    setUploaded(false);
                                 }
                                 console.log("Add img response: ", resImg);
                             })
-                    })
                 })
             })
     }
@@ -275,13 +310,11 @@ export const LessorCreateRequest = ({ navigation }) => {
 
                             {isUploaded && (
                                 <ScrollView horizontal={true} _important={true}>
-                                    {(console.log("LISTING REQUEST:", listingRequest)) &&
-                                        listingRequest.photos.map(photo => (
-                                            // console.log("EACH PHOTO:", photo)
-                                            <Image key={photo} source={{ uri: photo.toString() }} style={styles.image} padding={2} />
-                                        )
-                                        )
-                                    }
+                                    {listingRequest.photos.map(photo => (
+                                        photo.map(item => (
+                                            <Image key={item} source={{ uri: item }} style={styles.image} />
+                                        ))
+                                    ))}
                                 </ScrollView>
                             )}
 
@@ -392,7 +425,14 @@ export const LessorCreateRequest = ({ navigation }) => {
                         <Stack
                             marginTop={30}
                         >
-                            <GradientButton onPress={() => handleAddListing()} text='Thêm sản phẩm' radius={10} fontSize={18} height={55} colors={['#2A4AB6', '#269DDB']} />
+                            <GradientButton
+                                onPress={() => handleAddListing()}
+                                text='Thêm sản phẩm' radius={10} fontSize={18} height={55}
+                                colors={['#2A4AB6', '#269DDB']}
+                            // disabled= {!isAllowUpload 
+                            //     || isUploaded
+                            // }
+                            />
                         </Stack>
 
                         <Box height={120} />

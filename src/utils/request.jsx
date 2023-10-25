@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 
@@ -47,12 +48,66 @@ export const createRequest = async (userId, data) => {
     return res.data
 }
 
-export const uploadImage = async (listingId, dataImg) => {
-    const FormData = require('form-data');
-    const data = new FormData();
-    data.append('images', dataImg);
-    const res = await axios.post(`https://www.louerapp.com/api/images/listings/upload?listingId=${listingId}`, data);
-    return(res.status);
+// export const uploadImage = async (listingId, dataImg) => {
+//     var formdata = new FormData();
+//     formdata.append("images", dataImg);
+
+//     var requestOptions = {
+//         method: 'POST',
+//         body: formdata,
+//     };
+
+//     // fetch(`https://www.louerapp.com/api/images/listings/upload?listingId=${listingId}`, requestOptions)
+//     fetch(`https://www.louerapp.com/api/images/listings/upload?listingId=119`, requestOptions)
+//         .then(response => {
+//             console.log('Img upload response:',JSON.stringify(response.status));
+//             console.log('response:',JSON.stringify(response.toString));
+//             return response;
+//         })
+//         .then(result => {
+//             console.log('Img upload result:',JSON.stringify(result));
+//             return result;
+//         })
+//         .catch(error => {
+//             console.log('error', JSON.stringify(error));
+//         });
+// }
+
+
+
+
+export const uploadImage = async (listingId, images) => {
+
+    var formData = new FormData();
+
+    images.forEach((image) => {
+        console.log('image before formData:', image);
+        formData.append("images", image);
+    });
+
+
+
+    var request = {
+        method: 'POST',
+        body: formData,
+    };
+
+    console.log('request:', JSON.stringify(request));
+
+    // fetch(`https://www.louerapp.com/api/images/listings/upload?listingId=119`, request)
+    fetch(`https://www.louerapp.com/api/images/listings/upload?listingId=${listingId}`, request)
+        .then(response => {
+            console.log('Img upload response:',JSON.stringify(response));
+            console.log('response:',JSON.stringify(response.toString));
+            return response;
+        })
+        .then(result => {
+            console.log('Img upload result:',JSON.stringify(result));
+            return result;
+        })
+        .catch(error => {
+            console.log('error', JSON.stringify(error));
+        });
 }
 
 export default requestZ;

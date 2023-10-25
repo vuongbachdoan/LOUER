@@ -94,9 +94,11 @@ export const LessorHome = ({ navigation }) => {
 
 
     React.useEffect(() => {
-        setTimeout(() => {
-            handleGetListing();
-        }, 1000); // wait for 1 second before trying again
+        handleGetListing();
+        // setTimeout(() => {
+            
+        // }, 1000); // wait for 1 second before trying again
+
     }, [navigation, listing]);
 
 
@@ -197,7 +199,7 @@ export const LessorHome = ({ navigation }) => {
                         (
                             <ScrollView>
                                 {
-                                    listing.map((item, index) => (
+                                    listing.reverse().map((item, index) => (
                                         // console.log(item),
                                         
                                         <Box
@@ -220,7 +222,7 @@ export const LessorHome = ({ navigation }) => {
                                             </Box>
                                             <Ionicons onPress={() => navigation.navigate('Product details', { product: item })} name='chevron-forward' size={28} />
                                         </Box>
-                                        ))
+                                    ))
                                         // prodData.map((item, index) => (
                                         //     <Box
                                         //         key={index} // Use a unique key for each item

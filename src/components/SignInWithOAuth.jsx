@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import * as WebBrowser from "expo-web-browser";
-import { Button } from "react-native";
 import { useOAuth } from "@clerk/clerk-expo";
-import { useUser, useAuth } from "@clerk/clerk-react";
 import { useWarmUpBrowser } from "../hooks/WarmUpBrowser";
 import { GradientButton } from "./GradientButton";
 import { Checkbox, Flex, Link, Stack, Text } from "native-base";
