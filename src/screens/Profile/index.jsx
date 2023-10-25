@@ -44,6 +44,7 @@ export const Profile = ({ navigation }) => {
                     rowGap={15}
                     alignItems='center'
                 >
+                    <Box height={30} />
                     <Image alt="user" src={user.images[0]} width={140} height={140} borderRadius={15} />
                     <Text fontSize='2xl' fontWeight='semibold' color={getMainColor(userData.userMode)}>{user.firstName} {user.middleName} {user.lastName}</Text>
                     {/* <Text fontSize='xl' marginBottom={15} fontWeight='semibold'>{user.email}</Text> */}

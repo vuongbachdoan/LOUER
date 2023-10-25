@@ -6,7 +6,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { GradientButton } from "../../components/GradientButton";
 import * as Progress from 'react-native-progress';
 
-import demoCmtAva from "../../assets/images/demo/ava lessee.png";
+import demoCmtAva from "../../assets/images/demo/ava lessee.jpg";
 
 
 import { store } from "../../state/store";

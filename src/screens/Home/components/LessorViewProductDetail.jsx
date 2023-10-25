@@ -6,7 +6,7 @@ import { useLayoutEffect } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
 import { GradientButton } from "../../../components/GradientButton";
-import AvatarUser from '../../../assets/images/demo/ava-lessor.png'
+import AvatarUser from '../../../assets/images/demo/ava-lessor.jpg'
 
 export const LessorViewProductDetail = ({ navigation, route }) => {
 

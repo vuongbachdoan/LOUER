@@ -145,18 +145,16 @@ export const SignedIn = ({ navigation }) => {
                             </Avatar>
                         </Flex>
                         <Box>
-                            {user.fullName.split(' ').map((word, index) => (
-                                <GradientText
-                                    key={index}
-                                    text={word}
-                                    fontSize={50}
-                                    fontWeight={1000}
-                                    isGradientFill
-                                    gradientColors={['#FF5484', '#26A0DD']}
-                                />
-                            ))}
+                            <Text
+                                style={{
+                                    fontSize: 75, fontWeight: '900', textAlign: 'left',
+                                    color: (userMain.userMode) ? ('#22A4DD') : ('#FF5484')
+                                }}>
+                                {user.firstName} {user.lastName}
+                            </Text>
                         </Box>
                         <Box>
+                            <Box height={30} />
                             <GradientButton
                                 disabled={userMain.userId === ''}
                                 onPress={() => {

@@ -3,12 +3,14 @@ import axios from "axios";
 
 const requestZ = axios.create({
     baseURL: 'https://www.louerapp.com/api/',
-    timeout: 1000,
+    // timeout: 1000,
     headers: {
         // 'X-Custom-Header': 'foobar',
         // 'ngrok-skip-browser-warning': 'true' // Set the header with any value you want
     }
 });
+
+
 
 export const getBaseLink = async () => {
     return requestZ.baseURL;
@@ -37,25 +39,20 @@ export const post = async (path, data) => {
 }
 
 export const createRequest = async (userId, data) => {
-    const res = await axios.post("https://www.louerapp.com/api/listings/add", JSON.stringify(data), {
+    const res = await axios.post(`https://www.louerapp.com/api/listings/add?userId=${userId}`, JSON.stringify(data), {
         headers: {
             "Content-Type": "application/json; charset=UTF-8"
-        },
-        params: {
-            userId: userId
         }
     })
     return res.data
 }
 
-export const uploadImage = async (listingId, data) => {
-    const res = await axios.post("https://www.louerapp.com/api/images/listings/upload", data, {
-        params: {
-            listing_id: listingId
-        }
-    })
-    return res.data
+export const uploadImage = async (listingId, dataImg) => {
+    const FormData = require('form-data');
+    const data = new FormData();
+    data.append('images', dataImg);
+    const res = await axios.post(`https://www.louerapp.com/api/images/listings/upload?listingId=${listingId}`, data);
+    return(res.status);
 }
-
 
 export default requestZ;

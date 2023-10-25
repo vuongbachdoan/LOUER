@@ -86,6 +86,13 @@ export const LessorCreateRequest = ({ navigation }) => {
         });
         if (!result.cancelled) {
             setIsUploaded(true);
+            // Remove the old images from the listingRequest state variable.
+            setListingRequest({
+                ...listingRequest,
+                photos: []
+            });
+
+            // Add the new images to the listingRequest state variable.
             const listPhotos = result.assets.map((image) => image.uri);
             setListingRequest({
                 ...listingRequest,
@@ -110,16 +117,7 @@ export const LessorCreateRequest = ({ navigation }) => {
         // + listingDescription: String
         // + marketPrice: Integer, giá thị trường của sản phẩm
         // + price: Integer, giá cho thuê của sản phẩm
-
-        alert(listingRequest.userId)
-
         createRequest(listingRequest.userId, {
-            // productName: listingRequest.productName,
-            // brandName: listingRequest.brandName,
-            // categoryName: listingRequest.categoryName,
-            // listingDescription: listingRequest.listingDescription,
-            // marketPrice: listingRequest.marketPrice,
-            // price: listingRequest.price,
             productName: listingRequest.productName,
             brandName: listingRequest.brandName,
             categoryName: listingRequest.categoryName,
@@ -128,10 +126,22 @@ export const LessorCreateRequest = ({ navigation }) => {
             price: Number(listingRequest.price),
         })
             .then((res) => {
-                uploadImage(res.listingId, listingRequest.photos)
-                    .then((responseImg) => {
-                        alert("Add img response: ", responseImg);
+                // uploadImage(res.listingId, listingRequest.photos.toString())
+                console.log("Add listing response: ", JSON.stringify(res));
+                listingRequest.photos.map((photo) => {
+                    photo.map((p) => {
+                        console.log("EACH PHOTO:", p);
+                        uploadImage(res.listingId, p)
+                            .then((resImg) => {
+                                if (resImg==200) {
+                                    Toast.show('Thêm sản phẩm thành công');
+                                } else {
+                                    Toast.show('Thêm ảnh thất bại, lỗi:', {resImg});
+                                }
+                                console.log("Add img response: ", resImg);
+                            })
                     })
+                })
             })
     }
 
@@ -166,14 +176,14 @@ export const LessorCreateRequest = ({ navigation }) => {
     const handleMarketPriceInput = (e) => {
         setListingRequest({
             ...listingRequest,
-            price: 100,
+            price: e,
         })
     }
 
     const handlePriceInput = (e) => [
         setListingRequest({
             ...listingRequest,
-            marketPrice: 100,
+            marketPrice: e,
         })
     ]
 
@@ -252,7 +262,7 @@ export const LessorCreateRequest = ({ navigation }) => {
                                     >
                                         {categoryList.map((category, index) => (
                                             <Select.Item
-                                                // key={index} 
+                                                key={index}
                                                 label={category} value={category} />
                                         ))}
                                     </Select>
@@ -265,10 +275,13 @@ export const LessorCreateRequest = ({ navigation }) => {
 
                             {isUploaded && (
                                 <ScrollView horizontal={true} _important={true}>
-                                    {
-                                        listingRequest.photos.map((photo, index) => (
-                                            <Image key={index} source={{ uri: photo }} style={styles.image} padding={2} />
-                                        ))}
+                                    {(console.log("LISTING REQUEST:", listingRequest)) &&
+                                        listingRequest.photos.map(photo => (
+                                            // console.log("EACH PHOTO:", photo)
+                                            <Image key={photo} source={{ uri: photo.toString() }} style={styles.image} padding={2} />
+                                        )
+                                        )
+                                    }
                                 </ScrollView>
                             )}
 
