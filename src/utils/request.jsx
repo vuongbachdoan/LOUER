@@ -78,35 +78,36 @@ export const createRequest = async (userId, data) => {
 
 export const uploadImage = async (listingId, images) => {
 
-    var formData = new FormData();
-
+    let formData = new FormData();
     images.forEach((image) => {
-        console.log('image before formData:', image);
-        formData.append("images", image);
-    });
-
-
-
-    var request = {
+        formData.append("images", {
+            file: image,
+            type: 'image/jpeg',
+            // type: 'multipart',
+        });
+        
+    });   
+    
+    let header = {
+        'Content-Type': "multipart/form-data",
+    };
+    let request = {
         method: 'POST',
+        headers: header,
         body: formData,
     };
-
-    console.log('request:', JSON.stringify(request));
-
-    // fetch(`https://www.louerapp.com/api/images/listings/upload?listingId=119`, request)
     fetch(`https://www.louerapp.com/api/images/listings/upload?listingId=${listingId}`, request)
         .then(response => {
             console.log('Img upload response:',JSON.stringify(response));
             console.log('response:',JSON.stringify(response.toString));
-            return response;
+            return response.status;
         })
         .then(result => {
             console.log('Img upload result:',JSON.stringify(result));
-            return result;
+            return result.status;
         })
         .catch(error => {
-            console.log('error', JSON.stringify(error));
+            console.log('error UPLOAD IMG', error);
         });
 }
 

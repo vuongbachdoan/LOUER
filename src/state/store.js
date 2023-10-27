@@ -16,7 +16,7 @@ export const store = new Store({
         rating: '',
 
         phone: '',
-        address: '',
+        address: 1,
         bankBranch: '',
         bankAccount: '',
 
@@ -44,9 +44,15 @@ export const store = new Store({
         numberOfListings: number,
         marketPrice: number,
     },
-preferences: {
-    isDarkMode: false,
+    address: {
+        1: 'ĐH FPT Khu Công nghệ Cao, Quận 9, TP.HCM',
+        2: 'NVH Sinh viên, Quận Thủ Đức, TP.HCM',
+    },
+    preferences: {
+        isDarkMode: false,
         pushNotifications: false,
     },
-    
+
+
+
 });

@@ -47,16 +47,6 @@ export const LessorCreateRequest = ({ navigation }) => {
 
 
     const fadeAnim = React.useRef(new Animated.Value(0)).current;
-    // const makeRequest = async (productRequest) => {
-    //     try {
-    //         const response = await request.addProductRequest(productRequest);
-    //         console.log(response);
-    //         // handle successful response
-    //     } catch (error) {
-    //         console.error(error);
-    //         // handle error
-    //     }
-    // };
 
 
     React.useEffect(() => {
@@ -69,15 +59,6 @@ export const LessorCreateRequest = ({ navigation }) => {
 
 
     React.useEffect(() => {
-        setTimeout(() => {
-            if (listingRequest.productName !== '' && listingRequest.brandName !== '' &&
-                listingRequest.categoryName !== '' && listingRequest.listingDescription !== '' &&
-                listingRequest.marketPrice !== '' && listingRequest.price !== '') {
-                setAllowUpload(true);
-            } else {
-                setAllowUpload(false);
-            }
-        }, 500);
         console.log('listingRequest: ', listingRequest);
         console.log('isAllowUpload: ', isAllowUpload);
         console.log('isUploaded: ', isUploaded);
@@ -119,7 +100,6 @@ export const LessorCreateRequest = ({ navigation }) => {
 
             // Add the new images to the listingRequest state variable.
             const listPhotos = result.assets.map((image) => image.uri);
-            console.log('listPhotos: ', listPhotos);
             setListingRequest({
                 ...listingRequest,
                 photos: [
@@ -156,24 +136,25 @@ export const LessorCreateRequest = ({ navigation }) => {
                 // uploadImage(res.listingId, listingRequest.photos.toString()).then((resImg) => {
                 //     alert('Res IMG: ', resImg)
                 // });
-                console.log("Add listing response: ", JSON.stringify(res));
+                console.log('res INFO: ', res);
                 listingRequest.photos.map((photo) => {
                     uploadImage(res.listingId, photo)
                             .then((resImg) => {
-                                if (resImg.status == 200) {
+                                if (resImg == 200) {
                                     Toast.show('Thêm sản phẩm thành công');
                                     setUploaded(true);
-                                } else if (resImg.status == 400) {
+                                } else if (resImg == 400) {
                                     Toast.show('Thêm ảnh thất bại, lỗi: Mạng không ổn định');
                                     setUploaded(false);
-                                } else if (resImg.status == 500) {
+                                } else if (resImg == 500) {
                                     Toast.show('Thêm ảnh thất bại, lỗi: Lỗi phía server');
                                     setUploaded(false);
                                 }
-                                else {
-                                    Toast.show('Thêm ảnh thất bại, vui lòng liên hệ với Sharkionares.');
-                                    setUploaded(false);
-                                }
+                                // else {
+                                //     console.log('resImg: ', resImg);
+                                //     Toast.show('Thêm ảnh thất bại, vui lòng liên hệ với Sharkionares.');
+                                //     setUploaded(false);
+                                // }
                                 console.log("Add img response: ", resImg);
                             })
                 })
@@ -312,7 +293,7 @@ export const LessorCreateRequest = ({ navigation }) => {
                                 <ScrollView horizontal={true} _important={true}>
                                     {listingRequest.photos.map(photo => (
                                         photo.map(item => (
-                                            <Image key={item} source={{ uri: item }} style={styles.image} />
+                                            <Image alt="img" key={item} source={{ uri: item }} style={styles.image} />
                                         ))
                                     ))}
                                 </ScrollView>

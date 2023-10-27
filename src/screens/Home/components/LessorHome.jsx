@@ -220,7 +220,7 @@ export const LessorHome = ({ navigation }) => {
                                                 <Text fontSize='xl' fontWeight='semibold' color='#01005C' marginBottom={15}>{item.product.productName}</Text>
                                                 <Text fontSize='sm' fontWeight='semibold' color={item.statusColor}>{item.listingStatus}</Text>
                                             </Box>
-                                            <Ionicons onPress={() => navigation.navigate('Product details', { product: item })} name='chevron-forward' size={28} />
+                                            <Ionicons onPress={() => navigation.navigate('Product details', { item: item })} name='chevron-forward' size={28} />
                                         </Box>
                                     ))
                                         // prodData.map((item, index) => (

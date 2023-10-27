@@ -7,10 +7,18 @@ import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
 import { GradientButton } from "../../../components/GradientButton";
 
+
+const status = new Map([
+    [0, "Pending"],
+    [1, "Available"],
+    [2, "Request pending"]
+]);
+
+
 export const ProductDetail = ({ navigation, route }) => {
 
+    
     const fadeAnim = React.useRef(new Animated.Value(0)).current;
-
     React.useEffect(() => {
         Animated.timing(fadeAnim, {
             toValue: 1,
@@ -19,15 +27,15 @@ export const ProductDetail = ({ navigation, route }) => {
         }).start();
     }, [fadeAnim]);
 
-    const { product } = route.params;
+    const { item : listing } = route.params;
 
     const [isBanking, setIsBanking] = useState(false);
 
     useLayoutEffect(() => {
         navigation.setOptions({
-            headerTitle: () => <Text fontWeight='bold'>{product.name}</Text>,
+            headerTitle: () => <Text fontWeight='bold'>{listing.product.productName}</Text>,
         });
-    }, [navigation, product]);
+    }, [navigation, listing]);
 
     const toggleIsBanking = () => {
         setIsBanking(!isBanking)
@@ -54,7 +62,7 @@ export const ProductDetail = ({ navigation, route }) => {
                 >
 
                     <Flex><Ionicons name="chevron-back" size={22} onPress={() => navigation.goBack()} /></Flex>
-                    <Text textAlign='center' flex={1} fontSize={22} fontWeight='semibold'>{product.name}</Text>
+                    <Text textAlign='center' flex={1} fontSize={22} fontWeight='semibold'>{listing.product.productName}</Text>
                 </Flex>
 
                 <ScrollView>
@@ -155,14 +163,27 @@ export const ProductDetail = ({ navigation, route }) => {
                             <Text color="gray.500" fontSize={20} fontWeight='semibold'>624.000 vnđ</Text>
                         </Stack>
 
+
                         {
-                            (product.status === 'pending' && isEnding === false) &&
+                            (listing.listingStatus === 0 && isEnding === false) &&
                             <Stack marginTop={30}>
                                 <GradientButton onPress={() => setIsEnding(true)} text='Kết thúc giao dịch' colors={['#2A4AB6', '#269DDB']} height={45} radius={15} />
                             </Stack>
                         }
                         {
-                            (product.status === 'pending' && isEnding === true) &&
+                            (listing.listingStatus === 0 && isEnding === true) &&
+                            <Stack marginTop={30}>
+                                <GradientButton onPress={() => setIsEnding(true)} text='Kết thúc giao dịch' colors={['#2A4AB6', '#269DDB']} height={45} radius={15} />
+                            </Stack>
+                        }
+                        {
+                            (listing.listingStatus === 2 && isEnding === false) &&
+                            <Stack marginTop={30}>
+                                <GradientButton onPress={() => setIsEnding(true)} text='Kết thúc giao dịch' colors={['#2A4AB6', '#269DDB']} height={45} radius={15} />
+                            </Stack>
+                        }
+                        {
+                            (listing.listingStatus === 2 && isEnding === true) &&
                             <>
                                 <Text marginTop={15} fontSize={16} fontWeight='semibold'>Xác nhận kết thúc giao dịch trước hạn</Text>
                                 <Flex
@@ -176,7 +197,7 @@ export const ProductDetail = ({ navigation, route }) => {
                             </>
                         }
                         {
-                            product.status === 'available' &&
+                            listing.listingStatus === 1 &&
                             <>
                                 <Input
                                     marginTop={15}
