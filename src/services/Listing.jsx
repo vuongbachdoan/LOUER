@@ -1,4 +1,5 @@
 import * as request from "../utils/request";
+import * as Toast from "../components/Toast";
 
 export const getByProductId = async (productId) => {
     try {
@@ -62,5 +63,6 @@ export const add = async (userId, data) => {
 
 
 const outputError = (error) => {
+    Toast.show('Úi, lỗi mạng, mong bạn mở lại Louer nhé ><');
     return console.error(error);
 }

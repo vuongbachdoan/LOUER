@@ -48,6 +48,16 @@ export const store = new Store({
         1: 'ĐH FPT Khu Công nghệ Cao, Quận 9, TP.HCM',
         2: 'NVH Sinh viên, Quận Thủ Đức, TP.HCM',
     },
+    listingStatus:{
+        0: 'Đang thuê',
+        1: 'Sẵn sàng',
+        2: 'Chờ duyệt'
+    },
+    listingStatusColor:{
+        0: '#f65683',
+        1: '#22a4dd',
+        2: '#fdb400'
+    },
     preferences: {
         isDarkMode: false,
         pushNotifications: false,

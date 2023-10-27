@@ -98,5 +98,6 @@ export const updateModeById = async (userId) => {
 
 
 const outputError = (error) => {
+    Toast.show('Úi, lỗi mạng, mong bạn mở lại Louer nhé ><');
     return console.error(error);
 }

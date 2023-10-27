@@ -1,4 +1,4 @@
-import { Avatar, Box, CheckIcon, Flex, Heading, Image, ScrollView, Select, Stack, Text } from "native-base";
+import { Avatar, Box, CheckIcon, Flex, Heading, Image, ScrollView, Select, Stack, Text, Toast } from "native-base";
 import React from "react";
 import { StyleSheet, Animated, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
@@ -6,8 +6,9 @@ import { GradientButton } from "../../../components/GradientButton";
 import { useIsFocused } from "@react-navigation/native";
 
 
-import { store } from "../../../state/store";
+import{ store } from "../../../state/store";
 import * as ListingService from "../../../services/Listing";
+import { Touchable } from "react-native";
 
 
 
@@ -16,6 +17,8 @@ export const LessorHome = ({ navigation }) => {
     const fadeAnim = React.useRef(new Animated.Value(500)).current;
 
     const user = store.useState((state) => state.user);
+    const listingStatus = store.useState((state) => state.listingStatus);
+    const listingStatusColor = store.useState((state) => state.listingStatusColor);
     const [listing, setListing] = React.useState([]);
     const [isListEmpty, setIsListEmpty] = React.useState(true);
 
@@ -46,25 +49,18 @@ export const LessorHome = ({ navigation }) => {
 
 
     React.useEffect(() => {
-        handleGetListing().then(() => {
-            if (listing.length == 0) {
-                setIsListEmpty(false);
-            } else {
-                setIsListEmpty(true);
-            }
-        });
-    }, [useIsFocused()]);
+
+        //Handle listing from DOS the server
+        if (listing.length !== 0) {
+            setIsListEmpty(false);
+        } else {
+            setIsListEmpty(true);
+        }
+    }, [useIsFocused(),isListEmpty==true]);
 
 
     const handleChangeRoute = (route) => {
         navigation.navigate(route);
-    }
-
-
-    const MyComponent = () => {
-        return (
-            <View style={{ backgroundColor: 'red', height: 100, width: 100 }} />
-        );
     }
 
     const styles = StyleSheet.create({
@@ -75,7 +71,7 @@ export const LessorHome = ({ navigation }) => {
             paddingRight: 25,
             width: '100%',
             height: '100%',
-            backgroundColor: '#FAFAFA',
+            backgroundColor: '#EDEDED',
         },
         text: {
             textTransform: 'uppercase',
@@ -162,26 +158,41 @@ export const LessorHome = ({ navigation }) => {
                                 {
                                     listing.reverse().map((item, index) => (
                                         <Box
-                                            key={index} // Use a unique key for each item
+                                            onPress={() => navigation.navigate('Product details', { item: item })}
+                                            key={index}
                                             style={{
                                                 flexDirection: 'row',
                                                 justifyContent: 'space-between',
                                                 alignItems: 'center',
-                                                paddingBottom: 10,
-                                                columnGap: 15
+                                                padding: 10,
+                                                margin: 10,
+                                                columnGap: 10,
+                                                backgroundColor: '#FFFFFF',
+                                                borderRadius: 15,
+                                                shadowColor: '#000',
+                                                shadowOffset: {
+                                                    width: 0,
+                                                    height: 4,
+                                                },
+                                                elevation: 8,
+                                                overflow: 'hidden',
                                             }}
                                         >
-
-                                            {user.images !== null &&
-                                                <Image alt="thumbnail" source={{ uri: item.images[0] }} borderRadius={10} width={100} height={100} />
+                                            {(user.images !== null) &&
+                                                <Image  alt="thumbnail" 
+                                                    source={{ uri: item.images[0] }} 
+                                                    borderRadius={15} width={100} height={100} paddingLeft={5}
+                                                />
                                             }
                                             <Box
                                                 flex={1}
+                                                // paddingRight={5}
+                                                // paddingLeft={5}
                                             >
-                                                <Text fontSize='xl' fontWeight='semibold' color='#01005C' marginBottom={15}>{item.product.productName}</Text>
-                                                <Text fontSize='sm' fontWeight='semibold' color={item.statusColor}>{item.listingStatus}</Text>
+                                                <Text fontSize='lg' fontWeight='semibold' color='#01005C' marginBottom={15}>{item.product.productName}</Text>
+                                                <Text fontSize='sm' fontWeight='bold' color={listingStatusColor[item.statusColor]}>{listingStatus[item.listingStatus]}</Text>
                                             </Box>
-                                            <Ionicons onPress={() => navigation.navigate('Product details', { item: item })} name='chevron-forward' size={28} />
+                                            {/* <Ionicons onPress={() => navigation.navigate('Product details', { item: item })} name='chevron-forward' size={28} /> */}
                                         </Box>
                                     ))
                                 }

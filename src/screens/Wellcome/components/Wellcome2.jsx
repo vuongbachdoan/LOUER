@@ -5,13 +5,15 @@ import { Checkbox, Flex, Link, Stack, Text } from "native-base";
 import GradientText from "react-native-gradient-texts";
 import { SignedOut } from "@clerk/clerk-expo";
 import SignInWithOAuth from "../../../components/SignInWithOAuth";
-import { useUser } from "@clerk/clerk-react";
+import { useUser, useAuth } from "@clerk/clerk-react";
 
 
 export const Wellcome2 = ({ navigation }) => {
     const fadeAnim = React.useRef(new Animated.Value(0)).current;
 
-    const { isSignedIn, isLoaded } = useUser();
+    const { isSignedIn } = useUser();
+    const { isLoaded, userId, sessionId, getToken } = useAuth();
+
 
     React.useEffect(() => {
         Animated.timing(fadeAnim, {
@@ -31,46 +33,53 @@ export const Wellcome2 = ({ navigation }) => {
         }
     }, [isSignedIn, isLoaded, navigation]);
 
-    return (
-        <Animated.View style={{ flex: 1, opacity: fadeAnim }}>
-            <Flex
-                display='flex'
-                justifyContent='center'
-                alignItems='center'
-                flexDirection='column'
-                height='100%'
-                width='100%'
-            >
-                <Stack
+    // In case the user signs out while on the page.
+    if (!isLoaded || !userId) {
+        return (
+            <Animated.View style={{ flex: 1, opacity: fadeAnim }}>
+                <Flex
+                    display='flex'
+                    justifyContent='center'
                     alignItems='center'
-                    marginLeft={15}
-                    marginRight={15}
+                    flexDirection='column'
+                    height='100%'
+                    width='100%'
                 >
-                    <Image
-                        style={{
-                            width: 280,
-                            height: 280,
-                            resizeMode: 'contain',
-                        }}
-                        source={LogoLouer}
-                    />
+                    <Stack
+                        alignItems='center'
+                        marginLeft={15}
+                        marginRight={15}
+                    >
+                        <Image
+                            style={{
+                                width: 280,
+                                height: 280,
+                                resizeMode: 'contain',
+                            }}
+                            source={LogoLouer}
+                        />
+    
+                        <GradientText
+                            text={"Louer"}
+                            fontSize={95}
+                            fontWeight={1000}
+                            isGradientFill
+                            gradientColors={['#FF5484', '#26A0DD']}
+                        />
+    
+                        <Text fontSize={22} fontWeight='bold' marginBottom={7.5}>Đăng ký / Đăng nhập</Text>
+                        <Text fontSize={16} fontWeight='semibold' color='coolGray.500' marginBottom={15}>Sử dụng mail FPT Edu / Google của bạn</Text>
+                        {isSignedIn && isLoaded && handleSignedIn()}
+                        <SignedOut>
+                            <SignInWithOAuth navigation={navigation} />
+                        </SignedOut>
+                    </Stack>
+                </Flex>
+            </Animated.View>
+        );
+    }else{
+        navigation.navigate('SignedIn');
+    }
 
-                    <GradientText
-                        text={"Louer"}
-                        fontSize={95}
-                        fontWeight={1000}
-                        isGradientFill
-                        gradientColors={['#FF5484', '#26A0DD']}
-                    />
-
-                    <Text fontSize={22} fontWeight='bold' marginBottom={7.5}>Đăng ký / Đăng nhập</Text>
-                    <Text fontSize={16} fontWeight='semibold' color='coolGray.500' marginBottom={15}>Sử dụng mail FPT Edu / Google của bạn</Text>
-                    {isSignedIn && isLoaded && handleSignedIn()}
-                    <SignedOut>
-                        <SignInWithOAuth navigation={navigation} />
-                    </SignedOut>
-                </Stack>
-            </Flex>
-        </Animated.View>
-    );
+    
 };

@@ -1,5 +1,6 @@
 import *  as request from "../utils/request";
 import axios from "axios";
+import * as Toast from "../components/Toast";
 
 
 const getAllByProductId = async (productId) => {
@@ -89,5 +90,6 @@ const remove= async (listingId) => {
 };
 
 const outputError = (error) => {
-    return console.error(error);
+    Toast.show('Úi, lỗi mạng, mong bạn mở lại Louer nhé ><');
+    Toast.show(error.message);
 }

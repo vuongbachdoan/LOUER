@@ -20,7 +20,7 @@ export const Home = ({ navigation }) => {
 
     return (
             <Tab.Navigator
-                sceneContainerStyle={{ height: 60, backgroundColor: '#FAFAFA' }}
+                sceneContainerStyle={{ height: 60, backgroundColor: '#FAFAF9' }}
                 screenOptions={({ route }) => ({
                     headerShown: false,
                     gestureEnabled: true,
