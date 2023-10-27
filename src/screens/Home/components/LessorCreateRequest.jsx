@@ -10,6 +10,7 @@ import { store } from "../../../state/store";
 
 import { add, addImg } from "../../../services/ListingRequest"
 import { createRequest, uploadImage } from "../../../utils/request";
+import * as ListingService from "../../../services/ListingRequest";
 
 
 // const listingRequest = {
@@ -43,8 +44,6 @@ export const LessorCreateRequest = ({ navigation }) => {
 
     const user = store.useState((state) => state.user);
     const [isUploaded, setUploaded] = React.useState(false);
-    const [isAllowUpload, setAllowUpload] = React.useState(false);
-
 
     const fadeAnim = React.useRef(new Animated.Value(0)).current;
 
@@ -60,9 +59,10 @@ export const LessorCreateRequest = ({ navigation }) => {
 
     React.useEffect(() => {
         console.log('listingRequest: ', listingRequest);
-        console.log('isAllowUpload: ', isAllowUpload);
         console.log('isUploaded: ', isUploaded);
     }, [listingRequest]);
+
+
 
     const [listingRequest, setListingRequest] = useState({
         userId: user.userId,
@@ -72,7 +72,7 @@ export const LessorCreateRequest = ({ navigation }) => {
         listingDescription: "",
         marketPrice: 0,
         price: 0,
-        photos: [],
+        photos: [{ uri: "", type: "", name: "" }],
     })
 
     const [photoInfo, setPhotoInfo] = React.useState({
@@ -89,9 +89,7 @@ export const LessorCreateRequest = ({ navigation }) => {
             quality: 1,
         });
         if (!result.cancelled) {
-            // Remove the old images from the listingRequest state variable.
             setUploaded(true);
-            // result.assets.
             setListingRequest({
                 ...listingRequest,
                 photos: []
@@ -99,7 +97,13 @@ export const LessorCreateRequest = ({ navigation }) => {
             });
 
             // Add the new images to the listingRequest state variable.
-            const listPhotos = result.assets.map((image) => image.uri);
+            const listPhotos = result.assets.map((image) => {
+                return {
+                    uri: image.uri,
+                    name: image.fileName,
+                    type: image.type
+                }
+            });
             setListingRequest({
                 ...listingRequest,
                 photos: [
@@ -107,6 +111,7 @@ export const LessorCreateRequest = ({ navigation }) => {
                     listPhotos
                 ],
             })
+            console.log('listingRequest: ', listingRequest);
             setUploaded(true);
         } else if (result.error) {
             setUploaded(false);
@@ -132,21 +137,18 @@ export const LessorCreateRequest = ({ navigation }) => {
             marketPrice: Number(listingRequest.marketPrice),
             price: Number(listingRequest.price),
         })
-            .then((res) => {
-                // uploadImage(res.listingId, listingRequest.photos.toString()).then((resImg) => {
-                //     alert('Res IMG: ', resImg)
-                // });
-                console.log('res INFO: ', res);
+            .then(( listingRes) => {
                 listingRequest.photos.map((photo) => {
-                    uploadImage(res.listingId, photo)
-                            .then((resImg) => {
-                                if (resImg == 200) {
+                    uploadImage(listingRes.listingId, photo)
+                            .then((imgRes) => {
+                                if (imgRes == 200) {
                                     Toast.show('Thêm sản phẩm thành công');
                                     setUploaded(true);
-                                } else if (resImg == 400) {
+                                } else if (imgRes == 400) {
                                     Toast.show('Thêm ảnh thất bại, lỗi: Mạng không ổn định');
+
                                     setUploaded(false);
-                                } else if (resImg == 500) {
+                                } else if (imgRes == 500) {
                                     Toast.show('Thêm ảnh thất bại, lỗi: Lỗi phía server');
                                     setUploaded(false);
                                 }
@@ -155,7 +157,7 @@ export const LessorCreateRequest = ({ navigation }) => {
                                 //     Toast.show('Thêm ảnh thất bại, vui lòng liên hệ với Sharkionares.');
                                 //     setUploaded(false);
                                 // }
-                                console.log("Add img response: ", resImg);
+                                console.log("Add img response: ", imgRes);
                             })
                 })
             })

@@ -3,76 +3,31 @@ import React from "react";
 import { StyleSheet, Animated, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { GradientButton } from "../../../components/GradientButton";
-import Prod1 from '../../../assets/images/prod1.png'
-import Prod2 from '../../../assets/images/prod2.png'
-import Prod3 from '../../../assets/images/prod3.png'
-
+import { useIsFocused } from "@react-navigation/native";
 
 
 import { store } from "../../../state/store";
-import * as UserService from "../../../services/User";
 import * as ListingService from "../../../services/Listing";
 
-// const prodData = [
-//     {
-//         name: 'Canon EOS 700D',
-//         status: 'pending',
-//         statusMessage: '2 Giao dịch đang đợi',
-//         statusColor: '#FFC700',
-//         thumbnail: Prod1
-//     },
-//     {
-//         name: 'Nikon D7000',
-//         status: 'warning',
-//         statusMessage: 'Còn thiếu đền bù thiệt hại',
-//         statusColor: '#FC0000',
-//         thumbnail: Prod2
-//     },
-//     {
-//         name: 'Canon 5d Mark IV',
-//         status: 'available',
-//         statusMessage: 'Chưa có giao dịch',
-//         statusColor: '#0166FE',
-//         thumbnail: Prod3
-//     },
-//     {
-//         name: 'Nikon D7000',
-//         status: 'available',
-//         statusMessage: 'Chưa có giao dịch',
-//         statusColor: '#0166FE',
-//         thumbnail: Prod2
-//     },
-//     {
-//         name: 'Canon EOS 700D',
-//         status: 'available',
-//         statusMessage: 'Chưa có giao dịch',
-//         statusColor: '#0166FE',
-//         thumbnail: Prod1
-//     }
-// ]
 
-const prodData = []
 
 export const LessorHome = ({ navigation }) => {
 
     const fadeAnim = React.useRef(new Animated.Value(500)).current;
 
     const user = store.useState((state) => state.user);
-    // const listing = store.useState((state) => state.listing);
+    const [listing, setListing] = React.useState([]);
+    const [isListEmpty, setIsListEmpty] = React.useState(true);
 
     const [service, setService] = React.useState("");
-
-    const [listing, setListing] = React.useState([]);
 
 
 
     const handleGetListing = async () => {
         try {
-            ListingService.getByUserId(user.userId).then((data) => {
-                // const json = JSON.stringify(data);
-                setListing(data);
-                // ListingService.getByUserId(user.userId).then((data) => {
-            });
+            const res = await ListingService.getByUserId(user.userId);
+            console.log("listing get data", res);
+            setListing(res);
         } catch (error) {
             console.error(error);
         }
@@ -89,21 +44,27 @@ export const LessorHome = ({ navigation }) => {
         }).start();
     }, [fadeAnim]);
 
-    React.useEffect(() => {}, [listing]);
-
-
 
     React.useEffect(() => {
-        handleGetListing();
-        // setTimeout(() => {
-            
-        // }, 1000); // wait for 1 second before trying again
-
-    }, [navigation, listing]);
+        handleGetListing().then(() => {
+            if (listing.length == 0) {
+                setIsListEmpty(false);
+            } else {
+                setIsListEmpty(true);
+            }
+        });
+    }, [useIsFocused()]);
 
 
     const handleChangeRoute = (route) => {
         navigation.navigate(route);
+    }
+
+
+    const MyComponent = () => {
+        return (
+            <View style={{ backgroundColor: 'red', height: 100, width: 100 }} />
+        );
     }
 
     const styles = StyleSheet.create({
@@ -140,7 +101,7 @@ export const LessorHome = ({ navigation }) => {
                     paddingTop={15}
                 >
                     <Box>
-                        <Heading fontSize={36} fontWeight='bold'>Xin Chào</Heading>
+                        <Heading fontSize={20} fontWeight='bold'>Xin Chào,</Heading>
                         <Heading fontSize={36} fontWeight='bold' color='#22A4DD'>{user.firstName} {user.lastName}</Heading>
                     </Box>
                     <Avatar bg="lightBlue.400" source={{ uri: user.images[0] }} size="lg"
@@ -192,7 +153,7 @@ export const LessorHome = ({ navigation }) => {
                     flex={1}
                     overflow='hidden'
                 >
-                    {(!listing && listing.length > 0) ?
+                    {(isListEmpty) ?
                         (
                             <Box height={30} /> &&
                             <Text fontSize='xl' fontWeight='semibold' color='gray.500'>Chưa có sản phẩm được đăng</Text>) :
@@ -200,8 +161,6 @@ export const LessorHome = ({ navigation }) => {
                             <ScrollView>
                                 {
                                     listing.reverse().map((item, index) => (
-                                        // console.log(item),
-                                        
                                         <Box
                                             key={index} // Use a unique key for each item
                                             style={{
@@ -212,8 +171,10 @@ export const LessorHome = ({ navigation }) => {
                                                 columnGap: 15
                                             }}
                                         >
-                                            
-                                            {/* <Image alt="thumbnail" source={} borderRadius={10} width={100} height={100} /> */}
+
+                                            {user.images !== null &&
+                                                <Image alt="thumbnail" source={{ uri: item.images[0] }} borderRadius={10} width={100} height={100} />
+                                            }
                                             <Box
                                                 flex={1}
                                             >
@@ -223,27 +184,6 @@ export const LessorHome = ({ navigation }) => {
                                             <Ionicons onPress={() => navigation.navigate('Product details', { item: item })} name='chevron-forward' size={28} />
                                         </Box>
                                     ))
-                                        // prodData.map((item, index) => (
-                                        //     <Box
-                                        //         key={index} // Use a unique key for each item
-                                        //         style={{
-                                    //             flexDirection: 'row',
-                                    //             justifyContent: 'space-between',
-                                    //             alignItems: 'center',
-                                    //             paddingBottom: 15,
-                                    //             columnGap: 15
-                                    //         }}
-                                    //     >
-                                    //         <Image alt="thumbnail" source={item.thumbnail} borderRadius={10} width={100} height={100} />
-                                    //         <Box
-                                    //             flex={1}
-                                    //         >
-                                    //             <Text fontSize='xl' fontWeight='semibold' color='#01005C' marginBottom={15}>{item.name}</Text>
-                                    //             <Text fontSize='sm' fontWeight='semibold' color={item.statusColor}>{item.statusMessage}</Text>
-                                    //         </Box>
-                                    //         <Ionicons onPress={() => navigation.navigate('Product details', { product: item })} name='chevron-forward' size={28} />
-                                    //     </Box>
-                                    // ))
                                 }
                             </ScrollView>
 

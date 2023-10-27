@@ -9923,6 +9923,11 @@ react-native-screens@~3.22.0:
     react-freeze "^1.0.0"
     warn-once "^0.1.0"
 
+react-native-simple-heic2jpg@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/react-native-simple-heic2jpg/-/react-native-simple-heic2jpg-0.1.1.tgz#236540ce41eb3989849ee3690eb479ea6b5f43fe"
+  integrity sha512-AhPNMQuay8mtgNjb/E8TPEFfuUJfjNxdY39tjIbINnMdnJ577VNklOktM0rtXmJAT5J++jvshA+P3Zb3c3Bbcw==
+
 react-native-stock-star-rating@^1.0.6:
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/react-native-stock-star-rating/-/react-native-stock-star-rating-1.0.6.tgz#b28fb5d61a9e64a7581d73d307055fb86c32836c"

@@ -2,6 +2,7 @@
   "expo": {
     "name": "Louer",
     "slug": "louer",
+    "scheme": "com.sharkionares.louer",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -18,7 +19,8 @@
       "supportsTablet": true,
       "infoPlist": {
         "NSPhotoLibraryUsageDescription": "This app requires access to your photo library for uploading photos."
-      }
+      },
+      "bundleIdentifier": "com.sharkionares.louer"
     },
     "android": {
       "adaptiveIcon": {

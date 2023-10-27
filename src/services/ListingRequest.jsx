@@ -1,5 +1,5 @@
 import *  as request from "../utils/request";
-
+import axios from "axios";
 
 
 const getAllByProductId = async (productId) => {
@@ -41,12 +41,23 @@ const getImgById = async (listingId) => {
 export const add = async (userId, data) => {
     // data: productName, brandName, categoryName, listingDescription, marketPrice, price
     try {
-        const res = await request.post(`listings/add?userId=${userId}`, data);
+        const res = await request.post(`listings/add?userId=${userId}`, JSON.stringify(data));
         return res.data; 
     } catch (error) {
         outputError(error);
     }
 };
+
+export const createRequest = async (userId, data) => {
+    const res = await axios.post(`https://www.louerapp.com/api/listings/add?userId=${userId}`, JSON.stringify(data)
+    // ,{
+    //     headers: {
+    //         "Content-Type": "application/json; charset=UTF-8"
+    //     }
+    // }
+    )
+    return res.data
+}
 
 export const addImg = async (listingId, data) => {
     try {

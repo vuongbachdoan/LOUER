@@ -71,18 +71,18 @@ export const ChatList = ({ navigation }) => {
 
 
 
-    React.useEffect(() => {
+    // React.useEffect(() => {
         
-        const interval = setInterval(() => {
-            handleGetAllChat().then((res) => {
-                console.log('RES: ', res);
-                setChatList(res);
-            });
-        }, 2000);
-        console.log('ChatList: ', chatList);
-        return () => clearInterval(interval);
+    //     const interval = setInterval(() => {
+    //         handleGetAllChat().then((res) => {
+    //             console.log('RES: ', res);
+    //             setChatList(res);
+    //         });
+    //     }, 2000);
+    //     console.log('ChatList: ', chatList);
+    //     return () => clearInterval(interval);
         
-    }, [navigation, chatList]);
+    // }, [navigation, chatList]);
 
 
 

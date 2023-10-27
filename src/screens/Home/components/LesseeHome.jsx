@@ -74,13 +74,13 @@ export const LesseeHome = ({ navigation }) => {
                         paddingTop={15}
                     >
                         <Box>
-                            <Heading fontSize={36} fontWeight='bold'>Xin Chào</Heading>
+                            <Heading fontSize={20} fontWeight='bold'>Xin Chào,</Heading>
                             <Heading fontSize={36} fontWeight='bold' color='#FF5484'>{user.firstName} {user.middleName} {user.lastName}</Heading>
                         </Box>
                         {console.log('IMAGE', user.images[0])}
-                        <Avatar 
-                            bg="lightBlue.400" 
-                            source={{uri: user.images[0]}}
+                        <Avatar
+                            bg="lightBlue.400"
+                            source={{ uri: user.images[0] }}
                             size="md">
                             Avt
                             <Avatar.Badge bg="green.500" />
@@ -157,7 +157,7 @@ export const LesseeHome = ({ navigation }) => {
                                                 }}
                                             >
                                                 <Text textAlign='left' fontSize={14} fontWeight='semibold' color='gray.500' >{item.price}k / ngày</Text>
-                                                <GradientButton onPress={() => navigation.navigate('Lessee view product detail', {product: item})} paddingBottom={0} paddingTop={0} paddingLeft={0} paddingRight={0} prefixIcon={<Ionicons name="chevron-forward" color='#FFF' size={22} />} colors={['#9F3553', '#E98EA6']} width={35} height={35} radius={5} />
+                                                <GradientButton onPress={() => navigation.navigate('Lessee view product detail', { product: item })} paddingBottom={0} paddingTop={0} paddingLeft={0} paddingRight={0} prefixIcon={<Ionicons name="chevron-forward" color='#FFF' size={22} />} colors={['#9F3553', '#E98EA6']} width={35} height={35} radius={5} />
                                             </Flex>
                                         </Flex>
                                     </View>

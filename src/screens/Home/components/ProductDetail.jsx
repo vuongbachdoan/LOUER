@@ -51,7 +51,8 @@ export const ProductDetail = ({ navigation, route }) => {
                 flexDirection='column'
                 minHeight='100%'
                 overflow='hidden'
-            >
+            >   
+                <Box height={15} />
                 <Flex
                     width='100%'
                     flexDirection='row'

@@ -5,15 +5,15 @@ import { GradientButton } from "../../../components/GradientButton";
 import { Box, Stack, Heading, Avatar, Flex } from "native-base";
 import { useLayoutEffect } from "react";
 import Toast from "../../../components/Toast";
-import { useUser, useAuth } from "@clerk/clerk-expo";
+import { useUser } from "@clerk/clerk-expo";
 import { store } from "../../../state/store";
-import * as LoginService from "../../../services/Login";
+import * as LoginService from "../../../services/UserLogin";
 
 
 export const SignedIn = ({ navigation }) => {
 
     const userMain = store.useState((state) => state.user);
-    const { isSignedIn, user, isLoaded } = useUser();
+    const { user } = useUser();
     const [resLogin, setResLogin] = useState('');
     const [isImported, setIsImported] = useState(true);
     React.useEffect(() => {
@@ -67,7 +67,6 @@ export const SignedIn = ({ navigation }) => {
     }
 
     const handleUpdateState = () => {
-        console.log('Res Login', resLogin);
         store.update(s => {
             s.user.userId = resLogin.userId;
             s.user.studentId = resLogin.studentId;
