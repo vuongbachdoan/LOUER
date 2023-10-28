@@ -51,7 +51,7 @@ export const store = new Store({
     listingStatus:{
         0: 'Đang thuê',
         1: 'Sẵn sàng',
-        2: 'Chờ duyệt'
+        2: 'Chờ duyệt',
     },
     listingStatusColor:{
         0: '#f65683',

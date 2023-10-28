@@ -1,4 +1,4 @@
-import { Box, Button, Checkbox, Flex, Image, Input, Stack, Text, Select, CheckIcon } from "native-base";
+import { Box, Button, Checkbox, Flex, Image, Input, Stack, Text, Select, CheckIcon, List } from "native-base";
 import React, { useState, useEffect } from "react";
 import { StyleSheet, Animated, View, Platform, ScrollView, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
@@ -11,7 +11,6 @@ import { store } from "../../../state/store";
 import { add, addImg } from "../../../services/ListingRequest"
 import { createRequest, uploadImage } from "../../../utils/request";
 import * as ListingService from "../../../services/ListingRequest";
-
 
 // const listingRequest = {
 //     userId: 0,
@@ -72,14 +71,25 @@ export const LessorCreateRequest = ({ navigation }) => {
         listingDescription: "",
         marketPrice: 0,
         price: 0,
-        photos: [{ uri: "", type: "", name: "" }],
+        photos: [],
+
     })
 
-    const [photoInfo, setPhotoInfo] = React.useState({
-        type: "",
-        name: "",
 
-    });
+    const isAllowUpload = () => {
+
+        if (listingRequest.photos.length == 0) {
+            Toast.show('Vui lòng tải lên ảnh sản phẩm');
+        }
+        return listingRequest.productName !== ''
+            && listingRequest.brandName !== ''
+            && listingRequest.categoryName !== ''
+            && listingRequest.listingDescription !== ''
+            && listingRequest.marketPrice !== 0
+            && listingRequest.price !== 0
+            && listingRequest.photos.length !== 0
+    }
+
 
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -90,27 +100,19 @@ export const LessorCreateRequest = ({ navigation }) => {
         });
         if (!result.cancelled) {
             setUploaded(true);
-            setListingRequest({
-                ...listingRequest,
-                photos: []
 
-            });
-
-            // Add the new images to the listingRequest state variable.
+            // Remove old photos and add the new images to the listingRequest state variable.
             const listPhotos = result.assets.map((image) => {
                 return {
                     uri: image.uri,
                     name: image.fileName,
-                    type: image.type
-                }
+                    type: image.type,
+                };
             });
             setListingRequest({
                 ...listingRequest,
-                photos: [
-                    ...listingRequest.photos,
-                    listPhotos
-                ],
-            })
+                photos: [...listPhotos],
+            });
             console.log('listingRequest: ', listingRequest);
             setUploaded(true);
         } else if (result.error) {
@@ -129,7 +131,12 @@ export const LessorCreateRequest = ({ navigation }) => {
         // + listingDescription: String
         // + marketPrice: Integer, giá thị trường của sản phẩm
         // + price: Integer, giá cho thuê của sản phẩm
-        createRequest(listingRequest.userId, {
+
+        if (!isAllowUpload()) {
+            Toast.show('Vui lòng nhập đầy đủ thông tin');
+            return;
+        }
+        ListingService.createRequest(listingRequest.userId, {
             productName: listingRequest.productName,
             brandName: listingRequest.brandName,
             categoryName: listingRequest.categoryName,
@@ -137,29 +144,26 @@ export const LessorCreateRequest = ({ navigation }) => {
             marketPrice: Number(listingRequest.marketPrice),
             price: Number(listingRequest.price),
         })
-            .then(( listingRes) => {
-                listingRequest.photos.map((photo) => {
-                    uploadImage(listingRes.listingId, photo)
-                            .then((imgRes) => {
-                                if (imgRes == 200) {
-                                    Toast.show('Thêm sản phẩm thành công');
-                                    setUploaded(true);
-                                } else if (imgRes == 400) {
-                                    Toast.show('Thêm ảnh thất bại, lỗi: Mạng không ổn định');
-
-                                    setUploaded(false);
-                                } else if (imgRes == 500) {
-                                    Toast.show('Thêm ảnh thất bại, lỗi: Lỗi phía server');
-                                    setUploaded(false);
-                                }
-                                // else {
-                                //     console.log('resImg: ', resImg);
-                                //     Toast.show('Thêm ảnh thất bại, vui lòng liên hệ với Sharkionares.');
-                                //     setUploaded(false);
-                                // }
-                                console.log("Add img response: ", imgRes);
-                            })
-                })
+            .then((listingRes) => {
+                ListingService.addImg(listingRes.listingId, listingRequest.photos)
+                    .then((imgRes) => {
+                        if (imgRes == 200) {
+                            Toast.show('Thêm sản phẩm thành công');
+                            setUploaded(true);
+                        } else if (imgRes.status == 400) {
+                            Toast.show('Thêm ảnh thất bại, lỗi: Mạng không ổn định');
+                            setUploaded(false);
+                        } else if (imgRes.status == 500) {
+                            Toast.show('Thêm ảnh thất bại, lỗi: Lỗi phía server');
+                            setUploaded(false);
+                        }
+                        else {
+                            console.log('resImg: ', resImg);
+                            Toast.show('Thêm ảnh thất bại, vui lòng liên hệ với Sharkionares.');
+                            setUploaded(false);
+                        }
+                    });
+                
             })
     }
 
@@ -294,9 +298,12 @@ export const LessorCreateRequest = ({ navigation }) => {
                             {isUploaded && (
                                 <ScrollView horizontal={true} _important={true}>
                                     {listingRequest.photos.map(photo => (
-                                        photo.map(item => (
-                                            <Image alt="img" key={item} source={{ uri: item }} style={styles.image} />
-                                        ))
+                                        <Image
+                                            key={photo.uri}
+                                            alt="img"
+                                            source={{ uri: photo.uri }}
+                                            style={[styles.image]} // add margin to the right
+                                        />
                                     ))}
                                 </ScrollView>
                             )}
@@ -474,6 +481,7 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         padding: 2,
         flex: 1,
+        marginRight: 10,
     },
     errorText: {
         color: "red",

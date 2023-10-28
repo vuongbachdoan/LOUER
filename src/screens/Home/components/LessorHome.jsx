@@ -6,9 +6,11 @@ import { GradientButton } from "../../../components/GradientButton";
 import { useIsFocused } from "@react-navigation/native";
 
 
-import{ store } from "../../../state/store";
+import { store } from "../../../state/store";
 import * as ListingService from "../../../services/Listing";
 import { Touchable } from "react-native";
+
+
 
 
 
@@ -22,14 +24,13 @@ export const LessorHome = ({ navigation }) => {
     const [listing, setListing] = React.useState([]);
     const [isListEmpty, setIsListEmpty] = React.useState(true);
 
-    const [service, setService] = React.useState("");
+    const [sortStatus, setSortStatus] = React.useState("All");
 
 
 
     const handleGetListing = async () => {
         try {
             const res = await ListingService.getByUserId(user.userId);
-            console.log("listing get data", res);
             setListing(res);
         } catch (error) {
             console.error(error);
@@ -49,14 +50,13 @@ export const LessorHome = ({ navigation }) => {
 
 
     React.useEffect(() => {
-
-        //Handle listing from DOS the server
+        handleGetListing();
         if (listing.length !== 0) {
             setIsListEmpty(false);
         } else {
             setIsListEmpty(true);
         }
-    }, [useIsFocused(),isListEmpty==true]);
+    }, [useIsFocused()]);
 
 
     const handleChangeRoute = (route) => {
@@ -74,8 +74,25 @@ export const LessorHome = ({ navigation }) => {
             backgroundColor: '#EDEDED',
         },
         text: {
-            textTransform: 'uppercase',
+            // textTransform: 'uppercase',
             color: '#FFF'
+        },
+        listingBox: {
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            padding: 6,
+            margin: 10,
+            columnGap: 10,
+            backgroundColor: '#FFFFFF',
+            borderRadius: 15,
+            shadowColor: '#000',
+            shadowOffset: {
+                width: 0,
+                height: 4,
+            },
+            elevation: 8,
+            overflow: 'hidden',
         }
     })
 
@@ -125,23 +142,24 @@ export const LessorHome = ({ navigation }) => {
                     </Flex>
 
                     <Select
-                        selectedValue={service}
+                        selectedValue={sortStatus}
                         height={45}
-                        width={120}
+                        width={170}
                         accessibilityLabel="Choose Service"
-                        placeholder="All"
+                        placeholder={sortStatus}
                         borderRadius={10}
                         fontSize={14}
                         fontWeight={700}
                         _selectedItem={{
                             bg: 'gray.100',
                             endIcon: <CheckIcon size="5" />
-                        }} onValueChange={itemValue => setService(itemValue)}
+                        }} onValueChange={value => setSortStatus(value)}
                     >
-                        <Select.Item label="Pending" value="Pending" />
-                        <Select.Item label="Available" value="Available" />
-                        <Select.Item label="Leasing" value="Leasing" />
-                        <Select.Item label="Damanged" value="Damanged" />
+                        <Select.Item label="Tất cả" value="All" />
+                        {Object.keys(listingStatus).map((key) => (
+                            <Select.Item label={listingStatus[key]} value={listingStatus[key]} />
+
+                        ))}
                     </Select>
                 </Flex>
 
@@ -156,45 +174,56 @@ export const LessorHome = ({ navigation }) => {
                         (
                             <ScrollView>
                                 {
-                                    listing.reverse().map((item, index) => (
-                                        <Box
-                                            onPress={() => navigation.navigate('Product details', { item: item })}
-                                            key={index}
-                                            style={{
-                                                flexDirection: 'row',
-                                                justifyContent: 'space-between',
-                                                alignItems: 'center',
-                                                padding: 10,
-                                                margin: 10,
-                                                columnGap: 10,
-                                                backgroundColor: '#FFFFFF',
-                                                borderRadius: 15,
-                                                shadowColor: '#000',
-                                                shadowOffset: {
-                                                    width: 0,
-                                                    height: 4,
-                                                },
-                                                elevation: 8,
-                                                overflow: 'hidden',
-                                            }}
-                                        >
-                                            {(user.images !== null) &&
-                                                <Image  alt="thumbnail" 
-                                                    source={{ uri: item.images[0] }} 
-                                                    borderRadius={15} width={100} height={100} paddingLeft={5}
-                                                />
-                                            }
-                                            <Box
-                                                flex={1}
-                                                // paddingRight={5}
-                                                // paddingLeft={5}
-                                            >
-                                                <Text fontSize='lg' fontWeight='semibold' color='#01005C' marginBottom={15}>{item.product.productName}</Text>
-                                                <Text fontSize='sm' fontWeight='bold' color={listingStatusColor[item.statusColor]}>{listingStatus[item.listingStatus]}</Text>
-                                            </Box>
-                                            {/* <Ionicons onPress={() => navigation.navigate('Product details', { item: item })} name='chevron-forward' size={28} /> */}
-                                        </Box>
-                                    ))
+                                    listing
+                                        .slice()
+                                        .reverse()
+                                        .map((item) => (
+                                            (sortStatus === 'All') ? (
+                                                (item.images !== null) &&
+                                                <Box
+                                                    style={styles.listingBox}
+                                                >
+                                                    <Image alt="thumbnail"
+                                                        source={{ uri: item.images[0] }}
+                                                        borderRadius={15} width={100} height={100} paddingLeft={5}
+                                                    />
+                                                    <Box
+                                                        flex={1}
+                                                    // paddingRight={5}
+                                                    // paddingLeft={5}
+                                                    >
+                                                        <Text fontSize='md' fontWeight='semibold' color='#01005C' marginBottom={15}>{item.product.productName}</Text>
+                                                        <Text fontSize='sm' fontWeight='bold' color={listingStatusColor[item.statusColor]}>{listingStatus[item.listingStatus]}</Text>
+                                                    </Box>
+                                                    <Ionicons onPress={() => navigation.navigate('Product details', { item: item })} name='chevron-forward' size={28} />
+                                                </Box>
+                                            ) : (
+                                                (item.listingStatus === sortStatus && item.images !== null)
+                                                &&(
+                                                    (console.log('listing Status:',item.listingStatus)) &&
+                                                    <Box
+                                                        style={styles.listingBox}
+                                                    >
+                                                        <Image alt="thumbnail"
+                                                            source={{ uri: item.images[0] }}
+                                                            borderRadius={15} width={100} height={100} paddingLeft={5}
+                                                        />
+                                                        <Box
+                                                            flex={1}
+                                                        // paddingRight={5}
+                                                        // paddingLeft={5}
+                                                        >
+                                                            <Text fontSize='md' fontWeight='semibold' color='#01005C' marginBottom={15}>{item.product.productName}</Text>
+                                                            <Text fontSize='sm' fontWeight='bold' color={listingStatusColor[item.statusColor]}>{listingStatus[item.listingStatus]}</Text>
+                                                        </Box>
+                                                        <Ionicons onPress={() => navigation.navigate('Product details', { item: item })} name='chevron-forward' size={28} />
+                                                    </Box>
+
+                                                )
+                                            )
+
+
+                                        ))
                                 }
                             </ScrollView>
 

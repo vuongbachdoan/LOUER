@@ -6,6 +6,21 @@ import { store } from "../../../state/store";
 import { getMainColor } from "../../../state/color";
 import * as MessagingService from "../../../services/Messaging";
 
+const chatSession = {
+    sessionId: 123456789,
+    user1: {
+        userId: 27,
+        username: "Dat Hoang",
+        email: "user1@example.com"
+    },
+    user2: {
+        userId: 28,
+        username: "Đẳng cấp",
+        email: "user2@example.com"
+    },
+    dateCreated: new Date().toISOString()
+};
+
 
 
 const messages = [
