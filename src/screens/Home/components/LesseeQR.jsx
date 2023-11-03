@@ -1,14 +1,36 @@
 import { Avatar, Badge, Box, Button, Flex, Icon, Image, Input, Text } from "native-base";
 import React from "react";
+import * as Clipboard from 'expo-clipboard';
 import { StyleSheet, Animated } from "react-native";
-import QR from '../../../assets/images/qr.png';
-import Visa from '../../../assets/images/visa.png';
+import vietinbank from '../../../assets/images/vietinbank.png';
 import { GradientButton } from "../../../components/GradientButton";
 import { useState } from "react";
+import { store } from "../../../state/store";
+import { useIsFocused } from "@react-navigation/native";
+import { Ionicons } from "@expo/vector-icons";
+import * as Toast from "../../../components/Toast";
+
 
 export const LesseeQR = ({ navigation, route }) => {
 
     const fadeAnim = React.useRef(new Animated.Value(0)).current;
+    const product = route.params.product;
+    const louerBank = store.useState((state) => state.louerBank);
+
+    const [isPaid, setIsPaid] = useState(false);
+    const [des, setDes] = useState('');
+    const [qrLink, setQRLink] = useState('');
+
+
+    const makeQRLink = () => {
+        const amount = 50000;
+        const url = `https://img.vietqr.io/image/${louerBank.bankName}-${louerBank.cardNumber}-qr_only.png?amount=${amount}&addInfo=${des}`;
+        setQRLink(url);
+    };
+
+    const copyToClipboard = async (text) => {
+        await Clipboard.setStringAsync(text);
+    };
 
     React.useEffect(() => {
         Animated.timing(fadeAnim, {
@@ -18,7 +40,22 @@ export const LesseeQR = ({ navigation, route }) => {
         }).start();
     }, [fadeAnim]);
 
-    const [isPaid, setIsPaid] = useState(false);
+    React.useEffect((async ) => {
+        setTimeout(() => {
+            if (!isPaid){
+                
+            }
+        }, 3000);
+       
+    },useIsFocused(), [isPaid==false]);
+
+
+
+    React.useEffect(() => {
+        setDes(`louer-${product.productId}`);
+        makeQRLink();
+    }, [useIsFocused()]);
+
 
     return (
         <Animated.View style={{ flex: 1, opacity: fadeAnim }}>
@@ -36,7 +73,7 @@ export const LesseeQR = ({ navigation, route }) => {
                     rowGap={15}
                     alignItems='center'
                 >
-                    <Image alt="user" source={QR} width={140} height={140} borderRadius={15} />
+                    <Image alt="user" source={{ uri: qrLink}} width={250} height={250} borderRadius={15} />
                     {
                         isPaid &&
                         <Badge width='100%' padding='15px' borderRadius={10} colorScheme="green">
@@ -57,16 +94,73 @@ export const LesseeQR = ({ navigation, route }) => {
                             flexDirection='row'
                             justifyContent='space-between'
                             alignItems='center'
+                            paddingTop={15}
+                            paddingBottom={15}
                         >
-                            <Text fontSize={12} color='gray.500'>Hoang Tien Dat - Vietcombank</Text>
-                            <Image source={Visa} height='56px' />
+                            <Text fontSize={14} color='gray.500'>{louerBank.cardName} - {louerBank.bankNameFull}</Text>
+                            <Image
+                                source={vietinbank}
+                                style={{ height: '140%', flex: 1, resizeMode: 'contain' }}
+                            />
                         </Flex>
 
                         <Text fontSize={14} fontWeight='semibold'>Số tài khoản</Text>
-                        <Input size="xl" borderRadius={10} marginTop={7.5} marginBottom={15} placeholder="Card Number" />
+                        <Input
+                            size="xl" borderRadius={10} marginTop={7.5} marginBottom={15}
+                            placeholder={louerBank.cardNumber}
+                            isReadOnly={true}
+                            InputRightElement={
+                                <Button
+                                    variant="unstyled"
+                                    onPress={() => {
+                                        copyToClipboard(louerBank.cardNumber);
+                                        console.log('Copied card number');
+                                        Toast.show('Đã sao chép số tài khoản');
+                                    }}
+                                >
+                                    <Icon as={<Ionicons name="clipboard" />} size="xl"
+                                        color={'gray.500'} />
+                                </Button>
+                            }
+                        />
                         <Text fontSize={14} fontWeight='semibold'>Nội dung chuyển khoản</Text>
-                        <Input size="xl" borderRadius={10} marginTop={7.5} marginBottom={15} placeholder="Write something" />
-
+                        <Input
+                            size="xl" borderRadius={10} marginTop={7.5} marginBottom={15}
+                            placeholder={des}
+                            isReadOnly={true}
+                            InputRightElement={
+                                <Button
+                                    variant="unstyled"
+                                    onPress={() => {
+                                        copyToClipboard(des);
+                                        console.log('Copied trans des');
+                                        Toast.show('Đã sao nội dung chuyển khoản');
+                                    }}
+                                >
+                                    <Icon as={<Ionicons name="clipboard" />} size="xl"
+                                        color={'gray.500'} />
+                                </Button>
+                            }
+                        />
+                        <Text fontSize={14} fontWeight='semibold'>Số tiền</Text>
+                        <Input
+                            size="xl" borderRadius={10} marginTop={7.5} marginBottom={15}
+                            placeholder={des}
+                            isReadOnly={true}
+                            InputRightElement={
+                                <Button
+                                    variant="unstyled"
+                                    onPress={() => {
+                                        copyToClipboard(des);
+                                        console.log('Copied trans des');
+                                        Toast.show('Đã sao nội dung chuyển khoản');
+                                    }}
+                                >
+                                    <Icon as={<Ionicons name="clipboard" />} size="xl"
+                                        color={'gray.500'} />
+                                </Button>
+                            }
+                        />
                         <GradientButton onPress={() => setIsPaid(true)} text='Tiếp tục' radius={10} fontSize={18} height={55} colors={['#9F3553', '#E98EA6']} />
                     </Box>
                 </Flex>

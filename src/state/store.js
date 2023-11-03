@@ -17,10 +17,13 @@ export const store = new Store({
 
         phone: '',
         address: 1,
-        bankBranch: '',
-        bankAccount: '',
 
-        userStatus: 'Lessee',
+
+        bankName: '',
+        cardNumber: '',
+        cardName: '',
+
+        userStatus: '1',
         userMode: true,
 
         acceptedTnC: false,
@@ -57,6 +60,12 @@ export const store = new Store({
         0: '#f65683',
         1: '#22a4dd',
         2: '#fdb400'
+    },
+    louerBank: {
+        bankName: 'vietinbank',
+        bankNameFull: 'VietinBank',
+        cardName: 'Hoàng Vũ Minh Tài',
+        cardNumber: '104879541523',
     },
     preferences: {
         isDarkMode: false,

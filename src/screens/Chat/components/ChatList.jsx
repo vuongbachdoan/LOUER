@@ -135,8 +135,9 @@ export const ChatList = ({ navigation }) => {
                     marginTop={15}
                 >
                     {(chatList.length === 0) ?
-                        (<Text fontSize='xl' fontWeight='semibold' color='gray.500'>Không có tin nhắn nào</Text>) :
-                        (<>
+                        // (<Text fontSize='xl' fontWeight='semibold' color='gray.500'>Không có tin nhắn nào</Text>) :
+                        (<Text fontSize='xl' fontWeight='semibold' color='gray.500'>Tính năng đang trong quá trình hoàn thiện 🤓🤓</Text>) :
+                        (
                             <ScrollView>
                                 {
                                     chatList.map((item) => (
@@ -168,7 +169,7 @@ export const ChatList = ({ navigation }) => {
                                     ))
                                 }
                             </ScrollView>
-                        </>)
+                        )
                     }
 
                 </Box>

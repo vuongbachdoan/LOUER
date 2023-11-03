@@ -56,13 +56,6 @@ export const LessorCreateRequest = ({ navigation }) => {
     }, [fadeAnim]);
 
 
-    React.useEffect(() => {
-        console.log('listingRequest: ', listingRequest);
-        console.log('isUploaded: ', isUploaded);
-    }, [listingRequest]);
-
-
-
     const [listingRequest, setListingRequest] = useState({
         userId: user.userId,
         productName: "",
@@ -98,22 +91,20 @@ export const LessorCreateRequest = ({ navigation }) => {
             selectionLimit: UPLOADLIMIT,
             quality: 1,
         });
-        if (!result.cancelled) {
+        if (!result.canceled) {
             setUploaded(true);
 
             // Remove old photos and add the new images to the listingRequest state variable.
             const listPhotos = result.assets.map((image) => {
                 return {
+                    data: image,
                     uri: image.uri,
-                    name: image.fileName,
-                    type: image.type,
                 };
             });
             setListingRequest({
                 ...listingRequest,
                 photos: [...listPhotos],
             });
-            console.log('listingRequest: ', listingRequest);
             setUploaded(true);
         } else if (result.error) {
             setUploaded(false);
@@ -363,8 +354,8 @@ export const LessorCreateRequest = ({ navigation }) => {
                                 <Text fontSize={20}>≈</Text>
                                 <Input
                                     value={listingRequest.price}
-                                    type="number"
                                     placeholder="Giá" borderRadius={10} width={100}
+                                    type="number"
                                     onChangeText={text => {
                                         // Only allow positive integers
                                         const regex = /^[0-9\b]+$/;

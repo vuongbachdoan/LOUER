@@ -8,10 +8,7 @@ import { Chat } from "../Chat";
 import { Notification } from "../Notification";
 import { Profile } from "../Profile";
 import { store } from "../../state/store";
-import { getGradientColor, getMainColor } from "../../state/color";
 import { LessorCreateRequest } from "./components/LessorCreateRequest";
-import { enviroment } from "../../state/enviroment";
-import { ClerkProvider } from "@clerk/clerk-expo";
 
 const Tab = createBottomTabNavigator();
 

@@ -5,6 +5,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { GradientButton } from "../../components/GradientButton";
 import { store } from "../../state/store";
 import { getMainColor } from "../../state/color";
+import * as Toast from "../../components/Toast";
 
 import * as UserService from "../../services/User";
 
@@ -31,22 +32,14 @@ export const ProfileInformation = ({ navigation }) => {
 
 
     const user = store.useState((state) => state.user);
-    const [updateStatus, setUpdateStatus] = React.useState(false);
-    const [chosenUserMode, setChosenUserMode] = React.useState(user.userMode);
-    const [isFPTUser, setIsFPTUser] = React.useState(false);
-    const [newAddress, setNewAddress] = React.useState(user.address);
     const address = store.useState((state) => state.address);
+    const [editedInfo, setEditedInfo] = React.useState(user);
 
-    const [editedInfo, setEditedInfo] = React.useState({
-        studentId: '',
-        firstName: '',
-        lastName: '',
-        middleName: '',
-        phone: '',
-        address: '',
-        bankAccount: '',
-        bankBranch: '',
-    });
+
+    const [updateStatus, setUpdateStatus] = React.useState(false);
+    const [isFPTUser, setIsFPTUser] = React.useState(false);
+
+
 
     React.useEffect(() => {
         Animated.timing(fadeAnim, {
@@ -57,8 +50,11 @@ export const ProfileInformation = ({ navigation }) => {
     }, [fadeAnim]);
 
     React.useEffect(() => {
-
-    }, [updateStatus]);
+        const intervalId = setInterval(() => {
+            console.log('Edited info', editedInfo);
+        }, 5000);
+        return () => clearInterval(intervalId);
+    }, [editedInfo]);
 
     React.useEffect(() => {
         if (/[a-z0-9]{8,}@fpt\.edu\.vn/.test(user.email)) {
@@ -70,63 +66,47 @@ export const ProfileInformation = ({ navigation }) => {
     }, [navigation]);
 
 
-    const handleChangeUserMode = (userMode) => {
-        setChosenUserMode(userMode);
-    }
+    const handleUpdateData = async () => {
 
-    const handleUpdateUsermode = async () => {
-        if (user.userMode !== chosenUserMode) {
-            UserService.updateUserMode(user.id).then(res => {
-                store.update((state) => {
-                    state.user.userMode = userMode;
-                });
-            });
+        //Update UserMode
+        if (editedInfo.userMode !== user.userMode) {
+            UserService.updateModeById(user.userId)
+                .then(res => {
+                    if (res) {
+                        console.log('Update mode res', res);
+                        store.update((s) => {
+                            s.user.userMode = res.userMode;
+                        });
+                    }else{
+                        console.error('User mode update error', res);
+                    }
 
-        }
-    }
-
-    // Bữa sau nhớ thêm : Address, BankAccount, BankBranch
-    const handleGetData = async () => {
-        if (isFPTUser) {
-            setEditedInfo({
-                ...editedInfo,
-                phone: 'new phone number'
-            });
-        } else {
-            setEditedInfo({
-                ...editedInfo,
-                studentId: 'new student id',
-                phone: 'new phone number',
-                address: 'new address',
-
-            });
+                })
+                .catch(err => { console.error('Update mode error', err); })
         }
 
+        if (editedInfo) {
+            //Update Main Data and Bank Creds, then Update data
+            if (isFPTUser) {
+                UserService.updateDataFPT(user.userId, editedInfo)
+                    .then(isUpdated => {
+                        setUpdateStatus(isUpdated);
+                        console.log('Update data res', updateStatus);
+                    })
+                    .catch(err => { console.error('Update data error', err); })
+            } else {
+                UserService.updateDataGmail(user.userId, editedInfo)
+                    .then(isUpdated => {
+                        setUpdateStatus(isUpdated);
+                        console.log('Update data res', updateStatus);
+                    })
+                    .catch(err => { console.error('Update data error', err); });
+            }
 
-
-
-
-
-
-        const data = {
-            phone: user.phone,
-            address: user.address,
-            bankAccount: user.bankAccount
         }
-        UserService.updateUser(user.id, data).then(res => {
-            store.update((state) => {
-                state.user.phone = data.phone;
-                state.user.address = data.address;
-                state.user.bankAccount = data.bankAccount;
-            });
-            handleChangeUserMode();
-            setUpdateStatus(true);
-            Toast.show('Cập nhật thông tin thành công.');
-        });
 
 
     }
-
 
     return (
         <Animated.View style={{ flex: 1, opacity: fadeAnim }}>
@@ -185,9 +165,9 @@ export const ProfileInformation = ({ navigation }) => {
                                     flexDirection='column'
                                     justifyContent='space-between'
                                 >
-                                    <Text textAlign='left' numberOfLines={1} ellipsizeMode='tail' fontSize={20} fontWeight='semibold' color={(user.userMode) ? (getMainColor('lessor')) : (getMainColor('lessor'))}>{user?.firstName ?? ''} {user?.middleName ?? ''} {user?.lastName ?? ''}</Text>
-                                    <Text fontSize={13} >MSSV: {user?.studentId ?? ''}</Text>
-                                    <Text fontSize={13} >Email: {user?.email ?? ''}</Text>
+                                    <Text textAlign='left' numberOfLines={1} ellipsizeMode='tail' fontSize={20} fontWeight='semibold' color={(user.userMode) ? (getMainColor('lessor')) : (getMainColor('lessor'))}>{editedInfo?.firstName ?? ''} {editedInfo?.middleName ?? ''} {editedInfo?.lastName ?? ''}</Text>
+                                    <Text fontSize={13} >MSSV: {editedInfo?.studentId ?? ''}</Text>
+                                    <Text fontSize={13} >Email: {editedInfo?.email ?? ''}</Text>
                                 </Flex>
                             </View>
                         </View>
@@ -196,18 +176,19 @@ export const ProfileInformation = ({ navigation }) => {
                         <Box height={13} />
 
                         <Select
-                            selectedValue={chosenUserMode ? 'Lessor' : 'Lessee'}
+                            selectedValue={editedInfo.userMode ? 'Lessor' : 'Lessee'}
                             height={45}
                             width={120}
                             accessibilityLabel="Select userMode"
-                            placeholder={chosenUserMode ? 'Lessor' : 'Lessee'}
+                            placeholder={editedInfo.userMode ? 'Lessor' : 'Lessee'}
                             borderRadius={15}
                             fontSize={14}
                             fontWeight={700}
                             _selectedItem={{
                                 bg: 'gray.100',
                                 endIcon: <CheckIcon size="5" />
-                            }} onValueChange={itemValue => handleChangeUserMode(itemValue)}
+                            }}
+                            onValueChange={itemValue => setEditedInfo({ ...editedInfo, userMode: itemValue })}
                         >
                             <Select.Item label="Lessee" value={false} />
                             <Select.Item label="Lessor" value={true} />
@@ -243,9 +224,24 @@ export const ProfileInformation = ({ navigation }) => {
                                                 rowGap: 15,
                                             }}
                                         >
-                                            <Input fontSize={18} value={user?.lastName} placeholder='Họ' leftElement={<Stack marginLeft={15}></Stack>} height='50px' width={'30%'} borderRadius={15} />
-                                            <Input fontSize={18} value={user?.middleName} placeholder='Tên giữa' leftElement={<Stack marginLeft={15}></Stack>} height='50px' width={'30%'} borderRadius={15} />
-                                            <Input fontSize={18} value={user?.firstName} placeholder='Tên' leftElement={<Stack marginLeft={15}></Stack>} height='50px' width={'30%'} borderRadius={15} />
+                                            <Input fontSize={18}
+                                                value={editedInfo?.lastName} placeholder='Họ'
+                                                leftElement={<Stack marginLeft={15}></Stack>}
+                                                height='50px' width={'30%'} borderRadius={15}
+                                                onChange={(e) => setEditedInfo({ ...editedInfo, lastName: e.nativeEvent.text })}
+                                            />
+                                            <Input
+                                                fontSize={18} value={editedInfo?.middleName} placeholder='Tên giữa'
+                                                leftElement={<Stack marginLeft={15}></Stack>}
+                                                height='50px' width={'30%'} borderRadius={15}
+                                                onChange={(e) => setEditedInfo({ ...editedInfo, middleName: e.nativeEvent.text })}
+                                            />
+                                            <Input
+                                                fontSize={18}
+                                                value={editedInfo?.firstName} placeholder='Tên' leftElement={<Stack marginLeft={15}></Stack>}
+                                                height='50px' width={'30%'} borderRadius={15}
+                                                onChange={(e) => setEditedInfo({ ...editedInfo, firstName: e.nativeEvent.text })}
+                                            />
                                         </Flex>
                                     </Flex>
 
@@ -255,30 +251,70 @@ export const ProfileInformation = ({ navigation }) => {
                             )}
                             <Text fontWeight='semibold' fontSize={15} color='rgba(0, 0, 0, 0.6)'>Thông tin cơ bản</Text>
 
-                            <Input fontSize={18} value={user?.email} placeholder='Email' leftElement={<Stack marginLeft={15}><Ionicons name="at-outline" size={22} /></Stack>} height='50px' borderRadius={15} editable={false} />
-                            <Input fontSize={18} value={user?.phone} placeholder='Phone' leftElement={<Stack marginLeft={15}><Ionicons name="call-outline" size={22} /></Stack>} height='50px' borderRadius={15} />
-                            <Select
-                                selectedValue={newAddress ? address[1] : address[2]}
-                                height={50}
-                                width={'100%'}
+                            <Input
+                                fontSize={18}
+                                value={editedInfo?.phone} placeholder='Số điện thoại'
+                                leftElement={<Stack marginLeft={15}><Ionicons name="call-outline" size={22} /></Stack>}
+                                height='50px' borderRadius={15}
+                                type="number"
+                                keyboardType='numeric'
+                                onChangeText={text => {
+                                    // Only allow positive integers
+                                    const regex = /^[0-9\b]+$/;
+                                    if (regex.test(text) && text.length <= 10) {
+                                        setEditedInfo({ ...editedInfo, phone: text })
+                                    }
+                                    else {
+                                        Toast.show('Số điện thoại chỉ là số và không quá 10 chữ số')
+                                    }
+                                }}
+
+                            />
+
+
+                            {/* Editing Address */}
+                            {false && (
+                                <Select
+                                selectedValue={editedInfo.address == 1 ? address[1] : address[2]}
+                                height={50} width={'100%'}
+                                leftElement={<Stack marginLeft={15}><Ionicons name="home-outline" size={22} /></Stack>}
                                 accessibilityLabel="Select userMode"
-                                placeholder={newAddress ? address[1] : address[2]}
+                                placeholder={editedInfo.address == 1 ? address[1] : address[2]}
                                 borderRadius={15}
                                 fontSize={18}
                                 fontWeight={700}
                                 _selectedItem={{
                                     bg: 'gray.100',
                                     endIcon: <CheckIcon size="5" />
-                                }} onValueChange={value => setNewAddress(value)}
+                                }}
+                                onValueChange={newAddr => setEditedInfo({ ...editedInfo, address: newAddr })}
                             >
                                 <Select.Item label={address[1]} value={1} />
                                 <Select.Item label={address[2]} value={2} />
                             </Select>
+                            )}
+                            
 
                             {user.userMode && (
 
                                 <View>
                                     <Text fontWeight='semibold' fontSize={15} color='rgba(0, 0, 0, 0.6)'>Thông tin ngân hàng (dành cho người cho thuê)</Text>
+                                    <Flex
+                                        flexDirection='row'
+                                        style={{
+                                            columnGap: 5
+                                        }}
+                                        alignItems='center'
+                                    >
+                                        <Ionicons color='orange' name="information-circle-outline" size={30} />
+                                        <Flex
+                                            flexDirection='column'
+                                            style={{ columnGap: 1 }}
+                                            alignItems='left'
+                                        >
+                                            <Text fontWeight={'semibold'}>Chỉ dùng kí tự không dấu.</Text>
+                                        </Flex>
+                                    </Flex>
                                     <Flex
                                         marginTop={15}
                                         flexDirection='column'
@@ -286,8 +322,60 @@ export const ProfileInformation = ({ navigation }) => {
                                             rowGap: 15
                                         }}
                                     >
-                                        <Input fontSize={18} value={user?.bankBranch} placeholder="Ngân hàng" leftElement={<Stack marginLeft={15}><Ionicons name="planet-outline" size={22} /></Stack>} height='50px' borderRadius={15} editable={user.userMode} />
-                                        <Input fontSize={18} value={user?.bankAccount} placeholder="Số tài khoản ngân hàng" leftElement={<Stack marginLeft={15}><Ionicons name="card-outline" size={22} /></Stack>} height='50px' borderRadius={15} editable={user.userMode} />
+                                        <Input fontSize={18}
+                                            value={editedInfo?.bankName} placeholder="Tên Ngân hàng"
+                                            leftElement={<Stack marginLeft={15}><Ionicons name="planet-outline" size={22} /></Stack>}
+                                            height='50px' borderRadius={15}
+                                            editable={user.userMode}
+                                            type="text"
+                                            keyboardType="default"
+                                            onChangeText={text => {
+                                                // Only allow alphabets and spaces
+                                                const regex = /^[a-zA-Z\s]*$/;
+                                                if (regex.test(text)) {
+                                                    setEditedInfo(prevState => ({ ...prevState, bankName: text }))
+                                                }
+                                                else {
+                                                    Toast.show('Tên ngân hàng chỉ được chứa chữ cái và khoảng trắng')
+                                                }
+                                            }}
+                                        />
+                                        <Input fontSize={18}
+                                            value={editedInfo?.cardName} placeholder="Tên người dùng tài khoản"
+                                            leftElement={<Stack marginLeft={15}><Ionicons name="card-outline" size={22} /></Stack>}
+                                            height='50px' borderRadius={15}
+                                            editable={user.userMode}
+                                            type="text"
+                                            keyboardType="default"
+                                            onChangeText={text => {
+                                                // Only allow alphabets, spaces, and Vietnamese characters
+                                                const regex = /^[a-zA-Z\s\u00C0-\u024F]+$/;
+                                                if (regex.test(text)) {
+                                                    setEditedInfo({ ...editedInfo, cardName: text })
+                                                }
+                                                else {
+                                                    Toast.show('Tên người dùng chỉ được chứa chữ cái, khoảng trắng và ký tự tiếng Việt')
+                                                }
+                                            }}
+                                        />
+                                        <Input fontSize={18}
+                                            value={editedInfo?.cardNumber} placeholder="Số tài khoản ngân hàng"
+                                            leftElemesnt={<Stack marginLeft={15}><Ionicons name="card-outline" size={22} /></Stack>}
+                                            height='50px' borderRadius={15}
+                                            editable={user.userMode}
+                                            type="number"
+                                            keyboardType="numeric"
+                                            onChangeText={text => {
+                                                // Only allow numbers
+                                                const regex = /^[0-9]*$/;
+                                                if (regex.test(text)) {
+                                                    setEditedInfo({ ...editedInfo, cardNumber: text })
+                                                }
+                                                else {
+                                                    Toast.show('Số tài khoản chỉ được chứa số')
+                                                }
+                                            }}
+                                        />
 
                                     </Flex>
                                 </View>
@@ -301,9 +389,7 @@ export const ProfileInformation = ({ navigation }) => {
                                 </Badge>
                             }
                             <GradientButton
-                                onPress={() =>
-                                    setUpdateStatus(true)
-                                }
+                                onPress={() => handleUpdateData()}
                                 text='Cập nhật thông tin'
                                 colors={user?.userMode ? ['#2A4AB6', '#269DDB'] : ['#9F3553', '#E98EA6']}
                                 height={55} radius={15} />

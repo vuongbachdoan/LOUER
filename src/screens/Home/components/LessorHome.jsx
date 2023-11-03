@@ -8,10 +8,6 @@ import { useIsFocused } from "@react-navigation/native";
 
 import { store } from "../../../state/store";
 import * as ListingService from "../../../services/Listing";
-import { Touchable } from "react-native";
-
-
-
 
 
 export const LessorHome = ({ navigation }) => {

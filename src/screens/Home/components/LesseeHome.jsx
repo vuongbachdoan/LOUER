@@ -6,43 +6,19 @@ import Prod1 from '../../../assets/images/prod1.png'
 import Prod2 from '../../../assets/images/prod2.png'
 import Prod3 from '../../../assets/images/prod3.png'
 import { GradientButton } from "../../../components/GradientButton";
-
-
+import { useIsFocused } from "@react-navigation/native";
 
 import { store } from "../../../state/store";
+import * as ProdService from "../../../services/Product";
 
 
-
-
-const items = [
-    {
-        prodName: 'Nikon D700',
-        price: 500,
-        thumbnail: Prod1
-    },
-    {
-        prodName: 'Nikon D700',
-        price: 500,
-        thumbnail: Prod2
-    },
-    {
-        prodName: 'Nikon D700',
-        price: 500,
-        thumbnail: Prod3
-    },
-    {
-        prodName: 'Nikon D700',
-        price: 500,
-        thumbnail: Prod3
-    },
-]
 
 export const LesseeHome = ({ navigation }) => {
 
-
     const fadeAnim = React.useRef(new Animated.Value(0)).current;
     const user = store.useState((state) => state.user);
-
+    const [productList, setProductList] = React.useState([]);
+    const [page, setPage] = React.useState(1);
 
 
 
@@ -53,6 +29,15 @@ export const LesseeHome = ({ navigation }) => {
             useNativeDriver: true,
         }).start();
     }, [fadeAnim]);
+
+    React.useEffect(() => {
+        handleGetProdPage();
+    }, [useIsFocused, page]);
+
+    const handleGetProdPage = async () => {
+        setProductList(await ProdService.getAllByPage(page, 10));
+        console.log('PAGE Product', productList);
+    }
 
     return (
         <Animated.View style={{ flex: 1, opacity: fadeAnim }}>
@@ -77,7 +62,6 @@ export const LesseeHome = ({ navigation }) => {
                             <Heading fontSize={20} fontWeight='bold'>Xin Chào,</Heading>
                             <Heading fontSize={36} fontWeight='bold' color='#FF5484'>{user.firstName} {user.middleName} {user.lastName}</Heading>
                         </Box>
-                        {console.log('IMAGE', user.images[0])}
                         <Avatar
                             bg="lightBlue.400"
                             source={{ uri: user.images[0] }}
@@ -93,12 +77,34 @@ export const LesseeHome = ({ navigation }) => {
                         marginTop={15}
                         flexDirection='row'
                         style={{
-                            columnGap: 7.5
+                            columnGap: 7.5,
+                            alignItems: 'center'
                         }}
                     >
                         <GradientButton paddingLeft={0} paddingRight={0} paddingTop={0} paddingBottom={0} prefixIcon={<Ionicons name="refresh-outline" size={22} />} width={45} height={45} radius={15} colors={['#9F3553', '#E98EA6']} />
                         <GradientButton onPress={() => navigation.navigate("LesseeRecentActivity")} paddingLeft={0} paddingRight={0} paddingTop={0} paddingBottom={0} prefixIcon={<Ionicons name="timer-outline" size={22} />} width={45} height={45} radius={15} colors={['#9F3553', '#E98EA6']} />
                         <GradientButton paddingLeft={0} paddingRight={0} paddingTop={0} paddingBottom={0} prefixIcon={<Ionicons name="list-outline" size={22} />} width={45} height={45} radius={15} colors={['#9F3553', '#E98EA6']} />
+                        <Flex
+                            flexDirection='row'
+                            style={{
+                                columnGap: 7.5,
+                                alignItems: 'center',
+                                justifyContent: 'flex-end'
+                            }}>
+                            <Ionicons 
+                                name="chevron-back-circle" 
+                                color='#9F3553' 
+                                size={30} 
+                                onPress={() => setPage(page - 1)}
+                            />
+                            <Text fontSize={18} fontWeight='semibold' color='#9F3553'>Page {page}</Text>
+                            <Ionicons 
+                                name="chevron-forward-circle" 
+                                color='#9F3553' 
+                                size={30} 
+                                onPress={() => setPage(page + 1)}
+                            />
+                        </Flex>
                     </Flex>
                     <Box marginBottom={30} marginTop={30}>
                         <ScrollView horizontal>
@@ -131,38 +137,45 @@ export const LesseeHome = ({ navigation }) => {
                                 columnGap: 15
                             }}
                         >
-                            {
-                                items.map((item, index) => (
-                                    <View
-                                        key={index}
-                                        style={{
-                                            flexDirection: 'column',
-                                            alignItems: 'flex-start',
-                                            paddingBottom: 15,
-                                        }}
-                                    >
-                                        <Image alt="thumbnail" width={150} height={150} source={item.thumbnail} borderRadius={10} />
-                                        <Flex
-                                            flexDirection='column'
-                                            justifyContent='space-between'
-                                            alignItems='flex-start'
+                            {(productList.length === 0)
+                                ? (<Text>Chưa có sản phẩm lên kệ 😞</Text>)
+                                : (
+                                    productList.map((product) => (
+                                        <View
+                                            key={product.productId}
+                                            style={{
+                                                flexDirection: 'column',
+                                                alignItems: 'flex-start',
+                                                paddingBottom: 15,
+                                            }}
                                         >
-                                            <Text textAlign='left' fontSize={18} fontWeight='semibold' color='gray.500' >{item.prodName}</Text>
+                                            <Image alt="thumbnail" width={150} height={150} source={product.images[0]} borderRadius={10} />
                                             <Flex
-                                                flexDirection='row'
-                                                alignItems='flex-end'
+                                                flexDirection='column'
                                                 justifyContent='space-between'
-                                                style={{
-                                                    columnGap: 15
-                                                }}
+                                                alignItems='flex-start'
                                             >
-                                                <Text textAlign='left' fontSize={14} fontWeight='semibold' color='gray.500' >{item.price}k / ngày</Text>
-                                                <GradientButton onPress={() => navigation.navigate('Lessee view product detail', { product: item })} paddingBottom={0} paddingTop={0} paddingLeft={0} paddingRight={0} prefixIcon={<Ionicons name="chevron-forward" color='#FFF' size={22} />} colors={['#9F3553', '#E98EA6']} width={35} height={35} radius={5} />
+                                                <Text textAlign='left' fontSize={18} fontWeight='semibold' color='gray.500' >{product.productName}</Text>
+                                                <Flex
+                                                    flexDirection='row'
+                                                    alignItems='flex-end'
+                                                    justifyContent='space-between'
+                                                    style={{
+                                                        columnGap: 15
+                                                    }}
+                                                >
+                                                    <Text textAlign='left' fontSize={14} fontWeight='semibold' color='gray.500' >{product.marketPrice}/ ngày</Text>
+                                                    <GradientButton
+                                                        onPress={() => navigation.navigate('Lessee view product detail', { product: product })}
+                                                        paddingBottom={0} paddingTop={0} paddingLeft={0} paddingRight={0}
+                                                        prefixIcon={<Ionicons name="chevron-forward" color='#FFF' size={22} />}
+                                                        colors={['#9F3553', '#E98EA6']} width={35} height={35} radius={5} />
+                                                </Flex>
                                             </Flex>
-                                        </Flex>
-                                    </View>
-                                ))
-                            }
+                                        </View>
+                                    ))
+                                )}
+
                         </Flex>
                     </ScrollView>
                 </Box>
