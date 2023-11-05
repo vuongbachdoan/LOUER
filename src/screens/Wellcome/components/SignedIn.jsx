@@ -48,6 +48,9 @@ export const SignedIn = ({ navigation }) => {
         handleInputData();
     }, [useIsFocused(), navigation]);
 
+    React.useEffect(() => {
+    }, [userMain]);
+
 
 
     const fadeAnim = React.useRef(new Animated.Value(0)).current;

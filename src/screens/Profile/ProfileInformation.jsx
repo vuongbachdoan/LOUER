@@ -50,13 +50,6 @@ export const ProfileInformation = ({ navigation }) => {
     }, [fadeAnim]);
 
     React.useEffect(() => {
-        const intervalId = setInterval(() => {
-            console.log('Edited info', editedInfo);
-        }, 5000);
-        return () => clearInterval(intervalId);
-    }, [editedInfo]);
-
-    React.useEffect(() => {
         if (/[a-z0-9]{8,}@fpt\.edu\.vn/.test(user.email)) {
             // Case FPT
             setIsFPTUser(true);
@@ -77,7 +70,7 @@ export const ProfileInformation = ({ navigation }) => {
                         store.update((s) => {
                             s.user.userMode = res.userMode;
                         });
-                    }else{
+                    } else {
                         console.error('User mode update error', res);
                     }
 
@@ -275,25 +268,25 @@ export const ProfileInformation = ({ navigation }) => {
                             {/* Editing Address */}
                             {false && (
                                 <Select
-                                selectedValue={editedInfo.address == 1 ? address[1] : address[2]}
-                                height={50} width={'100%'}
-                                leftElement={<Stack marginLeft={15}><Ionicons name="home-outline" size={22} /></Stack>}
-                                accessibilityLabel="Select userMode"
-                                placeholder={editedInfo.address == 1 ? address[1] : address[2]}
-                                borderRadius={15}
-                                fontSize={18}
-                                fontWeight={700}
-                                _selectedItem={{
-                                    bg: 'gray.100',
-                                    endIcon: <CheckIcon size="5" />
-                                }}
-                                onValueChange={newAddr => setEditedInfo({ ...editedInfo, address: newAddr })}
-                            >
-                                <Select.Item label={address[1]} value={1} />
-                                <Select.Item label={address[2]} value={2} />
-                            </Select>
+                                    selectedValue={editedInfo.address == 1 ? address[1] : address[2]}
+                                    height={50} width={'100%'}
+                                    leftElement={<Stack marginLeft={15}><Ionicons name="home-outline" size={22} /></Stack>}
+                                    accessibilityLabel="Select userMode"
+                                    placeholder={editedInfo.address == 1 ? address[1] : address[2]}
+                                    borderRadius={15}
+                                    fontSize={18}
+                                    fontWeight={700}
+                                    _selectedItem={{
+                                        bg: 'gray.100',
+                                        endIcon: <CheckIcon size="5" />
+                                    }}
+                                    onValueChange={newAddr => setEditedInfo({ ...editedInfo, address: newAddr })}
+                                >
+                                    <Select.Item label={address[1]} value={1} />
+                                    <Select.Item label={address[2]} value={2} />
+                                </Select>
                             )}
-                            
+
 
                             {user.userMode && (
 
@@ -326,7 +319,6 @@ export const ProfileInformation = ({ navigation }) => {
                                             value={editedInfo?.bankName} placeholder="Tên Ngân hàng"
                                             leftElement={<Stack marginLeft={15}><Ionicons name="planet-outline" size={22} /></Stack>}
                                             height='50px' borderRadius={15}
-                                            editable={user.userMode}
                                             type="text"
                                             keyboardType="default"
                                             onChangeText={text => {
@@ -344,7 +336,6 @@ export const ProfileInformation = ({ navigation }) => {
                                             value={editedInfo?.cardName} placeholder="Tên người dùng tài khoản"
                                             leftElement={<Stack marginLeft={15}><Ionicons name="card-outline" size={22} /></Stack>}
                                             height='50px' borderRadius={15}
-                                            editable={user.userMode}
                                             type="text"
                                             keyboardType="default"
                                             onChangeText={text => {
@@ -354,15 +345,14 @@ export const ProfileInformation = ({ navigation }) => {
                                                     setEditedInfo({ ...editedInfo, cardName: text })
                                                 }
                                                 else {
-                                                    Toast.show('Tên người dùng chỉ được chứa chữ cái, khoảng trắng và ký tự tiếng Việt')
+                                                    Toast.show('Tên người dùng chỉ được chứa chữ cái và khoảng trắng')
                                                 }
                                             }}
                                         />
                                         <Input fontSize={18}
                                             value={editedInfo?.cardNumber} placeholder="Số tài khoản ngân hàng"
-                                            leftElemesnt={<Stack marginLeft={15}><Ionicons name="card-outline" size={22} /></Stack>}
+                                            leftElement={<Stack marginLeft={15}><Ionicons name="information-circle-outline" size={22} /></Stack>}
                                             height='50px' borderRadius={15}
-                                            editable={user.userMode}
                                             type="number"
                                             keyboardType="numeric"
                                             onChangeText={text => {
@@ -376,7 +366,6 @@ export const ProfileInformation = ({ navigation }) => {
                                                 }
                                             }}
                                         />
-
                                     </Flex>
                                 </View>
                             )}

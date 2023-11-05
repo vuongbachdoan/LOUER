@@ -1,4 +1,4 @@
-import { Avatar, Badge, Box, Flex, Heading, Input, Stack, Text, Image } from "native-base";
+import { Avatar, Badge, Box, Flex, Heading, Input, Stack, Text, Image, Button } from "native-base";
 import React from "react";
 import { StyleSheet, Animated, ScrollView, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
@@ -12,12 +12,33 @@ import { store } from "../../../state/store";
 import * as ProdService from "../../../services/Product";
 
 
+const categoryList = [
+    "Camera",
+    "Laptop",
+    "Ổ cắm điện",
+    "Tai nghe",
+    "Khác",
+];
+
+const buttonColor = [
+    noChosen = {
+        color: '#433035',
+        bg: '#FFFFFC'
+    },
+    chosen = {
+        color: '#FFFFFC',
+        bg: '#433035'
+    }
+]
+
 
 export const LesseeHome = ({ navigation }) => {
 
     const fadeAnim = React.useRef(new Animated.Value(0)).current;
     const user = store.useState((state) => state.user);
+    const [searchText, setSearchText] = React.useState('');
     const [productList, setProductList] = React.useState([]);
+    const [chosenCategory, setChosenCategory] = React.useState('All');
     const [page, setPage] = React.useState(1);
 
 
@@ -30,13 +51,31 @@ export const LesseeHome = ({ navigation }) => {
         }).start();
     }, [fadeAnim]);
 
-    React.useEffect(() => {
-        handleGetProdPage();
-    }, [useIsFocused, page]);
-
-    const handleGetProdPage = async () => {
+    const handleAddListing = async () => {
         setProductList(await ProdService.getAllByPage(page, 10));
+    };
+
+    React.useEffect(() => {
+        if (chosenCategory === '' || chosenCategory === 'All') {
+            handleAddListing();
+        }else{
+            handleAddListing();
+        }
+        
         console.log('PAGE Product', productList);
+    }, [useIsFocused, page, chosenCategory]);
+
+    React.useEffect(() => {
+
+    }, [useIsFocused, searchText]);
+
+
+    const handleChosenCategory = (category) => {
+        if (category === chosenCategory) {
+            setChosenCategory('');
+            return;
+        }
+        setChosenCategory(category);
     }
 
     return (
@@ -72,7 +111,7 @@ export const LesseeHome = ({ navigation }) => {
                     </Flex>
 
                     <GradientButton onPress={() => navigation.navigate('LesseeCreateRequest')} text='Yêu cầu cho thuê' radius={15} colors={['#9F3553', '#E98EA6']} />
-                    <Input placeholder="Tìm sản phẩm" size='2xl' borderRadius={15} marginTop={15} leftElement={<Stack marginLeft={15}><Ionicons name="search-outline" size={22} /></Stack>} />
+                    <Input placeholder="Tìm sản phẩm" size='xl' borderRadius={15} marginTop={15} leftElement={<Stack marginLeft={15}><Ionicons name="search-outline" size={22} /></Stack>} />
                     <Flex
                         marginTop={15}
                         flexDirection='row'
@@ -87,39 +126,47 @@ export const LesseeHome = ({ navigation }) => {
                         <Flex
                             flexDirection='row'
                             style={{
-                                columnGap: 7.5,
+                                columnGap: 10,
                                 alignItems: 'center',
                                 justifyContent: 'flex-end'
                             }}>
-                            <Ionicons 
-                                name="chevron-back-circle" 
-                                color='#9F3553' 
-                                size={30} 
+                            <Ionicons
+                                name="chevron-back-circle"
+                                color='#9F3553'
+                                size={30}
                                 onPress={() => setPage(page - 1)}
                             />
                             <Text fontSize={18} fontWeight='semibold' color='#9F3553'>Page {page}</Text>
-                            <Ionicons 
-                                name="chevron-forward-circle" 
-                                color='#9F3553' 
-                                size={30} 
+                            <Ionicons
+                                name="chevron-forward-circle"
+                                color='#9F3553'
+                                size={30}
                                 onPress={() => setPage(page + 1)}
                             />
                         </Flex>
                     </Flex>
-                    <Box marginBottom={30} marginTop={30}>
+                    <Box marginBottom={30} marginTop={15}>
+                        {console.log('chosenCategory', chosenCategory)}
                         <ScrollView horizontal>
-                            <Badge borderRadius={25} height={35} colorScheme="blue" marginRight={15}>
-                                <Text>Camera</Text>
-                            </Badge>
-                            <Badge borderRadius={25} height={35} colorScheme="blue" marginRight={15}>
-                                <Text>Lens</Text>
-                            </Badge>
-                            <Badge borderRadius={25} height={35} colorScheme="blue" marginRight={15}>
-                                <Text>Laptop</Text>
-                            </Badge>
-                            <Badge borderRadius={25} height={35} colorScheme="blue" marginRight={15}>
-                                <Text>Cable</Text>
-                            </Badge>
+                            {categoryList
+                                .map((category) => (
+                                <Button
+                                    borderRadius={25}
+                                    height={12}
+                                    marginRight={2}
+                                    bgColor={(chosenCategory === category) ? buttonColor[1].bg : 'transparent'}
+                                    key={category}
+                                    onPress={() => handleChosenCategory(category)}
+                                >
+                                    <Text
+                                        color={(chosenCategory === category) ? buttonColor[1].color : buttonColor[0].color}
+                                        flex={1}
+                                        fontSize={14}
+                                    >
+                                        {category}
+                                    </Text>
+                                </Button>
+                            ))}
                         </ScrollView>
                     </Box>
                 </Stack>

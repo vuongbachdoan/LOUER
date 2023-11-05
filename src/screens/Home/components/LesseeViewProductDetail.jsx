@@ -24,11 +24,10 @@ export const LesseeViewProductDetail = ({ navigation, route }) => {
     const [isBanking, setIsBanking] = useState(false);
 
     useLayoutEffect(() => {
-        console.log('product', product);
         navigation.setOptions({
             headerTitle: () => <Text fontWeight='bold'>{product.productName}</Text>,
         });
-    }, [navigation, product]);
+    }, [navigation]);
 
     const toggleIsBanking = () => {
         setIsBanking(!isBanking)
@@ -92,10 +91,10 @@ export const LesseeViewProductDetail = ({ navigation, route }) => {
                         <Box
                             marginTop={15}
                         >
-                            <Text fontSize={16} fontWeight='bold' >Giá thuê:<Text fontSize={16} fontWeight='bold' color={'#FF5484'}>{product.marketPrice} /ngày</Text></Text>
+                            <Text fontSize={16} fontWeight='bold' >Giá thuê : <Text fontSize={16} fontWeight='bold' color={'#FF5484'}>{product.marketPrice} /ngày</Text></Text>
                             <Text fontSize={16} fontWeight='bold'>Mô tả sản phẩm</Text>
                             <Text fontSize={16} marginBottom={15}>Tình trạng tốt, cond 9.5, trước mua về đề qua môn nên ít khi sử dụng.
-                                (Vui lòng để lại tin nhắn)</Text>
+                            (Vui lòng để lại tin nhắn)</Text>
 
                             <Text fontSize={16} fontWeight='bold' marginBottom={7.5}>Ảnh/Video sản phẩm</Text>
                             <Flex
@@ -106,13 +105,11 @@ export const LesseeViewProductDetail = ({ navigation, route }) => {
                                 marginBottom={15}
                             >
                                 {product.images.map((image) => (
-                                    <Image borderRadius={14} source={image} height={100} width={100} />
+                                    <Image 
+                                        key={image}
+                                        borderRadius={14} source={image} 
+                                        height={100} width={100} />
                                 ))}
-                                {/* <Image borderRadius={10} source={Prod1} height={100} width={100} />
-                                <Image borderRadius={10} source={Prod1} height={100} width={100} />
-                                <Image borderRadius={10} source={Prod1} height={100} width={100} />
-                                <Image borderRadius={10} source={Prod1} height={100} width={100} />
-                                <Image borderRadius={10} source={Prod1} height={100} width={100} /> */}
                             </Flex>
 
 
@@ -193,7 +190,7 @@ export const LesseeViewProductDetail = ({ navigation, route }) => {
 
                         </Box>
 
-                        <GradientButton onPress={() => navigation.navigate('Thanh toán',{product: product})} radius={10} fontSize={18} text='Bắt đầu thuê' height={55} colors={['#9F3553', '#E98EA6']} />
+                        <GradientButton onPress={() => navigation.navigate('Lessee note before order',{product: product})} radius={10} fontSize={18} text='Bắt đầu thuê' height={55} colors={['#9F3553', '#E98EA6']} />
                     </Stack>
                 </ScrollView>
             </Box>

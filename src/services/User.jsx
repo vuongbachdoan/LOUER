@@ -2,9 +2,8 @@ import * as request from "../utils/request";
 import * as LoginService from "./UserLogin";
 import * as BankService from "./UserBank";
 import { store } from "../state/store";
-import React from 'react';
+import React, {useState} from 'react';
 import axios from "axios";
-import { useUser } from "@clerk/clerk-expo";
 import * as Toast from "../components/Toast";
 
 
@@ -12,7 +11,7 @@ const requestUpdate = axios.create({
     baseURL: 'https://www.louerapp.com/api/',
     // timeout: 1000,
     headers: {
-        "Content-Type": "application/json; charset=UTF-8"
+        "Content-Type": "application/json"
     }
 });
 
@@ -165,18 +164,20 @@ export const updateDataGmail = async (userId, data) => {
 
 export const updateDataBank = async (data) => {
     console.log('Going to update bank');
-    let user = store.useState((state) => state.user);
+    let user = useState((state) => state.user)[0];
     let resBank;
-    let json = {
+    let jsonData = {
         userId: data.userId,
         bankName: data.bankName,
         cardNumber: data.cardNumber,
         cardName: data.cardName
     }
     if (user.bankName === null && user.cardName === null && user.cardNumber === null) {
-        resBank = await requestUpdate.post(`bankCreds/add`, json);
+        console.log('Going to add bank');
+        resBank = await requestUpdate.post(`bankCreds/add`, JSON.parse(jsonData));
     } else {
-        resBank = await requestUpdate.put(`bankCreds/add`, json);
+        console.log('Going to update bank');
+        resBank = (await requestUpdate.put(`bankCreds/update`, JSON.parse(jsonData))).data;
     }
     console.log('UPDATE BANK RES', resBank);
     return resBank;
@@ -230,8 +231,8 @@ const handleUpdateState = (resBank, resLogin) => {
 
         s.user.userStatus = resLogin.userStatus;
         s.user.userMode = resLogin.userMode;
-
-        if (resBank) {
+        
+        if (resBank || resBank !== undefined) {
             s.user.bankName = resBank.bankName;
             s.user.cardName = resBank.cardName;
             s.user.cardNumber = resBank.cardNumber;
