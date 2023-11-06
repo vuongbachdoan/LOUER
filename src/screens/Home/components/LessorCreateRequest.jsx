@@ -8,9 +8,9 @@ import * as ImagePicker from 'expo-image-picker';
 
 import { store } from "../../../state/store";
 
-import { add, addImg } from "../../../services/ListingRequest"
 import { createRequest, uploadImage } from "../../../utils/request";
-import * as ListingService from "../../../services/ListingRequest";
+// import { add, addImg } from "../../../services/ListingRequest"
+import * as ListingService from "../../../services/Listing";
 
 // const listingRequest = {
 //     userId: 0,

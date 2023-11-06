@@ -9,7 +9,7 @@ import { GradientButton } from "../../../components/GradientButton";
 import { useIsFocused } from "@react-navigation/native";
 
 import { store } from "../../../state/store";
-import * as ProdService from "../../../services/Product";
+import * as ListingService from "../../../services/Listing";
 
 
 const categoryList = [
@@ -19,6 +19,8 @@ const categoryList = [
     "Tai nghe",
     "Khác",
 ];
+
+
 
 const buttonColor = [
     noChosen = {
@@ -37,9 +39,9 @@ export const LesseeHome = ({ navigation }) => {
     const fadeAnim = React.useRef(new Animated.Value(0)).current;
     const user = store.useState((state) => state.user);
     const [searchText, setSearchText] = React.useState('');
-    const [productList, setProductList] = React.useState([]);
+    const [listingList, setListingList] = React.useState([]);
     const [chosenCategory, setChosenCategory] = React.useState('All');
-    const [page, setPage] = React.useState(1);
+    const [page, setPage] = React.useState(0);
 
 
 
@@ -52,17 +54,17 @@ export const LesseeHome = ({ navigation }) => {
     }, [fadeAnim]);
 
     const handleAddListing = async () => {
-        setProductList(await ProdService.getAllByPage(page, 10));
+        setListingList(await ListingService.getAllByPageSize(page, 10));
     };
 
     React.useEffect(() => {
         if (chosenCategory === '' || chosenCategory === 'All') {
             handleAddListing();
-        }else{
+        } else {
             handleAddListing();
         }
-        
-        console.log('PAGE Product', productList);
+
+        console.log('PAGE Product', listingList);
     }, [useIsFocused, page, chosenCategory]);
 
     React.useEffect(() => {
@@ -132,11 +134,12 @@ export const LesseeHome = ({ navigation }) => {
                             }}>
                             <Ionicons
                                 name="chevron-back-circle"
-                                color='#9F3553'
+                                color={page === 0 ? 'gray' : '#9F3553'}
                                 size={30}
                                 onPress={() => setPage(page - 1)}
+                                disabled={page === 0}
                             />
-                            <Text fontSize={18} fontWeight='semibold' color='#9F3553'>Page {page}</Text>
+                            <Text fontSize={18} fontWeight='semibold' color='#9F3553'>Page {page + 1}</Text>
                             <Ionicons
                                 name="chevron-forward-circle"
                                 color='#9F3553'
@@ -146,27 +149,26 @@ export const LesseeHome = ({ navigation }) => {
                         </Flex>
                     </Flex>
                     <Box marginBottom={30} marginTop={15}>
-                        {console.log('chosenCategory', chosenCategory)}
                         <ScrollView horizontal>
                             {categoryList
                                 .map((category) => (
-                                <Button
-                                    borderRadius={25}
-                                    height={12}
-                                    marginRight={2}
-                                    bgColor={(chosenCategory === category) ? buttonColor[1].bg : 'transparent'}
-                                    key={category}
-                                    onPress={() => handleChosenCategory(category)}
-                                >
-                                    <Text
-                                        color={(chosenCategory === category) ? buttonColor[1].color : buttonColor[0].color}
-                                        flex={1}
-                                        fontSize={14}
+                                    <Button
+                                        borderRadius={25}
+                                        height={12}
+                                        marginRight={2}
+                                        bgColor={(chosenCategory === category) ? buttonColor[1].bg : 'transparent'}
+                                        key={category}
+                                        onPress={() => handleChosenCategory(category)}
                                     >
-                                        {category}
-                                    </Text>
-                                </Button>
-                            ))}
+                                        <Text
+                                            color={(chosenCategory === category) ? buttonColor[1].color : buttonColor[0].color}
+                                            flex={1}
+                                            fontSize={14}
+                                        >
+                                            {category}
+                                        </Text>
+                                    </Button>
+                                ))}
                         </ScrollView>
                     </Box>
                 </Stack>
@@ -184,25 +186,45 @@ export const LesseeHome = ({ navigation }) => {
                                 columnGap: 15
                             }}
                         >
-                            {(productList.length === 0)
+                            {(listingList.length === 0)
                                 ? (<Text>Chưa có sản phẩm lên kệ 😞</Text>)
                                 : (
-                                    productList.map((product) => (
+                                    listingList.map((listing) => (
                                         <View
-                                            key={product.productId}
+                                            key={listingList.listingId}
                                             style={{
                                                 flexDirection: 'column',
                                                 alignItems: 'flex-start',
                                                 paddingBottom: 15,
+                                                backgroundColor: '#F5F5F5', // Add this line to set the background color
+                                                borderRadius: 15,
                                             }}
+                                            onTouchEnd={() => navigation.navigate('Lessee view product detail', { listing: listing })}
                                         >
-                                            <Image alt="thumbnail" width={150} height={150} source={product.images[0]} borderRadius={10} />
+                                            <Image
+                                                alt="thumbnail"
+                                                width={150}
+                                                height={150}
+                                                padding={5}
+                                                source={{ uri: listing.images[0] }}
+                                                borderRadius={15}
+                                            />
                                             <Flex
                                                 flexDirection='column'
                                                 justifyContent='space-between'
                                                 alignItems='flex-start'
+                                                paddingLeft={2}
                                             >
-                                                <Text textAlign='left' fontSize={18} fontWeight='semibold' color='gray.500' >{product.productName}</Text>
+                                                <Text 
+                                                    textAlign='left' 
+                                                    fontSize={18} 
+                                                    fontWeight='semibold' 
+                                                    color='#401924' 
+                                                    numberOfLines={1}
+                                                    ellipsizeMode='tail'
+                                                >
+                                                    {listing.product.productName.length > 11 ? listing.product.productName.substring(0, 11) + '...' : listing.product.productName}
+                                                </Text>
                                                 <Flex
                                                     flexDirection='row'
                                                     alignItems='flex-end'
@@ -211,12 +233,13 @@ export const LesseeHome = ({ navigation }) => {
                                                         columnGap: 15
                                                     }}
                                                 >
-                                                    <Text textAlign='left' fontSize={14} fontWeight='semibold' color='gray.500' >{product.marketPrice}/ ngày</Text>
-                                                    <GradientButton
-                                                        onPress={() => navigation.navigate('Lessee view product detail', { product: product })}
-                                                        paddingBottom={0} paddingTop={0} paddingLeft={0} paddingRight={0}
-                                                        prefixIcon={<Ionicons name="chevron-forward" color='#FFF' size={22} />}
-                                                        colors={['#9F3553', '#E98EA6']} width={35} height={35} radius={5} />
+                                                    <Text 
+                                                        textAlign='left' 
+                                                        fontSize={14} fontWeight='semibold' 
+                                                        color='gray.500' >
+                                                        <Text color='#9F6071' fontWeight={'bold'}>{listing.price.toLocaleString()}</Text>
+                                                        / ngày
+                                                    </Text>
                                                 </Flex>
                                             </Flex>
                                         </View>
@@ -239,7 +262,7 @@ const styles = StyleSheet.create({
         paddingRight: 25,
         width: '100%',
         height: '100%',
-        backgroundColor: '#FAFAFA',
+        backgroundColor: '#FAFAF9',
     },
     text: {
         textTransform: 'uppercase',

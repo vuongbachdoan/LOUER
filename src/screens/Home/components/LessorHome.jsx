@@ -15,7 +15,7 @@ export const LessorHome = ({ navigation }) => {
     const fadeAnim = React.useRef(new Animated.Value(500)).current;
 
     const user = store.useState((state) => state.user);
-    const listingStatus = store.useState((state) => state.listingStatus);
+    const listingStatusLessor = store.useState((state) => state.listingStatusLessor);
     const listingStatusColor = store.useState((state) => state.listingStatusColor);
     const [listing, setListing] = React.useState([]);
     const [isListEmpty, setIsListEmpty] = React.useState(true);
@@ -152,8 +152,8 @@ export const LessorHome = ({ navigation }) => {
                         }} onValueChange={value => setSortStatus(value)}
                     >
                         <Select.Item label="Tất cả" value="All" />
-                        {Object.keys(listingStatus).map((key) => (
-                            <Select.Item label={listingStatus[key]} value={listingStatus[key]} />
+                        {Object.keys(listingStatusLessor).map((key) => (
+                            <Select.Item label={listingStatusLessor[key]} value={listingStatusLessor[key]} />
 
                         ))}
                     </Select>
@@ -189,7 +189,7 @@ export const LessorHome = ({ navigation }) => {
                                                     // paddingLeft={5}
                                                     >
                                                         <Text fontSize='md' fontWeight='semibold' color='#01005C' marginBottom={15}>{item.product.productName}</Text>
-                                                        <Text fontSize='sm' fontWeight='bold' color={listingStatusColor[item.statusColor]}>{listingStatus[item.listingStatus]}</Text>
+                                                        <Text fontSize='sm' fontWeight='bold' color={listingStatusColor[item.statusColor]}>{listingStatusLessor[item.listingStatus]}</Text>
                                                     </Box>
                                                     <Ionicons onPress={() => navigation.navigate('Product details', { item: item })} name='chevron-forward' size={28} />
                                                 </Box>
@@ -210,7 +210,7 @@ export const LessorHome = ({ navigation }) => {
                                                         // paddingLeft={5}
                                                         >
                                                             <Text fontSize='md' fontWeight='semibold' color='#01005C' marginBottom={15}>{item.product.productName}</Text>
-                                                            <Text fontSize='sm' fontWeight='bold' color={listingStatusColor[item.statusColor]}>{listingStatus[item.listingStatus]}</Text>
+                                                            <Text fontSize='sm' fontWeight='bold' color={listingStatusColor[item.statusColor]}>{listingStatusLessor[item.listingStatus]}</Text>
                                                         </Box>
                                                         <Ionicons onPress={() => navigation.navigate('Product details', { item: item })} name='chevron-forward' size={28} />
                                                     </Box>

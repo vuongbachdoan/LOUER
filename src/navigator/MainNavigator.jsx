@@ -16,6 +16,7 @@ import { ProfileInformation } from '../screens/Profile/ProfileInformation';
 import { ProfileReview } from '../screens/Profile/ProfileReview';
 import { LesseeRecentActivity } from '../screens/Home/components/LesseeRecentActivity';
 import { LesseeCreateRequest } from '../screens/Home/components/LesseeCreateRequest';
+import { LesseeSendRequest } from '../screens/Home/components/LesseeSendRequest';
 import { LesseeViewProductDetail } from '../screens/Home/components/LesseeViewProductDetail';
 import { LessorViewProductDetail } from '../screens/Home/components/LessorViewProductDetail';
 import { LessorCreateRequest } from '../screens/Home/components/LessorCreateRequest';
@@ -128,6 +129,11 @@ export const MainNavigator = () => {
             }} />
 
           <Tab.Screen name="LesseeCreateRequest" component={LesseeCreateRequest}
+            options={{
+              headerShown: false,
+            }} />
+
+          <Tab.Screen name="LesseeSendRequest" component={LesseeSendRequest}
             options={{
               headerShown: false,
             }} />
