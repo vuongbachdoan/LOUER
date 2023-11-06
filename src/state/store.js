@@ -66,6 +66,18 @@ export const store = new Store({
         1: '#22a4dd',
         2: '#fdb400'
     },
+    orderStatus:{
+        0: 'Chờ thuê',
+        1: 'Đang thuê',
+        2: 'Đã thuê',
+        3: 'Đã hủy',
+    },
+    orderStatusColor:{
+        0: '#fdb400',
+        1: '#22a4dd',
+        2: '#f65683',
+        3: '#ff0000',
+    },
     louerBank: {
         bankName: 'vietinbank',
         bankNameFull: 'VietinBank',
@@ -76,7 +88,4 @@ export const store = new Store({
         isDarkMode: false,
         pushNotifications: false,
     },
-
-
-
 });

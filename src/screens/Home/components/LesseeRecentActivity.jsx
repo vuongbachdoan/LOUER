@@ -2,42 +2,31 @@ import { Box, Flex, Stack, Text } from "native-base";
 import React from "react";
 import { StyleSheet, Animated, ScrollView, View, Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import Prod1 from '../../../assets/images/prod1.png'
-import Prod2 from '../../../assets/images/prod2.png'
-import Prod3 from '../../../assets/images/prod3.png'
+
 import { useLayoutEffect } from "react";
 import { GradientButton } from "../../../components/GradientButton";
+import { useIsFocused } from "@react-navigation/native";
 
-const prodData = [
-    {
-        name: 'Canon EOS 700D',
-        user: 'Nguyễn Văn A - SE170111',
-        thumbnail: Prod1,
-        rating: 100,
-    },
-    {
-        name: 'Nikon D7000',
-        user: 'Nguyễn Văn C - SE170111',
-        thumbnail: Prod2,
-        rating: 100,
-    },
-    {
-        name: 'Canon 5d Mark IV',
-        user: 'Nguyễn Văn B - SE170111',
-        thumbnail: Prod3,
-        rating: 100,
-    },
-    {
-        name: 'Nikon D7000',
-        user: 'Nguyễn Văn D - SE170111',
-        thumbnail: Prod2,
-        rating: 100,
-    }
-]
+
+
+import {store} from '../../../state/store'
+import * as OrderService from "../../../services/Order";
+
 
 export const LesseeRecentActivity = ({ navigation }) => {
 
     const fadeAnim = React.useRef(new Animated.Value(0)).current;
+    const user = store.useState((state) => state.user);
+    const [orderList, setOrderList] = React.useState([]);
+    const orderStatus = store.useState((state) => state.orderStatus);
+    const orderStatusColor = store.useState((state) => state.orderStatusColor);
+
+    React.useEffect(() => {
+        OrderService.getAllLessee(user.userId).then((res) => {
+            setOrderList(res);
+        })
+    }, [useIsFocused()]);
+
 
     React.useEffect(() => {
         Animated.timing(fadeAnim, {
@@ -47,7 +36,6 @@ export const LesseeRecentActivity = ({ navigation }) => {
         }).start();
     }, [fadeAnim]);
 
-    const [service, setService] = React.useState("");
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -68,9 +56,10 @@ export const LesseeRecentActivity = ({ navigation }) => {
                 height='100vh'
                 overflow='hidden'
             >
-                <ScrollView>
-                    {
-                        prodData.map((item, index) => (
+                
+                {orderList ? (
+                    <ScrollView>
+                        {orderList.map((order, index) => (
                             <View
                                 key={index}
                                 style={{
@@ -78,29 +67,54 @@ export const LesseeRecentActivity = ({ navigation }) => {
                                     alignItems: 'flex-start',
                                     paddingBottom: 15,
                                 }}
+                                onTouchEnd={() =>
+                                    navigation.navigate('LesseeViewProductDetail', {
+                                        orderId: order.listing,
+                                    })
+                                }
                             >
-                                <Box width={150} height={100}><Image source={item.thumbnail} borderRadius={10} /></Box>
-                                <View
-                                    style={{ flex: 1 }}
-                                >
-                                    <Text textAlign='left' fontSize={16} fontWeight={700} color='#01005C'>{item.name}</Text>
-                                    <Text textAlign='left' fontSize={14} fontWeight={700} >{item.user}</Text>
+                                <Box width={150} height={100}>
+                                    <Image
+                                        source={{ uri: order.listing.images[0] }}
+                                        borderRadius={10}
+                                    />
+                                </Box>
+                                <View style={{ flex: 1 }}>
+                                    <Text
+                                        textAlign="left"
+                                        fontSize={16}
+                                        fontWeight={700}
+                                        color="#01005C"
+                                    >
+                                        {order.listing.product.productName}
+                                    </Text>
+                                    <Text textAlign="left" fontSize={14} fontWeight={700}>
+                                        {order.lessor.firstName} {order.lessor.middleName}{' '}
+                                        {order.lessor.lastName}
+                                    </Text>
                                     <Flex
-                                        flexDirection='row'
-                                        alignItems='center'
+                                        flexDirection="row"
+                                        alignItems="center"
                                         style={{
-                                            columnGap: 5
+                                            columnGap: 5,
                                         }}
                                     >
-                                        <Ionicons name="heart-outline" size={18} />
-                                        <Text textAlign='left'>{item.rating}%</Text>
+                                        <Ionicons name="information-circle-outline" size={18} />
+                                        <Text
+                                            textAlign="left"
+                                            color={orderStatusColor[order.orderStatus]}
+                                        >
+                                            {orderStatus[order.orderStatus]}
+                                        </Text>
                                     </Flex>
                                 </View>
-                                <Ionicons name='chevron-forward' size={20} />
+                                <Ionicons name="chevron-forward" size={20} />
                             </View>
-                        ))
-                    }
-                </ScrollView>
+                        ))}
+                    </ScrollView>
+                ) : (
+                    <Text>Chưa có mở hàng nha 👁️3👁️</Text>
+                )}
             </Stack>
         </Animated.View>
     );
