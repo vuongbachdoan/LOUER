@@ -4,10 +4,28 @@ import * as Toast from "../components/Toast";
 
 
 
-export const getAllByPageSize = async (page, size) => {
+export const getAllLessee = async (page, size, lesseeId, productName, categoryName, brandName) => {
     try {
-        const res = await request.get(`listings?page=${page}&size=${size}`);
-        return res; 
+        const json = {
+            excludeUserId: lesseeId,
+        }
+        if (productName !== null) {
+            json.productName = productName;
+        }
+        if (categoryName !== null) {
+            json.categoryName = categoryName;
+        }
+        if (brandName !== null) {
+            json.brandName = brandName;
+        }
+        const res = await axios.get(`listings`, {
+            params: {
+                page: page,
+                size: size
+            },
+            data: json
+        });
+        return res.data;
     } catch (error) {
         outputError(error);
     }

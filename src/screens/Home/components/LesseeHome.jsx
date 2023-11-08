@@ -48,28 +48,17 @@ export const LesseeHome = ({ navigation }) => {
     React.useEffect(() => {
         Animated.timing(fadeAnim, {
             toValue: 1,
-            duration: 1000,
+            duration: 500,
             useNativeDriver: true,
         }).start();
     }, [fadeAnim]);
 
-    const handleAddListing = async () => {
-        setListingList(await ListingService.getAllByPageSize(page, 10));
-    };
 
-    React.useEffect(() => {
-        if (chosenCategory === '' || chosenCategory === 'All') {
-            handleAddListing();
-        } else {
-            handleAddListing();
-        }
 
-        console.log('PAGE Product', listingList);
-    }, [useIsFocused, page, chosenCategory]);
+    React.useEffect(async () => {
+        setListingList(await ListingService.getAllLessee(page, 10, user.userId, searchText, chosenCategory, null));
+    }, [useIsFocused, page, chosenCategory, searchText]);
 
-    React.useEffect(() => {
-
-    }, [useIsFocused, searchText]);
 
 
     const handleChosenCategory = (category) => {

@@ -22,7 +22,7 @@ export const ProductDetail = ({ navigation, route }) => {
     React.useEffect(() => {
         Animated.timing(fadeAnim, {
             toValue: 1,
-            duration: 1000,
+            duration: 500,
             useNativeDriver: true,
         }).start();
     }, [fadeAnim]);
