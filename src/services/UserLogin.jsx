@@ -54,7 +54,7 @@ export const mailFPT = async (fullname, email, avaLink) => {
 
 
     const outputError = (error) => {
-        Toast.show('Úi, lỗi mạng, mong bạn mở lại Louer nhé ><');
+        Toast.show('Úi, lỗi đăng nhập, mong bạn mở lại Louer nhé ><');
         return console.error(error);
     }
 

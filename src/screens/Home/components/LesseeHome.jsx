@@ -44,20 +44,24 @@ export const LesseeHome = ({ navigation }) => {
     const [page, setPage] = React.useState(0);
 
 
-
     React.useEffect(() => {
         Animated.timing(fadeAnim, {
             toValue: 1,
-            duration: 500,
+            duration: 1000,
             useNativeDriver: true,
         }).start();
     }, [fadeAnim]);
 
-
-
-    React.useEffect(async () => {
+    const getHomeListings = async () => {
         setListingList(await ListingService.getAllLessee(page, 10, user.userId, searchText, chosenCategory, null));
-    }, [useIsFocused, page, chosenCategory, searchText]);
+        console.log('listinglist ',listingList);
+    }
+
+
+
+    React.useEffect(() => {
+        getHomeListings();
+    }, [useIsFocused(), page, chosenCategory, searchText]);
 
 
 

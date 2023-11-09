@@ -1,51 +1,88 @@
 import * as request from "../utils/request";
 import * as Toast from "../components/Toast";
-
-
-
+import axios from "axios";
 
 export const getAllLessee = async (page, size, lesseeId, productName, categoryName, brandName) => {
     try {
+
         const json = {
             excludeUserId: lesseeId,
         }
         if (productName !== null) {
             json.productName = productName;
         }
-        if (categoryName !== null) {
+        if (categoryName !== null || categoryName !== 'All') {
             json.categoryName = categoryName;
         }
         if (brandName !== null) {
             json.brandName = brandName;
         }
-        const res = await axios.get(`listings`, {
-            params: {
-                page: page,
-                size: size
-            },
-            data: json
-        });
+        const res = await axios.get(`https://www.louerapp.com/api/listings?page=${page}&size=${size}`, {
+            data: json,
+        }
+        );
+        console.log('Get all listings lessee res', res);
         return res.data;
     } catch (error) {
-        outputError(error);
+        outputError(error, "Listing-getAllLessee");
     }
 };
+
+
+// export const getAllLessee = async (page, size, lesseeId, productName, categoryName, brandName) => {
+//     var headers = new Headers();
+//     headers.append("Content-Type", "application/json");
+
+//     const json = {
+//         excludeUserId: lesseeId,
+//     }
+//     if (productName !== null) {
+//         json.productName = productName;
+//     }
+//     if (categoryName !== null || categoryName !== 'All') {
+//         json.categoryName = categoryName;
+//     }
+//     if (brandName !== null) {
+//         json.brandName = brandName;
+
+//         var request = {
+//             method: 'GET',
+//             headers: headers,
+//             body: JSON.stringify(json),
+//             redirect: 'follow'
+//         };
+
+//         fetch(`https://www.louerapp.com/api/listings?page=${page}&size=${size}`, request)
+//             .then(response => {
+//                 console.log('Get all listings lessee res', response);
+//                 return response.json()
+//             })
+//             .then(result => console.log('Get all listings lessee result', result))
+//             .catch(error => {
+//                 outputError(error, "Listing-getAllLessee");
+//             });
+//     }
+// }
+
+
+
+
 
 export const getByProductId = async (productId) => {
     try {
         const res = await request.get(`listings/product?productId=${productId}`);
-        return res; 
+        return res;
     } catch (error) {
-        outputError(error);
+        outputError(error, "Listing-getByProductId");
     }
 };
 
 export const getByUserId = async (userId) => {
     try {
         const res = await request.get(`listings/user?userId=${userId}`);
-        return res; 
+        return res;
     } catch (error) {
-        outputError(error);
+        outputError(error, "Listing-getByUserId");
     }
 
 };
@@ -53,9 +90,9 @@ export const getByUserId = async (userId) => {
 export const getById = async (listingId) => {
     try {
         const res = await request.get(`listings?listingId=${listingId}`);
-        return res; 
+        return res;
     } catch (error) {
-        outputError(error);
+        outputError(error, "Listing-getById");
     }
 
 };
@@ -63,19 +100,19 @@ export const getById = async (listingId) => {
 export const getImgById = async (listingId) => {
     try {
         const res = await request.get(`images/listings?listingId=${listingId}`);
-        return res["Images Links"]; 
+        return res["Images Links"];
     } catch (error) {
-        outputError(error);
+        outputError(error, "Listing-getImgById");
     }
 }
 
 export const updateById = async (data) => {
     try {
 
-        const res = await request.post(`listings`, data );
-        return res; 
+        const res = await request.post(`listings`, data);
+        return res;
     } catch (error) {
-        outputError(error);
+        outputError(error, "Listing-updateById");
     }
 
 };
@@ -83,9 +120,9 @@ export const updateById = async (data) => {
 export const add = async (userId, data) => {
     try {
         const res = await request.post(`listings/add?userId=${userId}`, data);
-        return res; 
+        return res;
     } catch (error) {
-        outputError(error);
+        outputError(error, "Listing-add");
     }
 
 };
@@ -134,7 +171,8 @@ export const addImg = async (listingId, images) => {
         console.log('Img upload response:', JSON.stringify(response));
         return response;
     } catch (error) {
-        console.log('error UPLOAD IMG', error);
+        // console.log('error UPLOAD IMG', error);
+        outputError(error, "Listing-addImg");
     }
 };
 
@@ -142,7 +180,7 @@ export const addImg = async (listingId, images) => {
 
 
 
-const outputError = (error) => {
+const outputError = (error, step) => {
     Toast.show('Úi, lỗi mạng, mong bạn mở lại Louer nhé ><');
-    return console.error(error);
+    return console.error("At " + step + " " + error);
 }
