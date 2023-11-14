@@ -4,29 +4,38 @@ import axios from "axios";
 
 export const getAllLessee = async (page, size, lesseeId, productName, categoryName, brandName) => {
     try {
-
         const json = {
             excludeUserId: lesseeId,
         }
         if (productName !== null) {
             json.productName = productName;
         }
-        if (categoryName !== null || categoryName !== 'All') {
-            json.categoryName = categoryName;
+        if (categoryName !== null ) {
+            if (categoryName !== 'All') {
+                json.categoryName = categoryName;
+            } else {
+                json.categoryName = "";
+            }
+           
         }
         if (brandName !== null) {
             json.brandName = brandName;
         }
-        const res = await axios.get(`https://www.louerapp.com/api/listings?page=${page}&size=${size}`, {
-            data: json,
-        }
-        );
-        console.log('Get all listings lessee res', res);
-        return res.data;
-    } catch (error) {
-        outputError(error, "Listing-getAllLessee");
-    }
+        const res = await axios.post(`https://www.louerapp.com/api/listings?page=${page}&size=${size}`, json, {
+            params: {
+                page: page,
+                size: size,
+            },
+            headers: {
+                "Content-Type": "application/json; charset=UTF-8"
+            }
+    })
+    return res.data;
+} catch (error) {
+    outputError(error, "Listing-getAllLessee");
+}
 };
+
 
 
 // export const getAllLessee = async (page, size, lesseeId, productName, categoryName, brandName) => {

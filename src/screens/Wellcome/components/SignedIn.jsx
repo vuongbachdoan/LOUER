@@ -41,6 +41,7 @@ export const SignedIn = ({ navigation }) => {
         )
             .then((res) => {
                 setIsImported(true);
+                console.log('user', userMain);
             });
     }
 

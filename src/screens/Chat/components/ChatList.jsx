@@ -5,63 +5,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { store } from "../../../state/store";
 import { getMainColor } from "../../../state/color";
 import * as MessagingService from "../../../services/Messaging";
-
-const chatSession = {
-    sessionId: 123456789,
-    user1: {
-        userId: 27,
-        username: "Dat Hoang",
-        email: "user1@example.com"
-    },
-    user2: {
-        userId: 28,
-        username: "Đẳng cấp",
-        email: "user2@example.com"
-    },
-    dateCreated: new Date().toISOString()
-};
-
-
-
-const messages = [
-    {
-        receiver: 'Nguyen Van A',
-        sender: 'Kid',
-        userMode: false,
-        messages: [
-            {
-                sender: 'A',
-                timestamp: '',
-                content: 'Cho mình hỏi về em D7000 với.'
-            },
-            {
-                sender: 'K',
-                timestamp: '',
-                content: 'Con đó tin chuẩn em nhé'
-            },
-            {
-                sender: 'A',
-                timestamp: '',
-                content: 'Vậy khi nào máy đó thuê được ạ?'
-            },
-            {
-                sender: 'K',
-                timestamp: '',
-                content: 'Con máy đó khoảng tuần sau là free đó em, có thông tin gì thêm không?'
-            },
-            {
-                sender: 'A',
-                timestamp: '',
-                content: 'Cho mình hỏi về em D7000 với.'
-            }
-        ],
-        lastMessage: "Con máy đó khoảng tuần sau là có đúng không bạn"
-    },
-    {
-        receiver: 'Nguyen Van B',
-        lastMessage: "Con máy đó khoảng tuần sau là có đúng không bạn"
-    }
-]
+import { useIsFocused } from "@react-navigation/native";
 
 export const ChatList = ({ navigation }) => {
 
@@ -79,25 +23,34 @@ export const ChatList = ({ navigation }) => {
         }).start();
     }, [fadeAnim]);
 
-    const handleGetAllChat = async () => {
-        const res = await MessagingService.getAllChat(user.userId);
-        setChatList(res);
+
+    React.useEffect(() => {
+        handleGetAllSessions();
+        const interval = setInterval(() => {
+            handleGetAllSessions();
+        }, 10000);
+        return () => clearInterval(interval);
+    }, [useIsFocused]);
+
+    const handleGetAllSessions = async () => {
+        const sessions = await MessagingService.getAllChat(user.userId);
+        const tempChatList = [];
+        for (const session of sessions) {
+            const chatDetail = await handleGetChatDetail(session.sessionId);
+            const chat = { session, chatDetail };
+            tempChatList.push(chat);
+        }
+        setChatList(tempChatList);
+        console.log('chatList', chatList);
+    };
+
+    const handleGetChatDetail = async (sessionId) => {
+        const res = await MessagingService.getDetailsBySessionId(sessionId);
+        return res;
     }
 
+    
 
-
-    // React.useEffect(() => {
-        
-    //     const interval = setInterval(() => {
-    //         handleGetAllChat().then((res) => {
-    //             console.log('RES: ', res);
-    //             setChatList(res);
-    //         });
-    //     }, 2000);
-    //     console.log('ChatList: ', chatList);
-    //     return () => clearInterval(interval);
-        
-    // }, [navigation, chatList]);
 
 
 
@@ -128,7 +81,9 @@ export const ChatList = ({ navigation }) => {
                         <Avatar.Badge bg="green.500" />
                     </Avatar>
                 </Stack>
-                <Input backgroundColor='#FFF' leftElement={<Stack padding='15px' backgroundColor='#FFF'><Ionicons color='#B9C6CC' size={22} name="search" /></Stack>} variant="rounded" placeholder="Search" size='2xl' />
+
+                {/* Search box */}
+                {/* <Input backgroundColor='#FFF' leftElement={<Stack padding='15px' backgroundColor='#FFF'><Ionicons color='#B9C6CC' size={22} name="search" /></Stack>} variant="rounded" placeholder="Search" size='2xl' /> */}
 
                 <Box
                     flex={1}
@@ -136,12 +91,12 @@ export const ChatList = ({ navigation }) => {
                 >
                     {(chatList.length === 0) ?
                         // (<Text fontSize='xl' fontWeight='semibold' color='gray.500'>Không có tin nhắn nào</Text>) :
-                        (<Text fontSize='xl' fontWeight='semibold' color='gray.500'>Tính năng đang trong quá trình hoàn thiện 🤓🤓</Text>) :
+                        (<Text fontSize='xl' fontWeight='semibold' color='gray.500'>Chưa một lời qua lại 🤓🤓</Text>) :
                         (
                             <ScrollView>
                                 {
-                                    chatList.map((item) => (
-                                        <TouchableOpacity onPress={() => navigation.navigate('ChatDetail', { chatDetail: item })}>
+                                    chatList.map((chat) => (
+                                        <TouchableOpacity onPress={() => navigation.navigate('ChatDetail', { chatDetail: chat })}>
                                             <Flex
                                                 flexDirection='row'
                                                 marginBottom='10px'
@@ -152,17 +107,21 @@ export const ChatList = ({ navigation }) => {
                                                 style={{ columnGap: 15 }}
                                             >
                                                 <Avatar bg="amber.500" source={{
-                                                    uri: "https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
+                                                    uri: chat.session.user2.images[0]
                                                 }} size="lg">
-                                                    NB
-                                                    <Avatar.Badge bg="green.500" />
+                                                    Ava
+                                                    {/* <Avatar.Badge bg="green.500" /> */}
                                                 </Avatar>
 
                                                 <Stack
                                                     flex={1}
                                                 >
-                                                    <Text fontSize='xl' fontWeight='semibold'>{item.receiver}</Text>
-                                                    <Text color="gray.500" numberOfLines={1} ellipsizeMode='tail' fontSize='sm' fontWeight='semibold'>{item.lastMessage}</Text>
+                                                    <Text 
+                                                        fontSize='xl' fontWeight='semibold' 
+                                                        color={getMainColor(chat.session.user2.userMode)}>
+                                                            {`${chat.session.user2.firstName} ${chat.session.user2.middleName ? chat.session.user2.middleName : ''} ${chat.session.user2.lastName}`}
+                                                    </Text>
+                                                    <Text color="gray.500" numberOfLines={1} ellipsizeMode='tail' fontSize='sm' fontWeight='semibold'>{chat.lastMessage}</Text>
                                                 </Stack>
                                             </Flex>
                                         </TouchableOpacity>

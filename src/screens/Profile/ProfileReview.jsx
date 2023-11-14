@@ -5,8 +5,11 @@ import AvatarUser from '../../assets/images/placeholder.png';
 import { Ionicons } from "@expo/vector-icons";
 import { GradientButton } from "../../components/GradientButton";
 import * as Progress from 'react-native-progress';
+import { useIsFocused } from "@react-navigation/native";
 
 import demoCmtAva from "../../assets/images/demo/ava lessee.jpg";
+
+import * as ReviewReq from "../../services/Reviews";
 
 
 import { store } from "../../state/store";
@@ -59,6 +62,7 @@ const reviews = [
 export const ProfileReview = ({ navigation }) => {
     const fadeAnim = React.useRef(new Animated.Value(0)).current;
     const user = store.useState((state) => state.user);
+    const [reviewList, setReviewList] = React.useState([]);
 
     React.useEffect(() => {
         Animated.timing(fadeAnim, {
@@ -67,6 +71,19 @@ export const ProfileReview = ({ navigation }) => {
             useNativeDriver: true,
         }).start();
     }, [fadeAnim]);
+
+
+    const getReviewList = async () => {
+        const response = await ReviewReq.getUserReviews(user.userId);
+        setReviewList(response);
+    }
+
+    React.useEffect(() => {
+        if (user) {
+            getReviewList();
+        }
+        console.log("reviewList", reviewList);
+    }, [useIsFocused]);
 
     return (
         <Animated.View style={{ flex: 1, opacity: fadeAnim }}>
@@ -210,6 +227,8 @@ export const ProfileReview = ({ navigation }) => {
                     </View>
 
 
+
+
                     <Flex
                         marginTop={15}
                         flexDirection='column'
@@ -221,37 +240,43 @@ export const ProfileReview = ({ navigation }) => {
                             flex={1}
                             overflow='hidden'
                         >
-                            {/* List of comments */}
-                            <ScrollView>
-                                {reviews.map((review, index) => (
-                                    <View key={index} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}>
-                                        <Box
-                                            key={index} // Use a unique key for each item
-                                            style={{
-                                                flexDirection: 'row',
-                                                justifyContent: 'space-between',
-                                                alignItems: 'center',
-                                                paddingBottom: 15,
-                                                columnGap: 15
-                                            }}
-                                        >
-                                            {/* <Image alt="thumbnail" source={review.avaLink} borderRadius={25} width={50} height={50} /> */}
-                                            <View style={{ flex: 1 }}>
-                                                <Text style={{ fontWeight: 'bold' }}>{review.name}</Text>
-                                                <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 5 }}>
-                                                    <Ionicons name={review.isLike ? "thumbs-up-sharp" : "thumbs-down-sharp"} size={20} color={review.isLike ? 'green' : 'red'} />
-                                                    <Text style={{ marginLeft: 5 }}>{review.date}</Text>
+                            {
+                                (reviewList.length === 0)
+                                    ? (<Text fontSize={17} fontWeight='light' paddingBottom={2}>Bạn chưa có đánh giá nào</Text>)
+                                    : (
+                                        <ScrollView>
+                                            {reviews.map((review, index) => (
+                                                <View key={index} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}>
+                                                    <Box
+                                                        key={index} // Use a unique key for each item
+                                                        style={{
+                                                            flexDirection: 'row',
+                                                            justifyContent: 'space-between',
+                                                            alignItems: 'center',
+                                                            paddingBottom: 15,
+                                                            columnGap: 15
+                                                        }}
+                                                    >
+                                                        {/* <Image alt="thumbnail" source={review.avaLink} borderRadius={25} width={50} height={50} /> */}
+                                                        <View style={{ flex: 1 }}>
+                                                            <Text style={{ fontWeight: 'bold' }}>{review.name}</Text>
+                                                            <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 5 }}>
+                                                                <Ionicons name={review.isLike ? "thumbs-up-sharp" : "thumbs-down-sharp"} size={20} color={review.isLike ? 'green' : 'red'} />
+                                                                <Text style={{ marginLeft: 5 }}>{review.date}</Text>
+                                                            </View>
+                                                            <Text style={{ marginTop: 5 }}>{review.comment}</Text>
+                                                        </View>
+
+
+
+                                                    </Box>
+
                                                 </View>
-                                                <Text style={{ marginTop: 5 }}>{review.comment}</Text>
-                                            </View>
+                                            ))}
+                                        </ScrollView>
+                                    )
+                            }
 
-
-
-                                        </Box>
-
-                                    </View>
-                                ))}
-                            </ScrollView>
                         </Box>
 
                     </Flex>

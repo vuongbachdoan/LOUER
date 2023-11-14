@@ -9,17 +9,17 @@ export const postReview = async (senderId, receiverId, rating, reviewDescription
         reviewDescription: reviewDescription,
     };
     try {
-        const response = await request.post(`${url}/reviews`, body);
-        return response.data;
+        const response = await request.post(`reviews`, body);
+        return response
     } catch (error) {
         console.error(error);
     }
 };
 
-export const getReviewsByUserId = async (userId) => {
+export const getUserReviews = async (userId) => {
     try {
-        const response = await request.get(`${url}/reviews/user?userId=${userId}`);
-        return response.data;
+        const response = await request.get(`reviews/user?userId=${userId}`);
+        return response;
     } catch (error) {
         console.error(error);
     }
@@ -28,8 +28,8 @@ export const getReviewsByUserId = async (userId) => {
 export const deleteReview = async (reviewId, senderId, userId) => {
     if (senderId === userId) {
         try {
-            const response = await request.del(`${url}/reviews/delete?reviewId=${reviewId}`);
-            return response.data;
+            const response = await request.del(`reviews/delete?reviewId=${reviewId}`);
+            return response;
         } catch (error) {
             console.error(error);
         }

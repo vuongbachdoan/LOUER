@@ -21,6 +21,7 @@ import { ViewLessorRequest } from "./ViewLessorRequest";
 import { SignoutConfirm } from "./SignoutConfirm";
 import { store } from "../../../state/store";
 import { LesseeHome } from "./LesseeHome";
+import { LesseeHomeSearch } from "./LesseeHomeSearch";
 import { LessorCreateRequest } from "./LessorCreateRequest";
 
 
@@ -124,6 +125,7 @@ export const HomeRouting = ({ navigation }) => {
             <HomeTabs.Screen name="Lessee note before order" component={LesseeNoteBeforeOrder} />
             <HomeTabs.Screen name="Thanh toán" component={LesseeQR} />
             <HomeTabs.Screen name="View lessor request" component={ViewLessorRequest} />
+            <HomeTabs.Screen name="LesseeHomeSearch" component={LesseeHomeSearch} />
         </HomeTabs.Navigator>
     )
 };
