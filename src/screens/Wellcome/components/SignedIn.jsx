@@ -1,12 +1,11 @@
 import { useUser } from "@clerk/clerk-expo";
 import { useIsFocused } from "@react-navigation/native";
 import { Avatar, Box, Flex, Stack } from "native-base";
-import React, { useEffect, useLayoutEffect, useState } from "react";
+import React, { useLayoutEffect, useState } from "react";
 import { Animated, StyleSheet, Text } from "react-native";
 import { GradientButton } from "../../../components/GradientButton";
 import * as UserService from "../../../services/User";
 import { store } from "../../../state/store";
-import LoadScreen from "../../../components/LoadScreen";
 
 
 const styles = StyleSheet.create({
@@ -30,7 +29,6 @@ export const SignedIn = ({ navigation }) => {
 
     const userMain = store.useState((state) => state.user);
     const [isImported, setIsImported] = useState(false);
-    const [changedUser, setChangedUser] = useState([]);
     const { user } = useUser();
 
     const handleInputData = () => {
@@ -41,18 +39,13 @@ export const SignedIn = ({ navigation }) => {
         )
             .then((res) => {
                 setIsImported(true);
-                console.log('user', userMain);
+                console.log('userMain', userMain);
             });
     }
 
     React.useEffect(() => {
         handleInputData();
-    }, [useIsFocused(), navigation]);
-
-    React.useEffect(() => {
-    }, [userMain]);
-
-
+    }, [useIsFocused()]);
 
     const fadeAnim = React.useRef(new Animated.Value(0)).current;
     React.useEffect(() => {

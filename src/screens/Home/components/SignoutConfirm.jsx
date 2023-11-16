@@ -43,38 +43,29 @@ export const SignoutConfirm = ({ navigation }) => {
                 flex={1}
                 display='flex'
                 justifyContent='center'
-                alignItems='center'
+                alignItems='left'
                 width='100%'
             >
-                <GradientText
-                    text={"Bạn"}
-                    fontSize={60}
-                    fontWeight={1000}
-                    isGradientFill
-                    gradientColors={['#FF5484', '#26A0DD']}
-                />
-                <GradientText
-                    text={"muốn"}
-                    fontSize={60}
-                    fontWeight={1000}
-                    isGradientFill
-                    gradientColors={['#FF5484', '#26A0DD']}
-                />
-                <GradientText
-                    text={"Đăng xuất?"}
-                    fontSize={60}
-                    fontWeight={1000}
-                    isGradientFill
-                    gradientColors={['#FF5484', '#26A0DD']}
-                />
+                <Text
+                    style={{
+                        fontSize: 85,
+                        fontWeight: '900',
+                        color: '#0000005E',
+                        textAlign: 'left',
+                        // lineHeight: 70
+                    }}
+                >Bạn{"\n"}muốn{"\n"}đăng{"\n"}xuất?
+                </Text>
+                <Box height={30}></Box>
 
                 <Box width='100%'>
                     <SignOutButton >
-                        <GradientButton onPress={() => (signOut)} fontSize={18} height={55} radius={10} colors={['#000000C7', '#0000005E']} text='Chuẩn luôn' />
+                        <GradientButton onPress={() => {
+                            signOut.apply && navigation.navigate('Wellcome2');
+                        }} fontSize={20} height={60} radius={15} colors={['#000000C7', '#0000005E']} text='Chuẩn luôn' />
                     </SignOutButton>
-                    <Box height={15}></Box>
-                    <GradientButton onPress={() => navigation.goBack()} fontSize={18} height={55} radius={10} colors={['#22A4DD', '#F45985']} text='Bấm lộn' />
-
+                    <Box height={30}></Box>
+                    <GradientButton onPress={() => navigation.goBack()} fontSize={20} height={60} radius={15} colors={['#22A4DD', '#F45985']} text='Bấm lộn' />
                 </Box>
             </Stack>
         </Animated.View>

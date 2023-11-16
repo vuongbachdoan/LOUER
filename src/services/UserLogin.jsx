@@ -9,7 +9,7 @@ export const getBaseLink = async () => {
     return requestZ.baseURL;
 };
 
-export const mail = async (firstName, email, avaLink, lastName = '', middleName = '') => {
+export const mail = async (firstName, email, avaLink, lastName, middleName) => {
     const json = {
         firstName: firstName,
         lastName: lastName,

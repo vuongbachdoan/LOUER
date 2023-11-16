@@ -195,16 +195,16 @@ export const handleGetData = async (fullName, firstName, email, avaLink, lastNam
         //Case Gmail
         case /^[a-z0-9]{8,}@gmail\.com$/.test(email):
             if (user.lastName !== null && middleName === null) {
-                resLogin = await LoginService.mail(fullName, email, avaLink, lastName);
+                resLogin = await LoginService.mail(firstName, email, avaLink, lastName);
             } else if (middleName !== null && lastName === null) {
-                resLogin = await LoginService.mail(fullName, email, avaLink, null, middleName)
+                resLogin = await LoginService.mail(firstName, email, avaLink, null, middleName)
             } else if (lastName !== null && middleName !== null) {
-                resLogin = await LoginService.mail(fullName, email, avaLink, lastName, middleName)
+                resLogin = await LoginService.mail(firstName, email, avaLink, lastName, middleName)
             }
             break;
         //Case Other Mail
         default:
-            resLogin = await LoginService.mailOther(fullName, email, avaLink);
+            resLogin = await LoginService.mailOther(firstName, email, avaLink);
             break;
     }
 

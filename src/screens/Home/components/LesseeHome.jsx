@@ -58,7 +58,7 @@ export const LesseeHome = ({ navigation }) => {
         if (res !== listingList) {
             setListingList([...listingList, ...res]);
         } else {
-            Toast.showError("Đã hết sản phẩm");
+            Toast.show("Đã hết sản phẩm");
         }
         
     }
