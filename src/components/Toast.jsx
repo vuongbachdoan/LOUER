@@ -1,8 +1,8 @@
-import Toast from 'react-native-toast-message';
-import { ToastAndroid } from 'react-native';
+// import Toast from 'react-native-toast-message';
+// import { ToastAndroid } from 'react-native';
 export  function show(message){
-    ToastAndroid.show(message, ToastAndroid.SHORT);
-
+    // ToastAndroid.show(message, ToastAndroid.SHORT);
+    console.log('Toast message: ', message);
 
     //From 'react-native-toast-message'
     // switch (type) {

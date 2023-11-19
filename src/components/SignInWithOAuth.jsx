@@ -9,7 +9,7 @@ import { store } from "../state/store";
 import { enviroment } from "../state/enviroment";
 
 import * as UserService from "../services/User";
-import { Toast } from "../components/Toast";
+import * as Toast from "../components/Toast";
 
 WebBrowser.maybeCompleteAuthSession();
 

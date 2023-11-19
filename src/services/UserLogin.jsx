@@ -1,5 +1,5 @@
 import axios from "axios";
-import Toast from '../components/Toast';
+import * as Toast from '../components/Toast';
 const requestZ = axios.create({
     baseURL: 'https://www.louerapp.com/api/',
     timeout: 1000
